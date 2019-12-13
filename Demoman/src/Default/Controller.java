@@ -2,7 +2,7 @@ package Default;
 
 import org.newdawn.slick.Input;
 
-import Engine.Functions;
+import Curio.Functions;
 
 public class Controller {
 	private int Mode = 0;

@@ -3,7 +3,7 @@ package Default;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import Engine.Utilities.Tileset;
+import Curio.Utilities.Tileset;
 
 public class Constants {
 	public static int CellSize = 32;
@@ -62,8 +62,8 @@ public class Constants {
 		bombFlameUpgrade = new Image("Data/Sprites/Items/flameupgr.png");
 	}
 
-	static int[][] obj_Building = { { 2, 2, 2, 2, 2, 2, 2 }, { 2, 1, 1, 1, 1, 1, 2 }, { 2, 1, 1, 2, 1, 1, 2 },
-			{ 1, 1, 2, 2, 2, 1, 2 }, { 2, 1, 1, 2, 1, 1, 2 }, { 2, 1, 1, 1, 1, 1, 2 }, { 2, 2, 2, 2, 2, 2, 2 }, };
+	static int[][] obj_Building = { { 4, 4, 4, 4, 4, 4, 4}, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 1, 1, 4, 1, 1, 4 },
+			{ 1, 1, 4, 4, 4, 1, 4 }, { 4, 1, 1,4, 1, 1, 4 }, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 4, 4, 4, 4, 4, 4 }, };
 
 	static int[][] obj_Snake = { { 2, 2, 2, 2, 2, 2, 2 }, { 4, 4, 4, 1, 1, 4, 2 }, { 2, 2, 2, 2, 2, 2, 2 },
 			{ 2, 4, 4, 1, 1, 4, 4 }, { 2, 2, 2, 2, 2, 2, 2 }, { 4, 4, 4, 1, 1, 4, 2 }, { 2, 2, 2, 2, 2, 2, 2 }, };
@@ -71,9 +71,9 @@ public class Constants {
 	static void InitTileset() {
 		Tset = new Tileset();
 		Tset.createTile(0, "Empty", false, false, 0, true, empty);
-		Tset.createTile(1, "grass", false, true, 400, true, grass);
+		Tset.createTile(1, "grass", false, true, 100, true, grass);
 		Tset.createTile(100, "burntgrass", false, false, 0, true, burntgrass);
-		Tset.createTile(2, "wood", false, true, 1000, true, wood);
+		Tset.createTile(2, "wood", false, true, 100, true, wood);
 		Tset.createTile(200, "burntwood", false, false, 0, true, burntwood);
 		Tset.createTile(3, "rock", true, false, 0, false, rock);
 		Tset.createTile(4, "Brickwall", true, false, 0, false, brick);

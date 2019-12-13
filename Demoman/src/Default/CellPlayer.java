@@ -3,8 +3,8 @@ package Default;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import Engine.Tilemap.Tilemap;
-import Engine.Utilities.Transform;
+import Curio.Tilemap.Tilemap;
+import Curio.Utilities.Transform;
 
 public class CellPlayer {
 	Transform transform;
