@@ -11,11 +11,16 @@ public class Controller {
 	private int key_DOWN = Input.KEY_S;
 	private int key_RIGHT = Input.KEY_D;
 	private int key_LEFT = Input.KEY_A;
-	private int key_USE = Input.KEY_E;
+
+	private int key_USE = Input.KEY_SPACE;
+	private int key_SWITCHITEM = Input.KEY_TAB;
+	private int key_DROP = Input.KEY_G;
+	private int key_TAKE = Input.KEY_E;
+
 	private int key_BOMB = Input.KEY_Q;
 
 	public boolean ActionNorth = false, ActionSouth = false, ActionWest = false, ActionEast = false, ActionUse = false,
-			ActionBomb = false;
+			ActionBomb = false, ActionSwitchItem = false, ActionTake = false, ActionDrop = false;
 
 	public boolean KeyLock;
 
@@ -81,12 +86,11 @@ public class Controller {
 			if (Main.input.isKeyDown(key_RIGHT)) {
 				ActionEast = true;
 			}
-			if (Main.input.isKeyDown(key_BOMB)) {
-				ActionBomb = true;
-			}
-			if (Main.input.isKeyDown(key_USE)) {
-				ActionUse = true;
-			}
+			ActionBomb = Main.input.isKeyPressed(key_BOMB);
+			ActionUse = Main.input.isKeyPressed(key_USE);
+			ActionSwitchItem = Main.input.isKeyPressed(key_SWITCHITEM);
+			ActionTake = Main.input.isKeyPressed(key_TAKE);
+			ActionDrop = Main.input.isKeyPressed(key_DROP);
 		}
 	}
 
@@ -99,6 +103,9 @@ public class Controller {
 			ActionEast = false;
 			ActionUse = false;
 			ActionBomb = false;
+			ActionSwitchItem = false;
+			ActionTake = false;
+			ActionDrop = false;
 		}
 	}
 

@@ -3,24 +3,20 @@ package Default;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import Curio.Utilities.Tileset;
-
 public class Constants {
 	public static int CellSize = 32;
-
-	public static Tileset Tset;
-
 	// tiles
-	public static Image empty = null, grass = null, brick = null, metalframe = null, rock = null, wood = null,burntwood =null, burntgrass =null;
+	public static Image empty = null, grass = null, brick = null, metalframe = null, rock = null, wood = null,
+			burntwood = null, burntgrass = null;
 //objects
 	public static Image firestarter = null, barrel = null, itemspawner = null, switchon = null, switchoff = null,
 			pushbutton = null, movetrigger = null;
 //items
-	public static Image medpack = null, stimpack = null, bombSizeUpgrade = null, bombFlameUpgrade = null;
+	public static Image medpack = null, stimpack = null, bombSizeUpgrade = null, bombFlameUpgrade = null,pizzaSlice = null,pizza = null;
 //anims
 	public static Image ExplosionSprite = null, FireSprite = null;
 //bombs
-	public static Image blueBombNormal = null, greenBombNormal = null,blueBombNapalm = null, greenBombNapalm = null;
+	public static Image blueBombNormal = null, greenBombNormal = null, blueBombNapalm = null, greenBombNapalm = null;
 
 	static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
@@ -60,24 +56,15 @@ public class Constants {
 		stimpack = new Image("Data/Sprites/Items/stimpack.png");
 		bombSizeUpgrade = new Image("Data/Sprites/Items/sizeupgrade.png");
 		bombFlameUpgrade = new Image("Data/Sprites/Items/flameupgr.png");
+		
+		pizzaSlice = new Image("Data/Sprites/Items/Food/PizzaSlice.png");
+		pizza = new Image("Data/Sprites/Items/Food/Pizza.png");
 	}
 
-	static int[][] obj_Building = { { 4, 4, 4, 4, 4, 4, 4}, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 1, 1, 4, 1, 1, 4 },
-			{ 1, 1, 4, 4, 4, 1, 4 }, { 4, 1, 1,4, 1, 1, 4 }, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 4, 4, 4, 4, 4, 4 }, };
+	static int[][] obj_Building = { { 4, 4, 4, 4, 4, 4, 4 }, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 1, 1, 4, 1, 1, 4 },
+			{ 1, 1, 4, 4, 4, 1, 4 }, { 4, 1, 1, 4, 1, 1, 4 }, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 4, 4, 4, 4, 4, 4 }, };
 
 	static int[][] obj_Snake = { { 2, 2, 2, 2, 2, 2, 2 }, { 4, 4, 4, 1, 1, 4, 2 }, { 2, 2, 2, 2, 2, 2, 2 },
 			{ 2, 4, 4, 1, 1, 4, 4 }, { 2, 2, 2, 2, 2, 2, 2 }, { 4, 4, 4, 1, 1, 4, 2 }, { 2, 2, 2, 2, 2, 2, 2 }, };
 
-	static void InitTileset() {
-		Tset = new Tileset();
-		Tset.createTile(0, "Empty", false, false, 0, true, empty);
-		Tset.createTile(1, "grass", false, true, 100, true, grass);
-		Tset.createTile(100, "burntgrass", false, false, 0, true, burntgrass);
-		Tset.createTile(2, "wood", false, true, 100, true, wood);
-		Tset.createTile(200, "burntwood", false, false, 0, true, burntwood);
-		Tset.createTile(3, "rock", true, false, 0, false, rock);
-		Tset.createTile(4, "Brickwall", true, false, 0, false, brick);
-		Tset.createTile(5, "metalframe", false, false, 0, false, metalframe);
-
-	}
 }

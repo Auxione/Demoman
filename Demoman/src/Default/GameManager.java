@@ -1,31 +1,33 @@
 package Default;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import Curio.*;
+import Curio.Viewport;
 import Curio.HUD.BarDisplay;
+import Curio.HUD.InventoryDisplay;
+import Curio.Items.Inventory;
 import Curio.Items.Item;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
-import Curio.Tilemap.*;
+import Curio.Tilemap.FireManager;
+import Curio.Tilemap.Tilemap;
 import Curio.Tilemap.Bomb.BombManager;
 import Curio.Tilemap.Logic.Logic;
-import Curio.Tilemap.Logic.Trigger.MoveTrigger;
-import Curio.Tilemap.Logic.Trigger.Pushbutton;
-import Curio.Tilemap.Logic.Trigger.Switchbutton;
 
 public class GameManager {
-	private ArrayList<Controller> controllerList;
+	private Controller controller;
+	private DynamicPlayer player;
+	private TilemapCollision collision;
+	private Viewport viewPort;
 
-	private HashMap<Controller, DynamicPlayer> playerList;
-	private HashMap<Controller, BarDisplay> hpBarList;
-	private HashMap<Controller, TilemapCollision> collisionList;
+	private Inventory playerInventory;
+	private InventoryDisplay inventoryDisplay;
+	private BarDisplay hpBar, foodBar;
+
 	private FireManager fm;
 	private BombManager bm;
+
 
 	Tilemap currentLevel;
 
@@ -39,10 +41,18 @@ public class GameManager {
 	GameManager(Tilemap l) {
 		currentLevel = l;
 
-		controllerList = new ArrayList<Controller>();
-		playerList = new HashMap<Controller, DynamicPlayer>();
-		hpBarList = new HashMap<Controller, BarDisplay>();
-		collisionList = new HashMap<Controller, TilemapCollision>();
+		controller = new Controller(1);
+		player = new DynamicPlayer(currentLevel, 200, 200);
+		collision = new TilemapCollision(currentLevel, player);
+
+		hpBar = new BarDisplay(0, 0, 100, 10, Color.red);
+		foodBar = new BarDisplay(0, 0, 100, 10, Color.green);
+
+		playerInventory = new Inventory(player, 3);
+		inventoryDisplay = new InventoryDisplay(500, 500, playerInventory);
+
+		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
+
 
 		fm = new FireManager(currentLevel);
 		bm = new BombManager(fm, currentLevel);
@@ -53,98 +63,75 @@ public class GameManager {
 		currentLevel.create_BlankLevel();
 	}
 
-	public void createPlayer(float posx, float posy, int mode) {
-		// create new controller
-		controllerList.add(new Controller(mode));
-		// get the last created controller
-		Controller ctrl = controllerList.get(controllerList.size() - 1);
-		// assign player and bomb to last created controller
-		playerList.put(ctrl, new DynamicPlayer(currentLevel, posx, posy));
-		hpBarList.put(ctrl, new BarDisplay(playerList.get(ctrl).Position, 60, 10, Color.red));
-		collisionList.put(ctrl, new TilemapCollision(currentLevel, playerList.get(ctrl)));
-	}
-
 	public void update(int delta) {
-		Logic.mainloop();
+		controller.Pressed();
 
-		for (Controller c : controllerList) {
-			fm.update(playerList.get(c));
-			bm.update(playerList.get(c));
-			
-			playerList.get(c).loop();
-			Item.itemScan(playerList.get(c));
-			hpBarList.get(c).Percentage(playerList.get(c).getCurrentHealth(), playerList.get(c).getMaxHealth());
-			collisionList.get(c).checkCollisions(playerList.get(c).psize);
-		}
+		Logic.mainloop();
+		fm.update(player);
+		bm.update(player);
+
+		player.loop();
+		viewPort.move(player.Position);
+
+		hpBar.Percentage(player.getCurrentHealth(), player.getMaxHealth());
+		foodBar.Percentage(player.getCurrentFood(), player.getMaxFood());
+
+		collision.checkCollisions(player.psize);
 
 		for (DynamicObject d : DynamicObject.dynamicObjectList) {
 			d.updatePhysics(delta);
 		}
+		
+		inventoryDisplay.inputEvent(Main.input);
+		actions();
 
-		for (Controller c : controllerList) {
-			// check if the movetrigger activated by this player
-			for (MoveTrigger m : Logic.movetriggerList) {
-				m.update();
-				if (Functions.isOnTop(playerList.get(c).CellPosition, m.transform) == true && m.activated == false) {
-					m.activated = true;
-				} else if (Functions.isOnTop(playerList.get(c).CellPosition, m.transform) == false) {
-					m.activated = false;
-				}
-			}
-			c.ActionEnd();
-		}
+		controller.ActionEnd();
 	}
 
 	void render(Graphics g) {
+		viewPort.renderStart(g);
 		// render level
-		currentLevel.render(g);
+		currentLevel.render(g, viewPort);
 		Logic.mainRender(g);
-
 		Item.mainRender(g);
 
 		fm.render(g);
 		bm.render(g);
 
-		for (Controller c : controllerList) {
-			playerList.get(c).render(g);
-			hpBarList.get(c).render(g);
-		}
+		player.render(g);
+
+		viewPort.renderEnd(g);
+		//
+		inventoryDisplay.render(g);
+		hpBar.render(g);
+		foodBar.render(g);
 
 	}
 
 	void KeyPressed(int key, char chr) {
-		for (Controller c : controllerList) {
-			c.Pressed();
-			playerList.get(c).MovementDir(chr, 1);
+		player.MovementDir(chr, 1);
 
-			if (c.ActionBomb == true) {
-				bm.create(playerList.get(c).CellPosition, playerList.get(c).Team, playerList.get(c).bombType,
-						playerList.get(c).bombTimer);
-			}
-
-			if (c.ActionUse == true) {
-				fm.create(playerList.get(c).CellPosition.get_x(), playerList.get(c).CellPosition.get_y());
-			}
-
-			// check if the player activates
-			for (Switchbutton sw : Logic.switchbuttonList) {
-				if (c.ActionUse == true && Functions.isOnTop(playerList.get(c).CellPosition, sw.transform)) {
-					sw.keyEvent();
-				}
-			}
-			// check if the player activates
-			for (Pushbutton b : Logic.pushbuttonList) {
-				if (c.ActionUse == true && Functions.isOnTop(playerList.get(c).CellPosition, b.transform)) {
-					b.keyEvent();
-				}
-			}
-		}
 	}
 
 	void KeyReleased(int key, char chr) {
-		for (Controller c : controllerList) {
+		player.MovementDir(chr, 0);
+	}
 
-			playerList.get(c).MovementDir(chr, 0);
+	private void actions() {
+		if (controller.ActionTake == true) {
+			playerInventory.take();
+		}
+
+		if (controller.ActionUse == true) {
+			playerInventory.useSelf();
+		}
+
+		if (controller.ActionSwitchItem == true) {
+			playerInventory.switchCurrentItem();
+		}
+
+		if (controller.ActionDrop == true) {
+			playerInventory.drop();
 		}
 	}
 }

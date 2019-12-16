@@ -13,25 +13,27 @@ public class DynamicPlayer extends DynamicObject {
 	private int maxHealth = 100;
 	private int currentHealth = maxHealth;
 	public int Team = 1;// spectator, dead = 0 //blue = 1 // green = 2
-	private int Speed = 100000;
-
+	private int Acceleration = 3;
+	
+	private int currentFood = 0;
+	private int maxFood = 100;
+	
 	public int psize = 10;
 	Tilemap level;
 
 	public boolean Dead;
+  
 	
 	private int Left = 0, Right = 0, Up = 0, Down = 0;
-	
 	protected DynamicPlayer(Tilemap _level, float positionX, float positionY) {
-		super(_level, positionX, positionY);
+		super(_level, positionX, positionY );
 		level = _level;
 		Dead = false;
 	}
 
-	
 	public void loop() {
-		move((Left + Right) * Speed, (Up + Down) * Speed);
-		healthUpdate();
+		move((Left + Right) * Acceleration, (Up + Down) * Acceleration);
+		statsUpdate();
 	}
 	
 	public void render(Graphics g) {
@@ -64,22 +66,49 @@ public class DynamicPlayer extends DynamicObject {
 	public int getMaxHealth() {
 		return maxHealth;
 	}
+	public int getCurrentFood() {
+		return currentFood;
+	}
 
-	private void healthUpdate() {
+	public int getMaxFood() {
+		return maxFood;
+	}
+	
+	private void statsUpdate() {
 		if (currentHealth < 0 && Dead == false) {
 			this.currentHealth = 0;
 			Dead = true;
 		} else if (currentHealth > maxHealth && Dead == false) {
 			this.currentHealth = maxHealth;
 		}
+		
+		if (currentFood < 0 && Dead == false) {
+			this.currentFood = 0;
+			Dead = true;
+		} else if (currentFood > maxFood && Dead == false) {
+			this.currentFood = maxFood;
+		}
+		
 	}
-
+	
+	public void addFood(int val) {
+		if (currentFood >= 0 && currentFood <= maxFood) {
+			this.currentFood += val;
+		}
+	}
+	
 	public void addHealth(int val) {
 		if (currentHealth >= 0 && currentHealth <= maxHealth) {
 			this.currentHealth += val;
 		}
 	}
-
+	
+	public void applyDamage(int val) {
+		if (currentHealth >= 0 && currentHealth <= maxHealth) {
+			this.currentHealth -= val;
+		}
+	}
+	
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
 	}
