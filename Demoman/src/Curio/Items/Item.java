@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import Curio.Tilemap.Tilemap;
+import Curio.Tilemap.Bomb.BombManager;
 import Default.Constants;
 import Default.DynamicPlayer;
 
@@ -33,6 +34,7 @@ public abstract class Item {
 		itemList.put(2, new Stimpack());
 		itemList.put(3, new Pizza());
 		itemList.put(4, new PizzaSlice());
+		itemList.put(5, new DefaultBomb());
 	}
 
 	public static void mainRender(Graphics g) {
@@ -90,9 +92,8 @@ public abstract class Item {
 
 	public abstract Image getImage();
 
-	public abstract void apply(DynamicPlayer dp);
+	public abstract void apply(DynamicPlayer dp, Tilemap level, BombManager bm);
 
-	public abstract void apply(Tilemap level);
+	public abstract boolean condition(DynamicPlayer dp, Tilemap level, BombManager bm);
 
-	public abstract boolean condition(DynamicPlayer dp);
 }

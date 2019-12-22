@@ -4,10 +4,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import Curio.Utilities.Vector;
+import Curio.Utilities.Math.Vector;
 
 public class BarDisplay extends HUD {
 	private Color barColor;
+	private Color backgroundColor = Color.lightGray;
 	public float ratio = 1;
 	private int xsize = 2;
 	private int ysize = 2;
@@ -28,9 +29,11 @@ public class BarDisplay extends HUD {
 		g.setLineWidth(0);
 		g.setColor(Color.black);
 		g.fillRect(Position.x, Position.y, width, height);
-
+		
+		g.setColor(backgroundColor);
+		g.fillRect(Position.x + xsize, Position.y + ysize, (width - xsize * 2), height - ysize * 2);
+		
 		g.setColor(barColor);
-
 		g.fillRect(Position.x + xsize, Position.y + ysize, (width - xsize * 2) * ratio, height - ysize * 2);
 	}
 

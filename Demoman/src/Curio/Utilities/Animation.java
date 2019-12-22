@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import Curio.Functions;
+import Curio.Utilities.Math.Transform;
 import Default.Constants;
 
 public class Animation {

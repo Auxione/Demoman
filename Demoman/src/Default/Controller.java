@@ -3,6 +3,8 @@ package Default;
 import org.newdawn.slick.Input;
 
 import Curio.Functions;
+import Curio.HUD.ConsoleDisplay;
+import Curio.Physics.CellularObject;
 
 public class Controller {
 	private int Mode = 0;
@@ -23,14 +25,38 @@ public class Controller {
 			ActionBomb = false, ActionSwitchItem = false, ActionTake = false, ActionDrop = false;
 
 	public boolean KeyLock;
+	CellularObject obj;
+	private ConsoleDisplay console;
 
-	public Controller(int om) {
-		Mode = om;
+	public Controller(int Mode, CellularObject obj, ConsoleDisplay console) {
+		this.Mode = Mode;
+		this.obj = obj;
+		this.console = console;
+
 		// enable player controls for the object
 		if (Mode == 1) {
 			KeyLock = true;
 		} else {
 			KeyLock = false;
+		}
+		String cmd = "Controller: Initialized and assigned.";
+		console.Add(0, cmd);
+	}
+
+	public Controller(int Mode, CellularObject obj) {
+		this.Mode = Mode;
+		this.obj = obj;
+		this.console = null;
+
+		// enable player controls for the object
+		if (Mode == 1) {
+			KeyLock = true;
+		} else {
+			KeyLock = false;
+		}
+		if (console != null) {
+			String cmd = "Controller: Initialized and assigned.";
+			console.Add(0, cmd);
 		}
 	}
 
@@ -49,10 +75,6 @@ public class Controller {
 		else if (Mode == 2) {
 			AIControl();
 		}
-		// server controls the object
-		else if (Mode == 3) {
-			ServerControl();
-		}
 	}
 
 	// ===========================================mode0===========================================
@@ -70,20 +92,31 @@ public class Controller {
 
 	// ===========================================mode1===========================================
 	private void PlayerControl() {
+		if (ActionNorth == true) {
+			obj.move(0, -1);
+		} else if (ActionSouth == true) {
+			obj.move(0, +1);
+		}
+
+		if (ActionEast == true) {
+			obj.move(+1, 0);
+		} else if (ActionWest == true) {
+			obj.move(-1, 0);
+		}
 	}
 
 	public void Pressed() {
 		if (KeyLock) {
-			if (Main.input.isKeyDown(key_UP)) {
+			if (Main.input.isKeyPressed(key_UP)) {
 				ActionNorth = true;
 			}
-			if (Main.input.isKeyDown(key_DOWN)) {
+			if (Main.input.isKeyPressed(key_DOWN)) {
 				ActionSouth = true;
 			}
-			if (Main.input.isKeyDown(key_LEFT)) {
+			if (Main.input.isKeyPressed(key_LEFT)) {
 				ActionWest = true;
 			}
-			if (Main.input.isKeyDown(key_RIGHT)) {
+			if (Main.input.isKeyPressed(key_RIGHT)) {
 				ActionEast = true;
 			}
 			ActionBomb = Main.input.isKeyPressed(key_BOMB);
@@ -111,9 +144,5 @@ public class Controller {
 
 	// ===========================================mode2===========================================
 	private void AIControl() {
-	}
-
-	// ===========================================mode3===========================================
-	private void ServerControl() {
 	}
 }

@@ -5,18 +5,19 @@ import java.util.ListIterator;
 
 import org.newdawn.slick.Graphics;
 
-import Default.DynamicPlayer;
+import Curio.Tileset;
+import Default.Player;
 
 public class FireManager implements Runnable{
 	private ArrayList<Fire> fireList;
-	private Tilemap level;
+	private TileMap level;
 
-	public FireManager(Tilemap _Level) {
+	public FireManager(TileMap _Level) {
 		fireList = new ArrayList<Fire>();
 		level = _Level;
 	}
 
-	public void update(DynamicPlayer dp) {
+	public void update(Player dp) {
 		ListIterator<Fire> f = fireList.listIterator();
 		while (f.hasNext()) {
 			Fire fire = f.next(); // must be called before you can call f.remove()

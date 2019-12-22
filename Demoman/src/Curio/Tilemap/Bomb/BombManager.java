@@ -6,30 +6,29 @@ import java.util.Iterator;
 import org.newdawn.slick.Graphics;
 
 import Curio.Tilemap.FireManager;
-import Curio.Tilemap.Tilemap;
-import Curio.Utilities.Transform;
-import Default.DynamicPlayer;
+import Curio.Tilemap.TileMap;
+import Curio.Utilities.Math.Transform;
+import Default.Player;
 
 public class BombManager {
 	private ArrayList<Bomb> bombList = new ArrayList<Bomb>();
 
-	private Tilemap level;
+	private TileMap level;
 	private FireManager fireManager;
 
-	public BombManager(FireManager _fireManager, Tilemap _level) {
+	public BombManager(FireManager _fireManager, TileMap _level) {
 		level = _level;
 		fireManager = _fireManager;
 	}
 
-	public void update(DynamicPlayer dp) {
+	public void update(Player dp) {
 		Iterator<Bomb> b = bombList.iterator();
 
 		while (b.hasNext()) {
 			Bomb bomb = b.next(); // must be called before you can call f.remove()
 			bomb.update();
 			if (bomb.Exploded == true) {
-				bomb.tileEffect(level);
-				bomb.playerEffect(dp);
+				bomb.Effect(level,dp);;
 				b.remove();
 			}
 		}
@@ -41,25 +40,26 @@ public class BombManager {
 		}
 	}
 
-	public void create(Transform _transform, int _type, int _time) {
-		boolean canPlace = false;
+	public boolean canPlace(Transform _transform) {
 		if (bombList.isEmpty() == false) {
 			for (Bomb b : bombList) {
 				if (!b.transform.equals(_transform)) {
-					canPlace = true;
-					break;
+					return true;
 				}
 			}
+			return false;
 		} else {
-			canPlace = true;
+			return true;
 		}
-		if (canPlace == true) {
-			Transform bombpos = new Transform(_transform.get_x(), _transform.get_y());
-			if (_type == 1) {
-				bombList.add(new Default(level, bombpos, _time));
-			} else if (_type == 2) {
-				bombList.add(new Napalm(fireManager, level, bombpos, _time));
-			}
+	}
+
+	public void create(Transform _transform, int _type, int _time) {
+		Transform bombpos = new Transform(_transform.get_x(), _transform.get_y());
+		if (_type == 1) {
+			bombList.add(new Default(level, bombpos, _time));
+		} else if (_type == 2) {
+			bombList.add(new Napalm(fireManager, level, bombpos, _time));
 		}
+
 	}
 }

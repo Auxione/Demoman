@@ -1,4 +1,4 @@
-package Curio.Utilities;
+package Curio.Utilities.Math;
 
 public class Transform {
 	private int[] Position;
@@ -55,7 +55,7 @@ public class Transform {
 	public int get_y() {
 		return Position[1];
 	}
-	
+
 	public float get_rotation() {
 		return Rotation;
 	}

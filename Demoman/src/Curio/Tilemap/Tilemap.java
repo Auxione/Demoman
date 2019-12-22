@@ -45,12 +45,15 @@ public class Tilemap {
 	}
 
 	public boolean applyDamage(int x, int y, float damage) {
-		if (tileHPMap[x][y] >= 0 && tileHPMap[x][y] <= Tileset.getHP(tilemap[x][y])) {
+		if (x >= 0 && x < tilemap.length && y >= 0 && y < tilemap[0].length) {
 			tileHPMap[x][y] -= damage;
-			return true;
-		} else {
+			if (tileHPMap[x][y] <= 0) {
+				tilemap[x][y] = 0;
+				return true;
+			}
 			return false;
 		}
+		return false;
 	}
 
 	private void createBlankTileMap() {

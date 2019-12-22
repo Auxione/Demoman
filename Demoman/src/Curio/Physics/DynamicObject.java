@@ -2,13 +2,13 @@ package Curio.Physics;
 
 import java.util.ArrayList;
 
-import Curio.Tilemap.Tilemap;
-import Curio.Utilities.Transform;
-import Curio.Utilities.Vector;
+import Curio.Tilemap.TileMap;
+import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class DynamicObject {
 	public static ArrayList<DynamicObject> dynamicObjectList = new ArrayList<DynamicObject>();
-	Tilemap level;
+	TileMap level;
 
 	public Vector Position;
 	public Transform CellPosition;
@@ -17,7 +17,9 @@ public class DynamicObject {
 	public Vector Acceleration;
 	private float AccelOffset = 1000;
 
-	protected DynamicObject(Tilemap _level, float positionX, float positionY) {
+	float size;
+
+	protected DynamicObject(TileMap _level, float positionX, float positionY, float size) {
 		level = _level;
 
 		Position = new Vector(positionX, positionY);
@@ -26,10 +28,11 @@ public class DynamicObject {
 		dynamicObjectList.add(this);
 
 		CellPosition = new Transform();
+		this.size = size;
 	}
 
 	public void updatePhysics(float deltaTime) {
-		float time = deltaTime/1000 ;
+		float time = deltaTime / 1000;
 
 		Velocity.x += Acceleration.x * time;
 		Velocity.y += Acceleration.y * time;

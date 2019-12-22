@@ -48,7 +48,7 @@ public class GameManager {
 		hpBar = new BarDisplay(0, 0, 100, 10, Color.red);
 		foodBar = new BarDisplay(0, 0, 100, 10, Color.green);
 
-		playerInventory = new Inventory(player, 3);
+		playerInventory = new Inventory(player, 6);
 		inventoryDisplay = new InventoryDisplay(500, 500, playerInventory);
 
 		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
@@ -103,7 +103,9 @@ public class GameManager {
 		viewPort.renderEnd(g);
 		//
 		inventoryDisplay.render(g);
+		g.translate(40, 500);
 		hpBar.render(g);
+		g.translate(0, 15);
 		foodBar.render(g);
 
 	}
@@ -123,7 +125,7 @@ public class GameManager {
 		}
 
 		if (controller.ActionUse == true) {
-			playerInventory.useSelf();
+			playerInventory.useSelf(bm, currentLevel);
 		}
 
 		if (controller.ActionSwitchItem == true) {

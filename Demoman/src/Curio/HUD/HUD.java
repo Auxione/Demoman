@@ -3,7 +3,7 @@ package Curio.HUD;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import Curio.Utilities.Vector;
+import Curio.Utilities.Math.Vector;
 
 public abstract class HUD {
 	public Vector Position;

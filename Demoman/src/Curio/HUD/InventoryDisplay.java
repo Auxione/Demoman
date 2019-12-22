@@ -5,15 +5,17 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import Curio.Functions;
-import Curio.Items.Inventory;
-import Curio.Items.Item;
+import Curio.ItemMap.Inventory;
+import Curio.ItemMap.ItemMap;
 
 public class InventoryDisplay extends HUD {
 	Inventory inventory;
+	private ItemMap itemMap;
 	static int itemIconSize = 32;
 
-	public InventoryDisplay(float x, float y, Inventory _inventory) {
+	public InventoryDisplay(float x, float y, Inventory _inventory, ItemMap itemMap) {
 		super(x, y, _inventory.getInventoryMap().length * itemIconSize, itemIconSize);
+		this.itemMap = itemMap;
 		inventory = _inventory;
 	}
 
@@ -34,14 +36,20 @@ public class InventoryDisplay extends HUD {
 			g.drawRect(x * itemIconSize, 0, itemIconSize, itemIconSize);
 			// if the array contains draw item image
 			if (inventory.getInventoryMap()[x][0] > 0 && inventory.getInventoryMap()[x][1] > 0) {
-				g.drawImage(Item.itemList.get(inventory.getInventoryMap()[x][0]).getImage(), x * itemIconSize, 0);
+				g.drawImage(itemMap.itemList.get(inventory.getInventoryMap()[x][0]).getImage(), x * itemIconSize, 0);
 				g.setColor(Color.black);
-				g.drawString(Integer.toString(inventory.getInventoryMap()[x][1]), x * itemIconSize, 0);
+				// draw item count
+				g.setColor(Color.lightGray);
+				g.fillRect(x * itemIconSize, -20, 20, 20);
+				g.setColor(Color.black);
+				g.drawRect(x * itemIconSize, -20, 20, 20);
+
+				g.drawString(Integer.toString(inventory.getInventoryMap()[x][1]), x * itemIconSize + 2, -20);
 			}
 		}
 		// selection index
 		g.setColor(Color.red);
-		g.drawRect(inventory.itemIndex * itemIconSize+2, +2, itemIconSize-4, itemIconSize-4);
+		g.drawRect(inventory.itemIndex * itemIconSize + 2, +2, itemIconSize - 4, itemIconSize - 4);
 		g.popTransform();
 	}
 
@@ -50,7 +58,7 @@ public class InventoryDisplay extends HUD {
 		if (inRange(input.getMouseX(), input.getMouseY()) == true) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				inventory.itemIndex = (int) Functions.map(input.getMouseX(), Position.x, Position.x + width, 0,
-						inventory.maxItem);
+						inventory.inventorySize);
 			}
 		}
 	}

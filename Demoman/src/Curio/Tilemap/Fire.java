@@ -6,60 +6,48 @@ import org.newdawn.slick.Graphics;
 
 import Curio.Functions;
 import Curio.Utilities.Animation;
-import Curio.Utilities.Transform;
+import Curio.Utilities.Math.Transform;
 import Default.Constants;
-import Default.DynamicPlayer;
+import Default.Player;
 
 public class Fire {
-	private Tilemap level;
+	private TileMap level;
 	public Transform transform;
 	private Random r = new Random();
 	private Animation FireAnimation;
 
 	private int spreadChance = 50;
 	private float burnTime = 0;
-	final private int goalOffset = 000;
-	private int burntID = 0;
 
-	public int burnDamage = -10;
+	public int burnDamage = 10;
+	public int burnTileDamage = 1000;
 
 	public boolean burnt;
 
-	public Fire(Tilemap _level, int x, int y) {
+	public Fire(TileMap _level, int x, int y) {
 		level = _level;
 		transform = new Transform(x, y);
 
-		int tileid = level.get_Tile(transform.get_x(), transform.get_y());
-		burntID = tileid * 100;
-
-		int tileBurnTime = 1;//Tileset.getBurnTime(tileid);
-		burnTime = Functions.millis() + tileBurnTime;
-
-		FireAnimation = new Animation(Constants.FireSprite, 32, 32, 7, tileBurnTime);
+		FireAnimation = new Animation(Constants.FireSprite, 32, 32, 7, timer);
 		FireAnimation.Play();
 		burnt = false;
 	}
 
-	int applyDamageTimer = 200;
-	int damageGoal = 0;
+	private int timer = 200;
 
-	// deal damage every "applyDamageTimer" milliseconds
-	private void applyDamage(DynamicPlayer dp) {
-		if (transform.equals(dp.CellPosition) == true) {
-			if (Functions.millis() > damageGoal) {
+	private void newBurn(Player dp) {
+		if (burnTime < Functions.millis()) {
+			if (level.applyDamage(transform.get_x(), transform.get_y(), burnTileDamage) == false) {
 				dp.addHealth(burnDamage);
-				damageGoal = Functions.millis() + applyDamageTimer;
+				burnTime = Functions.millis() + timer;
+			} else if (level.applyDamage(transform.get_x(), transform.get_y(), burnTileDamage) == true) {
+				burnt = true;
 			}
 		}
 	}
 
-	public void update(DynamicPlayer dp) {
-		if (Functions.millis() < burnTime - goalOffset) {
-			applyDamage(dp);
-		} else if (Functions.millis() > burnTime - goalOffset) {
-			level.set_Tile(transform.get_x(), transform.get_y(), burntID);
-			burnt = true;
-		}
+	public void update(Player dp) {
+		newBurn(dp);
 	}
 
 	public void render(Graphics g) {

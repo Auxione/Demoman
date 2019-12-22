@@ -3,6 +3,7 @@ package Curio.Items;
 import org.newdawn.slick.Image;
 
 import Curio.Tilemap.Tilemap;
+import Curio.Tilemap.Bomb.BombManager;
 import Default.Constants;
 import Default.DynamicPlayer;
 
@@ -17,19 +18,13 @@ public class Pizza extends Item {
 	}
 
 	@Override
-	public void apply(DynamicPlayer dp) {
+	public void apply(DynamicPlayer dp, Tilemap level, BombManager bm) {
 		dp.addFood(value);
 
 	}
 
 	@Override
-	public void apply(Tilemap level) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean condition(DynamicPlayer dp) {
+	public boolean condition(DynamicPlayer dp, Tilemap level, BombManager bm) {
 		if (dp.getCurrentFood() < dp.getMaxFood()) {
 			return true;
 		} else {

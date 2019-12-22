@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import Curio.Utilities.Vector;
+import Curio.Utilities.Math.Vector;
 
 public class Button extends HUD {
 	private String buttonText;
@@ -30,6 +30,7 @@ public class Button extends HUD {
 	}
 
 	public void render(Graphics g) {
+		g.flush();
 		g.setColor(buttonColor);
 		g.fillRoundRect(Position.x, Position.y, width, height, 10);
 		float textx = Position.x + width / 2 - buttonText.length() * fontWidth; // Subtract the length of string

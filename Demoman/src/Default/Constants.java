@@ -17,8 +17,9 @@ public class Constants {
 	public static Image ExplosionSprite = null, FireSprite = null;
 //bombs
 	public static Image blueBombNormal = null, greenBombNormal = null, blueBombNapalm = null, greenBombNapalm = null;
-
-	static void loadData() throws SlickException {
+	public static Image berryBushState1 = null, berryBushState2 = null, berryBushState3 = null;
+	
+	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
 		// https://opengameart.org/content/explosion-3
 		ExplosionSprite = new Image("Data/Sprites/Animations/explosion.png");
@@ -59,6 +60,12 @@ public class Constants {
 		
 		pizzaSlice = new Image("Data/Sprites/Items/Food/PizzaSlice.png");
 		pizza = new Image("Data/Sprites/Items/Food/Pizza.png");
+		
+		berryBushState1 = new Image("/Data/Sprites/Berries/BerryBush1.png");
+		berryBushState2 = new Image("/Data/Sprites/Berries/BerryBush2.png");
+		berryBushState3 = new Image("/Data/Sprites/Berries/BerryBush3.png");
+		
+		Main.console.Add(0,"Textures Loaded");
 	}
 
 	static int[][] obj_Building = { { 4, 4, 4, 4, 4, 4, 4 }, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 1, 1, 4, 1, 1, 4 },

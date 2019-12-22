@@ -18,15 +18,15 @@ public class Tileset {
 	private static HashMap<Integer, Image> Texture = new HashMap<Integer, Image>();
 
 	public static void InitTileset() {
-		createTile(0, "Empty", true, false, 0, true, Constants.empty);
+		createTile(0, "Empty", true, false, 0, false, Constants.empty);
 
 		createTile(1, "grass", true, true, 5000, true, Constants.grass);
 
 		createTile(2, "wood", true, true, 2000, true, Constants.wood);
 
 		createTile(3, "rock", true, true, 3000, false, Constants.rock);
-		createTile(4, "Brickwall", false, true, 4000, false, Constants.brick);
-		createTile(5, "metalframe", false, false, 5000, false, Constants.metalframe);
+		createTile(4, "Brickwall", false, false, 4000, false, Constants.brick);
+		createTile(5, "metalframe", false, true, 5000, false, Constants.metalframe);
 	}
 	
 	private static void createTile(int id, // id of the tile
@@ -40,9 +40,12 @@ public class Tileset {
 
 		IDarray.add(id);
 		Name.put(id, name);
+		
 		canBreak.put(id, unbreakable);
 		maxHP.put(id, tileMaxHP);
+		
 		canMove.put(id, moveable);
+		
 		canBurn.put(id, flammable);
 		Texture.put(id, texture);
 	}

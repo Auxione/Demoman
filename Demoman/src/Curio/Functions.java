@@ -1,6 +1,6 @@
 package Curio;
 
-import Curio.Utilities.Transform;
+import Curio.Utilities.Math.Transform;
 import Default.Main;
 
 public class Functions {

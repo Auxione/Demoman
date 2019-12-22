@@ -56,7 +56,6 @@ public class DynamicPlayer extends DynamicObject {
 			Left = -act;
 			break;
 		}
-
 	}
 
 	public int getCurrentHealth() {
@@ -84,7 +83,6 @@ public class DynamicPlayer extends DynamicObject {
 		
 		if (currentFood < 0 && Dead == false) {
 			this.currentFood = 0;
-			Dead = true;
 		} else if (currentFood > maxFood && Dead == false) {
 			this.currentFood = maxFood;
 		}

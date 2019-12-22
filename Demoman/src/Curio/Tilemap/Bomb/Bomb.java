@@ -4,11 +4,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import Curio.Functions;
-import Curio.Tilemap.Tilemap;
+import Curio.Tilemap.TileMap;
 import Curio.Utilities.Animation;
-import Curio.Utilities.Transform;
+import Curio.Utilities.Math.Transform;
 import Default.Constants;
-import Default.DynamicPlayer;
+import Default.Player;
 
 public abstract class Bomb {
 	public Transform transform;
@@ -61,7 +61,6 @@ public abstract class Bomb {
 			break;
 		}
 	}
-	public abstract void playerEffect(DynamicPlayer dp);
-	public abstract void tileEffect(Tilemap _level);
+	public abstract void Effect(TileMap _level,Player dp);
 	public abstract void effectRender(Graphics g);
 }

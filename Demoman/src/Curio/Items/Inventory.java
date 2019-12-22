@@ -1,5 +1,7 @@
 package Curio.Items;
 
+import Curio.Tilemap.Tilemap;
+import Curio.Tilemap.Bomb.BombManager;
 import Curio.Utilities.Vector;
 import Default.DynamicPlayer;
 
@@ -11,17 +13,18 @@ public class Inventory {
 	public int itemIndex = 0;
 
 	public final int maxItem = 3;
+	public int inventorySize;
 
 	public Inventory(DynamicPlayer dp, int _sizeX) {
 		player = dp;
-		inventoryMap = new int[_sizeX][2];
+		inventorySize = _sizeX;
+		inventoryMap = new int[inventorySize][2];
 		Position = new Vector(0, 0);
 		// init inv
 		for (int x = 0; x < getInventoryMap().length; x++) {
 			inventoryMap[x][0] = 0;
 			inventoryMap[x][1] = 0;
 		}
-
 	}
 
 	public void switchCurrentItem() {
@@ -32,12 +35,12 @@ public class Inventory {
 		}
 	}
 
-	public void useSelf() {
-		applyItem(player, itemIndex);
+	public void useSelf(BombManager bm, Tilemap level) {
+		applyItem(bm, level, player, itemIndex);
 	}
 
-	public void useOther(DynamicPlayer dp) {
-		applyItem(dp, itemIndex);
+	public void useOther(BombManager bm, Tilemap level, DynamicPlayer dp) {
+		applyItem(bm, level, player, itemIndex);
 	}
 
 	public void drop() {
@@ -82,16 +85,16 @@ public class Inventory {
 		}
 	}
 
-	private void applyItem(DynamicPlayer dp, int index) {
+	private void applyItem(BombManager bm, Tilemap level, DynamicPlayer dp, int index) {
 		if (inventoryMap[index][0] > 0 && inventoryMap[index][1] > 0) {
-			if (Item.itemList.get(inventoryMap[index][0]).condition(dp) == true) {
-				Item.itemList.get(inventoryMap[index][0]).apply(dp);
+			if (Item.itemList.get(inventoryMap[index][0]).condition(dp, level, bm) == true) {
+				Item.itemList.get(inventoryMap[index][0]).apply(dp, level, bm);
 				inventoryMap[index][1] = inventoryMap[index][1] - 1;
-				if (inventoryMap[index][1] <= 0) {
-					inventoryMap[index][0] = 0;
-					inventoryMap[index][1] = 0;
-				}
 			}
+		}
+		if (inventoryMap[index][1] <= 0) {
+			inventoryMap[index][0] = 0;
+			inventoryMap[index][1] = 0;
 		}
 	}
 
