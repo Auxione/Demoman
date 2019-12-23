@@ -1,12 +1,14 @@
 package Curio.HUD;
 
 import java.util.ArrayList;
+import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.TrueTypeFont;
 
 public class ConsoleDisplay extends HUD {
 	int textSize = 16;
@@ -19,9 +21,10 @@ public class ConsoleDisplay extends HUD {
 	Calendar cal = Calendar.getInstance();
 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
+	private TrueTypeFont trueTypeFont = super.getTTF();
+
 	public ConsoleDisplay(float x, float y, float w, float h) {
 		super(x, y, w, h);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void Add(int typ3, String input) {
@@ -49,15 +52,21 @@ public class ConsoleDisplay extends HUD {
 			// texts
 			g.setWorldClip(super.Position.x, super.Position.y, super.width, super.height);
 			for (int i = commandHistory.size() - 1; i >= 0; i--) {
-
+				Color c = null;
 				if (commandType.get(i) == 0) {
-					g.setColor(Color.black);
+					c = (Color.black);
 				} else if (commandType.get(i) == 1) {
-					g.setColor(Color.red);
+					c = (Color.red);
 				}
 
-				g.drawString(commandHistory.get(i), super.Position.x,
-						super.Position.y + super.height + i * textSize - commandHistory.size() * textSize - barSize);
+				int stringLineWidth = trueTypeFont.getWidth(commandHistory.get(i));
+				int stringLineHeight = trueTypeFont.getHeight(commandHistory.get(i));
+				
+				float Stringx = super.Position.x;
+				float Stringy = super.Position.y + super.height + i * textSize - commandHistory.size() * (textSize + 1)
+						- barSize;
+
+				trueTypeFont.drawString(Stringx, Stringy, commandHistory.get(i), c);
 			}
 			// bottombar
 			g.setColor(Color.black);

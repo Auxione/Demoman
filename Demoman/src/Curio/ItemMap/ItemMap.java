@@ -6,11 +6,14 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import Curio.HUD.ConsoleDisplay;
+import Curio.ItemMap.Items.Berries;
 import Curio.ItemMap.Items.DefaultBomb;
 import Curio.ItemMap.Items.Medpack;
 import Curio.ItemMap.Items.NapalmBomb;
 import Curio.ItemMap.Items.Pizza;
 import Curio.ItemMap.Items.PizzaSlice;
+import Curio.ItemMap.Items.Sausage;
+import Curio.ItemMap.Items.SausageSeed;
 import Curio.ItemMap.Items.Stimpack;
 import Curio.Tilemap.TileMap;
 import Default.Constants;
@@ -21,8 +24,21 @@ public class ItemMap {
 	private int tileMaxItems = 5;
 	private ConsoleDisplay console;
 
-	public ItemMap(TileMap level, ConsoleDisplay console) {
+	private void putItems() {
+		itemList.put(1, new Medpack());
+		itemList.put(2, new Stimpack());
+		itemList.put(3, new Pizza());
+		itemList.put(4, new PizzaSlice());
+		itemList.put(5, new DefaultBomb());
+		itemList.put(6, new NapalmBomb());
+		itemList.put(7, new Sausage());
+		itemList.put(8, new Berries());
+		itemList.put(9, new SausageSeed());
+	}
+
+	public ItemMap(TileMap level,int tileMaxItems, ConsoleDisplay console) {
 		this.console = console;
+		this.tileMaxItems = tileMaxItems;
 		// coordinate system x,y
 		// itemMap[][][0] = item id;
 		// itemMap[][][1] = item count;
@@ -36,18 +52,13 @@ public class ItemMap {
 				itemMap[x][y][1] = 0;
 			}
 		}
-		itemList.put(1, new Medpack());
-		itemList.put(2, new Stimpack());
-		itemList.put(3, new Pizza());
-		itemList.put(4, new PizzaSlice());
-		itemList.put(5, new DefaultBomb());
-		itemList.put(6, new NapalmBomb());
-
+		putItems();
 		console.Add(0, "Item: System initialized");
 	}
 
-	public ItemMap(TileMap level) {
+	public ItemMap(TileMap level,int tileMaxItems) {
 		this.console = null;
+		this.tileMaxItems = tileMaxItems;
 		// coordinate system x,y
 		// itemMap[][][0] = item id;
 		// itemMap[][][1] = item count;
@@ -61,16 +72,10 @@ public class ItemMap {
 				itemMap[x][y][1] = 0;
 			}
 		}
-		itemList.put(1, new Medpack());
-		itemList.put(2, new Stimpack());
-		itemList.put(3, new Pizza());
-		itemList.put(4, new PizzaSlice());
-		itemList.put(5, new DefaultBomb());
-		itemList.put(6, new NapalmBomb());
+		putItems();
 	}
 
-
-	public void mainRender(Graphics g) {
+	public void render(Graphics g) {
 		for (int x = 0; x < itemMap.length; x++) {
 			for (int y = 0; y < itemMap[0].length; y++) {
 				if (itemMap[x][y][0] > 0 && itemMap[x][y][1] > 0) {
@@ -105,6 +110,12 @@ public class ItemMap {
 		}
 	}
 
+	private void clearCell(int x, int y) {
+		for (int i = 0; i < itemMap[0][0].length; i++) {
+			itemMap[x][y][i] = 0;
+		}
+	}
+
 	// this function returns item id if conditions are met
 	public int get(int x, int y) {
 		// check if theres a item on position
@@ -118,8 +129,7 @@ public class ItemMap {
 	public void remove(int x, int y) {
 		itemMap[x][y][1] -= 1;
 		if (itemMap[x][y][0] == 0 || itemMap[x][y][1] <= 0) {
-			itemMap[x][y][0] = 0;
-			itemMap[x][y][1] = 0;
+			clearCell(x, y);
 		}
 		if (console != null) {
 			String cmd = "removed item from:" + x + "-" + y + ".";

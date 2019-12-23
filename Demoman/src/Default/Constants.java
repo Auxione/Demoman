@@ -6,19 +6,45 @@ import org.newdawn.slick.SlickException;
 public class Constants {
 	public static int CellSize = 32;
 	// tiles
-	public static Image empty = null, grass = null, brick = null, metalframe = null, rock = null, wood = null,
-			burntwood = null, burntgrass = null;
-//objects
-	public static Image firestarter = null, barrel = null, itemspawner = null, switchon = null, switchoff = null,
-			pushbutton = null, movetrigger = null;
+	public static Image empty;
+	public static Image grass;
+	public static Image brick;
+	public static Image metalframe;
+	public static Image rock;
+	public static Image wood;
+	public static Image burntwood;
+	public static Image burntgrass;
+	public static Image Farmland;
+//logic objects
+	public static Image firestarter;
+	public static Image barrel;
+	public static Image itemspawner;
+	public static Image switchon;
+	public static Image switchoff;
+	public static Image pushbutton;
+	public static Image movetrigger;
 //items
-	public static Image medpack = null, stimpack = null, bombSizeUpgrade = null, bombFlameUpgrade = null,pizzaSlice = null,pizza = null;
+	public static Image medpack;
+	public static Image stimpack;
+	public static Image bombSizeUpgrade;
+	public static Image bombFlameUpgrade;
+	public static Image pizzaSlice;
+	public static Image pizza;
+	public static Image sausage;
+	public static Image berries;
+	public static Image SausageSeed;
 //anims
-	public static Image ExplosionSprite = null, FireSprite = null;
+	public static Image ExplosionSprite;
+	public static Image FireSprite;
 //bombs
-	public static Image blueBombNormal = null, greenBombNormal = null, blueBombNapalm = null, greenBombNapalm = null;
-	public static Image berryBushState1 = null, berryBushState2 = null, berryBushState3 = null;
-	
+	public static Image blueBombNormal;
+	public static Image greenBombNormal;
+	public static Image blueBombNapalm;
+	public static Image greenBombNapalm;
+//plants
+	public static Image berryBushState1, berryBushState2, berryBushState3;
+	public static Image sausagePlant1, sausagePlant2, sausagePlant3, sausagePlant4, sausagePlant5;
+
 	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
 		// https://opengameart.org/content/explosion-3
@@ -52,20 +78,31 @@ public class Constants {
 		metalframe = new Image("Data/Sprites/Tiles/metalframe.png");
 		wood = new Image("Data/Sprites/Tiles/wood.png");
 		burntwood = new Image("Data/Sprites/Tiles/BurntWood.png");
+		Farmland = new Image("Data/Sprites/Tiles/farmland.png");
 
 		medpack = new Image("Data/Sprites/Items/medpack.png");
 		stimpack = new Image("Data/Sprites/Items/stimpack.png");
 		bombSizeUpgrade = new Image("Data/Sprites/Items/sizeupgrade.png");
 		bombFlameUpgrade = new Image("Data/Sprites/Items/flameupgr.png");
-		
+
 		pizzaSlice = new Image("Data/Sprites/Items/Food/PizzaSlice.png");
 		pizza = new Image("Data/Sprites/Items/Food/Pizza.png");
-		
-		berryBushState1 = new Image("/Data/Sprites/Berries/BerryBush1.png");
-		berryBushState2 = new Image("/Data/Sprites/Berries/BerryBush2.png");
-		berryBushState3 = new Image("/Data/Sprites/Berries/BerryBush3.png");
-		
-		Main.console.Add(0,"Textures Loaded");
+		sausage = new Image("Data/Sprites/Items/Food/sausage.png");
+		berries = new Image("Data/Sprites/Items/Food/berries.png");
+
+		SausageSeed = new Image("Data/Sprites/Items/SausageSeed.png");
+
+		berryBushState1 = new Image("/Data/Sprites/Plants/BerryBush1.png");
+		berryBushState2 = new Image("/Data/Sprites/Plants/BerryBush2.png");
+		berryBushState3 = new Image("/Data/Sprites/Plants/BerryBush3.png");
+
+		sausagePlant1 = new Image("Data/Sprites/Plants/sausagePlant1.png");
+		sausagePlant2 = new Image("Data/Sprites/Plants/sausagePlant2.png");
+		sausagePlant3 = new Image("Data/Sprites/Plants/sausagePlant3.png");
+		sausagePlant4 = new Image("Data/Sprites/Plants/sausagePlant4.png");
+		sausagePlant5 = new Image("Data/Sprites/Plants/sausagePlant5.png");
+
+		Main.console.Add(0, "Textures Loaded");
 	}
 
 	static int[][] obj_Building = { { 4, 4, 4, 4, 4, 4, 4 }, { 4, 1, 1, 1, 1, 1, 4 }, { 4, 1, 1, 4, 1, 1, 4 },

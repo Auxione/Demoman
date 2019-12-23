@@ -3,6 +3,7 @@ package Curio.HUD;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.TrueTypeFont;
 
 import Curio.Functions;
 import Curio.ItemMap.Inventory;
@@ -12,6 +13,9 @@ public class InventoryDisplay extends HUD {
 	Inventory inventory;
 	private ItemMap itemMap;
 	static int itemIconSize = 32;
+	private int itemCounterBoxSize = 20;
+
+	private TrueTypeFont trueTypeFont = super.getTTF();
 
 	public InventoryDisplay(float x, float y, Inventory _inventory, ItemMap itemMap) {
 		super(x, y, _inventory.getInventoryMap().length * itemIconSize, itemIconSize);
@@ -40,11 +44,17 @@ public class InventoryDisplay extends HUD {
 				g.setColor(Color.black);
 				// draw item count
 				g.setColor(Color.lightGray);
-				g.fillRect(x * itemIconSize, -20, 20, 20);
+				g.fillRect(x * itemIconSize, -itemCounterBoxSize, itemCounterBoxSize, itemCounterBoxSize);
 				g.setColor(Color.black);
-				g.drawRect(x * itemIconSize, -20, 20, 20);
-
-				g.drawString(Integer.toString(inventory.getInventoryMap()[x][1]), x * itemIconSize + 2, -20);
+				g.drawRect(x * itemIconSize, -itemCounterBoxSize, itemCounterBoxSize, itemCounterBoxSize);
+				
+				int stringLineWidth = trueTypeFont.getWidth(Integer.toString(inventory.getInventoryMap()[x][1]));
+				int stringLineHeight = trueTypeFont.getHeight(Integer.toString(inventory.getInventoryMap()[x][1]));
+				float Stringx = x * itemIconSize + itemCounterBoxSize / 2 - stringLineWidth / 2;
+				float Stringy = -itemCounterBoxSize - itemCounterBoxSize / 2 + stringLineHeight/2;
+				
+				trueTypeFont.drawString(Stringx, Stringy, Integer.toString(inventory.getInventoryMap()[x][1]),
+						Color.black);
 			}
 		}
 		// selection index

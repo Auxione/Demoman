@@ -57,7 +57,7 @@ public class ServerStarter {
 			console.Add(0, "Server started. Listening on port: " + port);
 			// create map
 			level.create_BlankLevel();
-			itemMap = new ItemMap(level);
+			itemMap = new ItemMap(level, 10);
 			
 			fm = new FireManager(level);
 			bm = new BombManager(fm, level);

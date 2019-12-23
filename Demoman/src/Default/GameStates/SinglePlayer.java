@@ -3,15 +3,18 @@ package Default.GameStates;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import Curio.Functions;
 import Curio.Viewport;
 import Curio.HUD.BarDisplay;
 import Curio.HUD.ConsoleDisplay;
 import Curio.HUD.InventoryDisplay;
+import Curio.HUD.TextDisplay;
 import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
 import Curio.LogicMap.LogicMap;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
+import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.FireManager;
 import Curio.Tilemap.TileMap;
 import Curio.Tilemap.Bomb.BombManager;
@@ -30,14 +33,15 @@ public class SinglePlayer {
 	private Inventory playerInventory;
 	private InventoryDisplay inventoryDisplay;
 	private BarDisplay hpBar, foodBar;
-
+	private TextDisplay PlayerName;
 	private FireManager fm;
 	private BombManager bm;
 
-	TileMap tileMap;
-	LogicMap logicMap;
-	ItemMap itemMap;
-	ConsoleDisplay console;
+	private TileMap tileMap;
+	private LogicMap logicMap;
+	private ItemMap itemMap;
+	private PlantMap plantMap;
+	private ConsoleDisplay console;
 
 	public SinglePlayer(ConsoleDisplay console) {
 		this.console = console;
@@ -45,32 +49,79 @@ public class SinglePlayer {
 
 		tileMap = new TileMap(30, 30, Constants.CellSize, console);
 		tileMap.create_BlankLevel();
-		itemMap = new ItemMap(tileMap);
-		logicMap= new LogicMap(tileMap, itemMap);
+		itemMap = new ItemMap(tileMap, 15);
+		logicMap = new LogicMap(tileMap, itemMap);
+		plantMap = new PlantMap(tileMap, itemMap);
 
 		player = new Player(tileMap, 4, 4);
 		controller = new Controller(1, player);
 		collision = new TilemapCollision(tileMap, player);
-		playerInventory = new Inventory(itemMap, player, 6);
+		playerInventory = new Inventory(itemMap, player, 4, 5);
 
 		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
 		hpBar = new BarDisplay(0, 0, 100, 10, Color.red);
 		foodBar = new BarDisplay(0, 0, 100, 10, Color.green);
 		inventoryDisplay = new InventoryDisplay(500, 500, playerInventory, itemMap);
+		PlayerName = new TextDisplay(20, 20, 0, 0, "Name", "cem");
 
 		fm = new FireManager(tileMap);
 		bm = new BombManager(fm, tileMap);
 
 		itemMap.put(4, 4, 3);
+
 		itemMap.put(4, 5, 5);
 		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		itemMap.put(4, 5, 5);
+		
+		itemMap.put(2, 2, 9);
+		itemMap.put(2, 2, 9);
+		itemMap.put(2, 2, 9);
+		itemMap.put(2, 2, 9);
+		itemMap.put(2, 2, 9);
+		
+		plantMap.put(4, 6, 1);
+		plantMap.put(4, 7, 1);
+		plantMap.put(4, 8, 1);
+		plantMap.put(4, 9, 1);
+		plantMap.put(5, 6, 1);
+		plantMap.put(5, 7, 1);
+		plantMap.put(5, 8, 1);
+		plantMap.put(5, 9, 1);
+
+		tileMap.set_Tile(6, 6, 6);
+		tileMap.set_Tile(6, 7, 6);
+		tileMap.set_Tile(6, 8, 6);
+		tileMap.set_Tile(6, 9, 6);
+		tileMap.set_Tile(7, 6, 6);
+		tileMap.set_Tile(7, 7, 6);
+		tileMap.set_Tile(7, 8, 6);
+		tileMap.set_Tile(7, 9, 6);
+
+		plantMap.put(6, 6, 2);
+		plantMap.put(6, 7, 2);
+		plantMap.put(6, 8, 2);
+		plantMap.put(6, 9, 2);
+		plantMap.put(7, 6, 2);
+		plantMap.put(7, 7, 2);
+		plantMap.put(7, 8, 2);
+		plantMap.put(7, 9, 2);
+
 	}
 
 	public void update(int delta) {
 		controller.Pressed();
 		controller.update();
 
-		logicMap.mainloop();
+		logicMap.update();
+		plantMap.update(Functions.millis());
+
 		fm.update(player);
 		bm.update(player);
 
@@ -98,8 +149,9 @@ public class SinglePlayer {
 		viewPort.renderStart(g);
 		// render level
 		tileMap.render(g, viewPort);
-		logicMap.mainRender(g);
-		itemMap.mainRender(g);
+		logicMap.render(g);
+		itemMap.render(g);
+		plantMap.render(g);
 
 		fm.render(g);
 		bm.render(g);
@@ -110,7 +162,7 @@ public class SinglePlayer {
 		//
 
 		inventoryDisplay.render(g);
-
+		PlayerName.render(g);
 		g.translate(40, 500);
 		hpBar.render(g);
 		g.translate(0, 15);
@@ -127,10 +179,12 @@ public class SinglePlayer {
 	private void actions() {
 		if (controller.ActionTake == true) {
 			playerInventory.take();
+			plantMap.harvest(player);
 		}
 
 		if (controller.ActionUse == true) {
-			playerInventory.useSelf(bm, tileMap);
+			playerInventory.useSelf(bm, tileMap, plantMap);
+
 		}
 
 		if (controller.ActionSwitchItem == true) {

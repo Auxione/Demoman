@@ -3,6 +3,7 @@ package Curio.ItemMap.Items;
 import org.newdawn.slick.Image;
 
 import Curio.ItemMap.Item;
+import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.TileMap;
 import Curio.Tilemap.Bomb.BombManager;
 import Curio.Utilities.Math.Transform;
@@ -20,12 +21,12 @@ public class DefaultBomb implements Item {
 		return image;
 	}
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm) {
+	public void apply(Player dp, TileMap level, BombManager bm,PlantMap plantMap) {
 		bm.create(dp.CellPosition, 1, 1500);
 		
 	}
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm) {
+	public boolean condition(Player dp, TileMap level, BombManager bm,PlantMap plantMap) {
 		// TODO Auto-generated method stub
 		return bm.canPlace(dp.CellPosition);
 	}

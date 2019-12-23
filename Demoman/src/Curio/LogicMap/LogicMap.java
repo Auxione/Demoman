@@ -136,7 +136,7 @@ public class LogicMap {
 		}
 	}
 
-	public void mainloop() {
+	public void update() {
 		// triggers
 		for (Pushbutton b : pushbuttonList) {
 			b.update(this);
@@ -170,7 +170,7 @@ public class LogicMap {
 		clearTickChannels();
 	}
 
-	public void mainRender(Graphics g) {
+	public void render(Graphics g) {
 		for (Delay t : delayList) {
 			t.render(g);
 		}

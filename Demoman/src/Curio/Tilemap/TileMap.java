@@ -26,7 +26,7 @@ public class TileMap {
 
 		Cellsize = cellsize;
 		this.console = console;
-		console.Add(0, "Map Initialized");
+		console.Add(0, "Map Initialized with parameters: x= " + sx + " y= " + sy + " CellSize= " + cellsize);
 	}
 
 	public TileMap(int sx, int sy, int cellsize) {
