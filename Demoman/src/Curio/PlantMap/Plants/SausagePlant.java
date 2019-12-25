@@ -3,7 +3,6 @@ package Curio.PlantMap.Plants;
 import org.newdawn.slick.Image;
 
 import Curio.PlantMap.Plant;
-import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.TileMap;
 import Default.Constants;
 import Default.Player;
@@ -16,7 +15,21 @@ public class SausagePlant implements Plant {
 	private int maxGrowth = 200;
 	private int maxHealth = 100;
 	private int itemID = 7;
+	private String name = "Sausage Plant";
+	private String desc = "null";
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
 
+	@Override
+	public String getDesc() {
+		// TODO Auto-generated method stub
+		return desc;
+	}
+	
 	@Override
 	public boolean plantCondition(Player player, TileMap tilemap, int x, int y) {
 		if (tilemap.get_Tile(x, y) == 6) {
@@ -56,4 +69,6 @@ public class SausagePlant implements Plant {
 	public int getHarvestItem() {
 		return itemID;
 	}
+
+
 }

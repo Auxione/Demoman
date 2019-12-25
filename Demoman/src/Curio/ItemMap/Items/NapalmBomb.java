@@ -15,6 +15,21 @@ public class NapalmBomb implements Item {
 	private Image image = Constants.blueBombNapalm;
 	Transform tr;
 	
+	private String name = "NapalmBomb";
+	private String description = "Classic bomb with Napalm warhead.";
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return description;
+	}
+	
 	public Image getImage() {
 		// TODO Auto-generated method stub
 		return image;

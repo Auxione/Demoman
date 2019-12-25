@@ -14,15 +14,13 @@ import Default.Constants;
 public class TileMap {
 	// create tile array that holds informations
 	// coords x, coord y, and tile value
-	private int[][] tilemap;
-	private float[][] tileHPMap;
+	private int[][][] tileMap;
 
 	private int Cellsize;
 	ConsoleDisplay console;
 
 	public TileMap(int sx, int sy, int cellsize, ConsoleDisplay console) {
-		tilemap = new int[sx][sy];
-		tileHPMap = new float[sx][sy];
+		tileMap = new int[sx][sy][2];
 
 		Cellsize = cellsize;
 		this.console = console;
@@ -30,8 +28,7 @@ public class TileMap {
 	}
 
 	public TileMap(int sx, int sy, int cellsize) {
-		tilemap = new int[sx][sy];
-		tileHPMap = new float[sx][sy];
+		tileMap = new int[sx][sy][2];
 
 		Cellsize = cellsize;
 		this.console = null;
@@ -56,18 +53,19 @@ public class TileMap {
 	}
 
 	private void generateTileHPs() {
-		for (int x = 0; x < tilemap.length; x++) {
-			for (int y = 0; y < tilemap[0].length; y++) {
-				tileHPMap[x][y] = Tileset.getHP(tilemap[x][y]);
+		for (int x = 0; x < tileMap.length; x++) {
+			for (int y = 0; y < tileMap[0].length; y++) {
+				tileMap[x][y][1] = Tileset.getHP(tileMap[x][y][0]);
 			}
 		}
 	}
 
 	public boolean applyDamage(int x, int y, float damage) {
-		if (x >= 0 && x < tilemap.length && y >= 0 && y < tilemap[0].length) {
-			tileHPMap[x][y] -= damage;
-			if (tileHPMap[x][y] <= 0) {
-				tilemap[x][y] = 0;
+		if (x >= 0 && x < tileMap.length && y >= 0 && y < tileMap[0].length) {
+			tileMap[x][y][1] -= damage;
+			if (tileMap[x][y][1] <= 0) {
+				tileMap[x][y][1] = 0;
+				tileMap[x][y][0] = 0;
 				return true;
 			}
 			return false;
@@ -76,12 +74,12 @@ public class TileMap {
 	}
 
 	private void createBlankTileMap() {
-		for (int x = 0; x < tilemap.length; x++) {
-			for (int y = 0; y < tilemap[0].length; y++) {
-				if (x == tilemap.length - 1 || x == 0 || y == tilemap[0].length - 1 || y == 0) {
-					tilemap[x][y] = 5;
+		for (int x = 0; x < tileMap.length; x++) {
+			for (int y = 0; y < tileMap[0].length; y++) {
+				if (x == tileMap.length - 1 || x == 0 || y == tileMap[0].length - 1 || y == 0) {
+					tileMap[x][y][0] = 5;
 				} else {
-					tilemap[x][y] = 1;
+					tileMap[x][y][0] = 1;
 				}
 			}
 		}
@@ -89,12 +87,12 @@ public class TileMap {
 
 	private void createRandomTileMap() {
 		int[] idArray = { 1, 2, 2, 2, 2, 2, 4, 5 };
-		for (int x = 0; x < tilemap.length; x++) {
-			for (int y = 0; y < tilemap[0].length; y++) {
-				if (x == tilemap.length - 1 || x == 0 || y == tilemap[0].length - 1 || y == 0) {
-					tilemap[x][y] = 5;
+		for (int x = 0; x < tileMap.length; x++) {
+			for (int y = 0; y < tileMap[0].length; y++) {
+				if (x == tileMap.length - 1 || x == 0 || y == tileMap[0].length - 1 || y == 0) {
+					tileMap[x][y][0] = 5;
 				} else {
-					tilemap[x][y] = getRandom(idArray);
+					tileMap[x][y][0] = getRandom(idArray);
 				}
 			}
 		}
@@ -108,9 +106,9 @@ public class TileMap {
 	public void render(Graphics g, Viewport vp) {
 		// make background white
 		// put dots in every corner of the cells
-		for (int x = 0; x < tilemap.length; x++) {
-			for (int y = 0; y < tilemap[0].length; y++) {
-				g.drawImage(Tileset.getTexture(tilemap[x][y]), x * Cellsize, y * Cellsize);
+		for (int x = 0; x < tileMap.length; x++) {
+			for (int y = 0; y < tileMap[0].length; y++) {
+				g.drawImage(Tileset.getTexture(tileMap[x][y][0]), x * Cellsize, y * Cellsize);
 			}
 		}
 	}
@@ -118,52 +116,42 @@ public class TileMap {
 	// -----------------------------------functions-----------------------------------
 	// when you receive new level data from the server, load new data and render map
 	// again
-	public void update_Level(int[][] lvl) {
-		tilemap = lvl;
+	public void update_Level(int[][][] lvl) {
+		tileMap = lvl;
 	}
 
 	// use this to update tiles in level when server level data taking too much to
 	// load.
 	public boolean set_Tile(int x, int y, int val) {
 		// change the tile and render again
-		if ((x > 0) && (x < tilemap.length) && (y > 0) && (y < tilemap[0].length)) {
-			tilemap[x][y] = val;
+		if ((x > 0) && (x < tileMap.length) && (y > 0) && (y < tileMap[0].length)) {
+			tileMap[x][y][0] = val;
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public int get_Tile(int x, int y) {
-		// if any request from this function exceeds tilemap borders
-		// return only the border value
-		if (x >= 0 && x < tilemap.length && y >= 0 && y < tilemap[0].length) {
-			// if its inside the tilemap array
-			return tilemap[x][y];
-		} else
-			return 0;
-	}
-
-	public int[][] get_Tilemap() {
-		return tilemap;
+	public int[][][] get_Tilemap() {
+		return tileMap;
 	}
 
 	public Transform worldPostoMapPos(Vector vpos) {
 		Transform out = new Transform();
-		if (vpos.x >= 0 && vpos.x <= tilemap.length * Constants.CellSize && vpos.y >= 0
-				&& vpos.y <= tilemap[0].length * Constants.CellSize) {
-			out.set_x((int) (vpos.x / Constants.CellSize));
-			out.set_y((int) (vpos.y / Constants.CellSize));
+		if (vpos.x >= 0 && vpos.x <= tileMap.length * Constants.CellSize && vpos.y >= 0
+				&& vpos.y <= tileMap[0].length * Constants.CellSize) {
+			out.set_x((int) (Math.floor(vpos.x / Constants.CellSize)));
+			out.set_y((int) (Math.floor(vpos.y / Constants.CellSize)));
 		}
 		return out;
 	}
 
 	public int get_MaxCellX() {
-		return tilemap.length;
+		return tileMap.length;
 	}
 
 	public int get_MaxCellY() {
-		return tilemap[0].length;
+		return tileMap[0].length;
 	}
 
 	public void put_TileObj(int[][] obj, int px, int py) {
@@ -172,5 +160,26 @@ public class TileMap {
 				set_Tile(px + x, py + y, obj[x][y]);
 			}
 		}
+	}
+
+	public int get_Tile(int x, int y) {
+		// if any request from this function exceeds tilemap borders
+		// return only the border value
+		if (x >= 0 && x < tileMap.length && y >= 0 && y < tileMap[0].length) {
+			// if its inside the tilemap array
+			return tileMap[x][y][0];
+		} else
+			return 0;
+	}
+ 
+	public int get_Tile(Transform cellPos) {
+		// if any request from this function exceeds tilemap borders
+		// return only the border value
+		if (cellPos.get_x() >= 0 && cellPos.get_x() < tileMap.length && cellPos.get_y() >= 0
+				&& cellPos.get_y() < tileMap[0].length) {
+			// if its inside the tilemap array
+			return tileMap[cellPos.get_x()][cellPos.get_y()][0];
+		} else
+			return 0;
 	}
 }

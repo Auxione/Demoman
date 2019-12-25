@@ -13,6 +13,21 @@ public class Stimpack implements Item {
 	public int value = 10;
 	private Image image = Constants.stimpack;
 	
+	private String name = "Stimpack";
+	private String description = "Heals for "+value+" HP.";
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return description;
+	}
+	
 	@Override
 	public Image getImage() {
 		return image;

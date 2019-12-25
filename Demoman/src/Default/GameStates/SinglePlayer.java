@@ -3,23 +3,23 @@ package Default.GameStates;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import Curio.Functions;
 import Curio.Viewport;
 import Curio.HUD.BarDisplay;
 import Curio.HUD.ConsoleDisplay;
 import Curio.HUD.InventoryDisplay;
+import Curio.HUD.MouseStatsDisplay;
 import Curio.HUD.ObjectiveDisplay;
 import Curio.HUD.TextDisplay;
 import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
 import Curio.LogicMap.LogicMap;
-import Curio.ObjectiveSystem.Objective;
 import Curio.ObjectiveSystem.ObjectiveSystem;
 import Curio.ObjectiveSystem.Objectives.MoveToTile;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
 import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.FireManager;
+import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
 import Curio.Tilemap.Bomb.BombManager;
 import Default.Constants;
@@ -45,13 +45,14 @@ public class SinglePlayer {
 	private LogicMap logicMap;
 	private ItemMap itemMap;
 	private PlantMap plantMap;
-	private ConsoleDisplay console;
+	private FluidMap oxygenMap;
 
 	private ObjectiveSystem objectiveSystem;
 	private ObjectiveDisplay objDisplay;
 
+	private MouseStatsDisplay mouseStatsDisplay;
+
 	public SinglePlayer(ConsoleDisplay console) {
-		this.console = console;
 		console.Add(0, "Creating Singleplayer Game");
 
 		tileMap = new TileMap(30, 30, Constants.CellSize, console);
@@ -59,17 +60,19 @@ public class SinglePlayer {
 		itemMap = new ItemMap(tileMap, 15);
 		logicMap = new LogicMap(tileMap, itemMap);
 		plantMap = new PlantMap(tileMap, itemMap);
+		oxygenMap = new FluidMap(tileMap);
 
-		player = new Player(tileMap, 4, 4);
+		player = new Player(tileMap, 250, 250);
 		controller = new Controller(1, player);
 		collision = new TilemapCollision(tileMap, player);
 		playerInventory = new Inventory(itemMap, player, 4, 5);
 
 		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
-		hpBar = new BarDisplay(0, 0, 100, 10, Color.red);
-		foodBar = new BarDisplay(0, 0, 100, 10, Color.green);
+		hpBar = new BarDisplay(500, 500 + 32, 128, 10, Color.red);
+		foodBar = new BarDisplay(500, 500 + 32 + 10, 128, 10, Color.green);
 		inventoryDisplay = new InventoryDisplay(500, 500, playerInventory, itemMap);
-		PlayerName = new TextDisplay(20, 20, "Name", "user \n cem");
+		PlayerName = new TextDisplay(20, 20, "Cem");
+		mouseStatsDisplay = new MouseStatsDisplay(viewPort, player, tileMap, itemMap, plantMap, oxygenMap);
 
 		fm = new FireManager(tileMap);
 		bm = new BombManager(fm, tileMap);
@@ -111,6 +114,24 @@ public class SinglePlayer {
 		tileMap.set_Tile(7, 8, 6);
 		tileMap.set_Tile(7, 9, 6);
 
+		tileMap.set_Tile(11, 11, 2);
+		tileMap.set_Tile(11, 12, 2);
+		tileMap.set_Tile(11, 13, 2);
+		tileMap.set_Tile(11, 14, 2);
+		tileMap.set_Tile(11, 15, 2);
+		tileMap.set_Tile(12, 11, 2);
+		tileMap.set_Tile(12, 15, 2);
+		tileMap.set_Tile(13, 11, 2);
+		tileMap.set_Tile(13, 15, 2);
+		tileMap.set_Tile(14, 11, 2);
+		tileMap.set_Tile(14, 15, 2);
+		tileMap.set_Tile(15, 11, 2);
+		tileMap.set_Tile(15, 12, 2);
+		tileMap.set_Tile(15, 13, 2);
+		tileMap.set_Tile(15, 14, 2);
+		tileMap.set_Tile(15, 15, 2);
+		oxygenMap.put(12, 12, 32);
+
 		plantMap.put(6, 6, 2);
 		plantMap.put(6, 7, 2);
 		plantMap.put(6, 8, 2);
@@ -121,25 +142,26 @@ public class SinglePlayer {
 		plantMap.put(7, 9, 2);
 
 		objectiveSystem = new ObjectiveSystem(player, tileMap, itemMap, plantMap);
-				
-		objectiveSystem.add(new MoveToTile(5,5));
-		
-		objDisplay = new ObjectiveDisplay(20, 50, new MoveToTile(5,5));
+
+		objectiveSystem.add(new MoveToTile(5, 5));
+
+		objDisplay = new ObjectiveDisplay(20, 50, new MoveToTile(5, 5));
 	}
 
 	public void update(int delta) {
 		controller.Pressed();
 		controller.update();
 		objectiveSystem.update(player, tileMap, itemMap, plantMap);
-
+		mouseStatsDisplay.getCellData();
 		logicMap.update();
-		plantMap.update(Functions.millis());
+		plantMap.update();
+		oxygenMap.update();
 
 		fm.update(player);
 		bm.update(player);
 
 		player.loop();
-		viewPort.move(player.CellPosition);
+		viewPort.move(player.Position);
 
 		hpBar.Percentage(player.getCurrentHealth(), player.getMaxHealth());
 		foodBar.Percentage(player.getCurrentFood(), player.getMaxFood());
@@ -151,11 +173,11 @@ public class SinglePlayer {
 		}
 
 		inventoryDisplay.inputEvent(Main.input);
-
+		mouseStatsDisplay.inputEvent(Main.input);
 		actions();
-
 		objectiveSystem.updateEnd();
 		controller.ActionEnd();
+
 	}
 
 	public void render(Graphics g) {
@@ -166,6 +188,7 @@ public class SinglePlayer {
 		logicMap.render(g);
 		itemMap.render(g);
 		plantMap.render(g);
+		oxygenMap.render(g);
 
 		fm.render(g);
 		bm.render(g);
@@ -174,14 +197,13 @@ public class SinglePlayer {
 
 		viewPort.renderEnd(g);
 		//
-		
+		mouseStatsDisplay.render(g);
 		objDisplay.render(g);
 		inventoryDisplay.render(g);
 		PlayerName.render(g);
-		g.translate(40, 500);
 		hpBar.render(g);
-		g.translate(0, 15);
 		foodBar.render(g);
+
 		g.popTransform();
 	}
 
@@ -199,7 +221,6 @@ public class SinglePlayer {
 
 		if (controller.ActionUse == true) {
 			playerInventory.useSelf(bm, tileMap, plantMap);
-
 		}
 
 		if (controller.ActionSwitchItem == true) {

@@ -19,7 +19,7 @@ public class DynamicObject {
 
 	float size;
 
-	protected DynamicObject(TileMap _level, float positionX, float positionY, float size) {
+	protected DynamicObject(TileMap _level, float positionX, float positionY) {
 		level = _level;
 
 		Position = new Vector(positionX, positionY);
@@ -28,26 +28,32 @@ public class DynamicObject {
 		dynamicObjectList.add(this);
 
 		CellPosition = new Transform();
+
+	}
+
+	protected void setSize(float size) {
 		this.size = size;
 	}
 
 	public void updatePhysics(float deltaTime) {
 		float time = deltaTime / 1000;
-
+		
 		Velocity.x += Acceleration.x * time;
 		Velocity.y += Acceleration.y * time;
-
+		
 		Position.x += Velocity.x * time;
 		Position.y += Velocity.y * time;
 
 		updateCellPosition();
 		updateWithfriction();
+		//System.out.println(Velocity.x + " : " + Velocity.y);
 	}
 
 	private void updateWithfriction() {
-		Velocity.multiply((float) 0.9);
-		if (Velocity.magnitude() < 0.1) {
+		if (Velocity.magnitude() < 1f) {
 			Velocity.multiply(0);
+		} else if (Velocity.magnitude() > 1f) {
+			Velocity.multiply(0.96f);
 		}
 	}
 
@@ -55,8 +61,13 @@ public class DynamicObject {
 		CellPosition = level.worldPostoMapPos(Position);
 	}
 
-	protected void move(int x, int y) {
+	public void addAcceleration(int x, int y) {
 		Acceleration.x = x * AccelOffset;
 		Acceleration.y = y * AccelOffset;
+	}
+
+	public void setPosition(int x, int y) {
+		Position.x = x;
+		Position.x = y;
 	}
 }

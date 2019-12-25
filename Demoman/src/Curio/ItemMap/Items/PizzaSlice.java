@@ -12,6 +12,20 @@ import Default.Player;
 public class PizzaSlice implements Item {
 	public int value = 10;
 	private Image image = Constants.pizzaSlice;
+	private String name = "PizzaSlice";
+	private String description = "---";
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return description;
+	}
 
 	@Override
 	public Image getImage() {
@@ -20,13 +34,13 @@ public class PizzaSlice implements Item {
 	}
 
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm,PlantMap plantMap) {
+	public void apply(Player dp, TileMap level, BombManager bm, PlantMap plantMap) {
 		dp.addFood(value);
 
 	}
 
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm,PlantMap plantMap) {
+	public boolean condition(Player dp, TileMap level, BombManager bm, PlantMap plantMap) {
 		if (dp.getCurrentFood() < dp.getMaxFood()) {
 			return true;
 		} else {

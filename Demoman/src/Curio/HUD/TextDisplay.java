@@ -1,5 +1,7 @@
 package Curio.HUD;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -7,22 +9,26 @@ import org.newdawn.slick.TrueTypeFont;
 
 public class TextDisplay extends HUD {
 	private Color backgroundColor = Color.lightGray;
-
-	private String displayText;
-	private String displayValue;
-	private String displayString;
-
+	private ArrayList<String> displayStringArray;
 	private TrueTypeFont trueTypeFont = super.getTTF();
-private int xOffset = 4;
-private int yOffset = 4;
-	public TextDisplay(int Xposition, int Yposition, String displayText, String displayValue) {
+	private int xOffset = 2;
+	private int yOffset = 2;
+
+	public TextDisplay(int Xposition, int Yposition) {
 		super(Xposition, Yposition);
+		displayStringArray = new ArrayList<String>();
 
-		this.displayText = displayText;
-		this.displayValue = displayValue;
+	}
 
-		this.displayString = displayText + " : " + displayValue;
-		super.resize(trueTypeFont.getWidth(displayString)+xOffset*2, trueTypeFont.getHeight(displayString)+yOffset*2);
+	public TextDisplay(int Xposition, int Yposition, String text) {
+		super(Xposition, Yposition);
+		displayStringArray = new ArrayList<String>();
+		updateString(text);
+	}
+
+	public TextDisplay() {
+		super();
+		displayStringArray = new ArrayList<String>();
 	}
 
 	@Override
@@ -33,22 +39,31 @@ private int yOffset = 4;
 		g.setLineWidth(1);
 		// background color
 		g.setColor(backgroundColor);
-		g.fillRect(0, 0, width, height);
-		// text color
+		for (int i = 0; i < displayStringArray.size(); i++) {
+			int width = trueTypeFont.getWidth(displayStringArray.get(i)) + 2 * xOffset;
+			int height = trueTypeFont.getHeight() + 2 * yOffset;
+			g.fillRect(0, i * trueTypeFont.getHeight(), width, height);
 
-		trueTypeFont.drawString(xOffset, yOffset, displayString, Color.black);
-
+			trueTypeFont.drawString(xOffset, i * trueTypeFont.getHeight() + yOffset, displayStringArray.get(i),
+					Color.black);
+		}
 		g.popTransform();
 	}
 
-	public void updateValue(String value) {
-		displayValue = value;
-		displayString = displayText + " : " + displayValue;
+	public void updateString(String value) {
+		displayStringArray.removeAll(displayStringArray);
+		String[] split = splitText(value);
+		for (int i = 0; i < split.length; i++) {
+			displayStringArray.add(split[i]);
+		}
 	}
 
-	public void updateText(String text) {
-		displayText = text;
-		displayString = displayText + " : " + displayValue;
+	private String[] splitText(String text) {
+		String[] texts = text.split("\\r?\\n");
+		for (String s : texts) {
+			s.trim();
+		}
+		return texts;
 	}
 
 	@Override

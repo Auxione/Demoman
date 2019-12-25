@@ -11,7 +11,11 @@ public interface Item {
 
 	public Image getImage();
 
-	public void apply(Player p, TileMap level, BombManager bm,PlantMap plantMap);
+	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap);
 
-	public boolean condition(Player p, TileMap level, BombManager bm,PlantMap plantMap);
+	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap);
+
+	public String getName();
+	
+	public String getDescription();
 }

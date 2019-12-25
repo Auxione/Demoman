@@ -13,6 +13,20 @@ public class Sausage implements Item {
 	private Image img = Constants.sausage;
 	private int foodValue = 15;
 	private int healthValue = 5;
+	private String name = "Sausage";
+	private String description = "Space sausage. Yummy!";
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return description;
+	}
 
 	@Override
 	public Image getImage() {
@@ -20,13 +34,13 @@ public class Sausage implements Item {
 	}
 
 	@Override
-	public void apply(Player p, TileMap level, BombManager bm,PlantMap plantMap) {
+	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap) {
 		p.addFood(foodValue);
 		p.addHealth(healthValue);
 	}
 
 	@Override
-	public boolean condition(Player p, TileMap level, BombManager bm,PlantMap plantMap) {
+	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap) {
 		if (p.getCurrentFood() < p.getMaxFood()) {
 			return true;
 		} else {

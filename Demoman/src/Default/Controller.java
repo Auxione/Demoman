@@ -4,7 +4,7 @@ import org.newdawn.slick.Input;
 
 import Curio.Functions;
 import Curio.HUD.ConsoleDisplay;
-import Curio.Physics.CellularObject;
+import Curio.Physics.DynamicObject;
 
 public class Controller {
 	private int Mode = 0;
@@ -25,10 +25,10 @@ public class Controller {
 			ActionBomb = false, ActionSwitchItem = false, ActionTake = false, ActionDrop = false;
 
 	public boolean KeyLock;
-	CellularObject obj;
+	DynamicObject obj;
 	private ConsoleDisplay console;
 
-	public Controller(int Mode, CellularObject obj, ConsoleDisplay console) {
+	public Controller(int Mode, DynamicObject obj, ConsoleDisplay console) {
 		this.Mode = Mode;
 		this.obj = obj;
 		this.console = console;
@@ -43,7 +43,7 @@ public class Controller {
 		console.Add(0, cmd);
 	}
 
-	public Controller(int Mode, CellularObject obj) {
+	public Controller(int Mode, DynamicObject obj) {
 		this.Mode = Mode;
 		this.obj = obj;
 		this.console = null;
@@ -67,9 +67,9 @@ public class Controller {
 		if (Mode == 0) {
 			Disabled();
 		}
-		// player controls the object
+		// user controls the object
 		else if (Mode == 1) {
-			PlayerControl();
+			UserControl();
 		}
 		// computer controls the object
 		else if (Mode == 2) {
@@ -91,32 +91,40 @@ public class Controller {
 	}
 
 	// ===========================================mode1===========================================
-	private void PlayerControl() {
+	private void UserControl() {
+		int right = 0;
+		int left = 0;
+		int up = 0;
+		int down = 0;
+		
 		if (ActionNorth == true) {
-			obj.move(0, -1);
-		} else if (ActionSouth == true) {
-			obj.move(0, +1);
+			up = -1;
+		}
+		if (ActionSouth == true) {
+			down = +1;
 		}
 
 		if (ActionEast == true) {
-			obj.move(+1, 0);
-		} else if (ActionWest == true) {
-			obj.move(-1, 0);
+			left = +1;
 		}
+		if (ActionWest == true) {
+			right = -1;
+		}
+		obj.addAcceleration(left+right,up+down);
 	}
 
 	public void Pressed() {
 		if (KeyLock) {
-			if (Main.input.isKeyPressed(key_UP)) {
+			if (Main.input.isKeyDown(key_UP)) {
 				ActionNorth = true;
 			}
-			if (Main.input.isKeyPressed(key_DOWN)) {
+			if (Main.input.isKeyDown(key_DOWN)) {
 				ActionSouth = true;
 			}
-			if (Main.input.isKeyPressed(key_LEFT)) {
+			if (Main.input.isKeyDown(key_LEFT)) {
 				ActionWest = true;
 			}
-			if (Main.input.isKeyPressed(key_RIGHT)) {
+			if (Main.input.isKeyDown(key_RIGHT)) {
 				ActionEast = true;
 			}
 			ActionBomb = Main.input.isKeyPressed(key_BOMB);

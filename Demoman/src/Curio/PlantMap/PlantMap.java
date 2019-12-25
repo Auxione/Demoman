@@ -15,7 +15,7 @@ import Default.Constants;
 import Default.Player;
 
 public class PlantMap {
-	public HashMap<Integer, Plant> plantList;
+	private HashMap<Integer, Plant> plantList;
 
 	private int[][][] plantMap;
 	private TileMap tilemap;
@@ -92,8 +92,8 @@ public class PlantMap {
 		}
 	}
 
-	public void update(int millis) {
-		updateGrowth(millis);
+	public void update() {
+		updateGrowth();
 	}
 
 	public void render(Graphics g) {
@@ -109,8 +109,8 @@ public class PlantMap {
 		}
 	}
 
-	private void updateGrowth(int millis) {
-		if (millis > millis_goal) {
+	private void updateGrowth() {
+		if (Functions.millis() > millis_goal) {
 			for (int x = 0; x < plantMap.length; x++) {
 				for (int y = 0; y < plantMap[0].length; y++) {
 					if (plantMap[x][y][0] != 0 && plantMap[x][y][1] > 0) {
@@ -128,8 +128,19 @@ public class PlantMap {
 					}
 				}
 			}
-			millis_goal = millis + rate;
+			millis_goal = Functions.millis() + rate;
 		}
+	}
+
+	public int get_Cell(int x, int y) {
+		// if any request from this function exceeds tilemap borders
+		// return only the border value
+
+		if (x >= 0 && x < plantMap.length && y >= 0 && y < plantMap[0].length) {
+			// if its inside the tilemap array
+			return plantMap[x][y][0];
+		} else
+			return 0;
 	}
 
 	// int[][][0] = plant id
@@ -138,6 +149,17 @@ public class PlantMap {
 	// int[][][3] = plantmaxgrowth
 	// int[][][4] = currentStates
 	// int[][][5] = maxStates
+	public String getName(int id) {
+		return plantList.get(id).getName();
+	}
+
+	public String getDescription(int id) {
+		return plantList.get(id).getDesc();
+	}
+
+	public int getHealth(int x, int y) {
+		return plantMap[x][y][1];
+	}
 
 	private int calculateState(int x, int y) {
 		int out = (int) Functions.map(plantMap[x][y][2], 0, plantMap[x][y][3], 0, plantMap[x][y][5]);

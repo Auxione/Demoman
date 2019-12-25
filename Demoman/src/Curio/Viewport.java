@@ -67,9 +67,7 @@ public class Viewport {
 	}
 
 	public Vector ScreenToWorldPos(TileMap level, float x, float y) {
-		float outx = Functions.map(x + Position.x, 0, Main.DisplayWidth, 0, level.get_MaxCellX());
-		float outy = Functions.map(y + Position.y, 0, Main.DisplayHeight, 0, level.get_MaxCellY());
-		Vector out = new Vector(outx, outy);
+		Vector out = new Vector(x+Position.x, y+Position.y);
 		return out;
 	}
 }

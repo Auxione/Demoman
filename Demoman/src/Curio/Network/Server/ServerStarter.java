@@ -139,7 +139,7 @@ public class ServerStarter {
 				CellPlayerPositionPackage cpp = (CellPlayerPositionPackage) object;
 				Player p = playerList.get(cpp.credentials);
 
-				p.set(cpp.position);
+				//p.set(cpp.position);
 
 				for (Connection c : ConnectionManager.getConnections()) {
 					c.sendTcp(cpp);

@@ -14,7 +14,21 @@ public class DefaultBomb implements Item {
 	public int value = 35;
 	private Image image = Constants.blueBombNormal;
 	Transform tr;
+	
+	private String name = "Bomb";
+	private String description = "Deals "+value+" damage.";
+
 	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return description;
+	}
 	
 	public Image getImage() {
 		// TODO Auto-generated method stub

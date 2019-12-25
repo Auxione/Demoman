@@ -14,7 +14,21 @@ public class Berries implements Item {
 
 	private int foodValue = 5;
 	private int healthValue = 5;
+	
+	private String name = "Berry";
+	private String description = "Fresh berries.";
 
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return description;
+	}
 	@Override
 	public Image getImage() {
 		return img;
@@ -34,5 +48,6 @@ public class Berries implements Item {
 			return false;
 		}
 	}
+
 
 }

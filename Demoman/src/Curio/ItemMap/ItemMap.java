@@ -36,7 +36,7 @@ public class ItemMap {
 		itemList.put(9, new SausageSeed());
 	}
 
-	public ItemMap(TileMap level,int tileMaxItems, ConsoleDisplay console) {
+	public ItemMap(TileMap level, int tileMaxItems, ConsoleDisplay console) {
 		this.console = console;
 		this.tileMaxItems = tileMaxItems;
 		// coordinate system x,y
@@ -56,7 +56,7 @@ public class ItemMap {
 		console.Add(0, "Item: System initialized");
 	}
 
-	public ItemMap(TileMap level,int tileMaxItems) {
+	public ItemMap(TileMap level, int tileMaxItems) {
 		this.console = null;
 		this.tileMaxItems = tileMaxItems;
 		// coordinate system x,y
@@ -119,10 +119,28 @@ public class ItemMap {
 	// this function returns item id if conditions are met
 	public int get(int x, int y) {
 		// check if theres a item on position
-		if (itemMap[x][y][0] > 0 && itemMap[x][y][1] > 0) {
-			return itemMap[x][y][0];
+		if (x >= 0 && x < itemMap.length && y >= 0 && y < itemMap[0].length) {
+			// if its inside the tilemap array
+			if (itemMap[x][y][0] > 0 && itemMap[x][y][1] > 0) {
+				return itemMap[x][y][0];
+			}
+		}
+		return 0;
+	}
+
+	public String getItemName(int itemID) {
+		if (itemID > 0 && itemID < itemList.size()) {
+			return this.itemList.get(itemID).getName();
 		} else {
-			return 0;
+			return null;
+		}
+	}
+
+	public String getItemDesc(int itemID) {
+		if (itemID > 0 && itemID < itemList.size()) {
+			return this.itemList.get(itemID).getDescription();
+		} else {
+			return null;
 		}
 	}
 

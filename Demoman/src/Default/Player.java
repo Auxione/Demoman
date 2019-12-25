@@ -4,10 +4,10 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import Curio.HUD.ConsoleDisplay;
-import Curio.Physics.CellularObject;
+import Curio.Physics.DynamicObject;
 import Curio.Tilemap.TileMap;
 
-public class Player extends CellularObject {
+public class Player extends DynamicObject {
 
 	public int bombType = 1;
 	public int bombTimer = 1500;
@@ -22,12 +22,11 @@ public class Player extends CellularObject {
 	public int psize = 10;
 
 	public boolean Dead;
-
-	private int Left = 0, Right = 0, Up = 0, Down = 0;
 	private ConsoleDisplay console;
 
 	public Player(TileMap level, int positionX, int positionY, ConsoleDisplay console) {
 		super(level, positionX, positionY);
+		super.setSize(psize);
 		this.console = console;
 		// TODO Auto-generated constructor stub
 		String cmd = "Player: initialized and spawned to: " + positionX + "-" + positionY + ".";
@@ -36,36 +35,18 @@ public class Player extends CellularObject {
 
 	public Player(TileMap level, int positionX, int positionY) {
 		super(level, positionX, positionY);
+		super.setSize(psize);
 		this.console = null;
 		// TODO Auto-generated constructor stub
 	}
 
 	public void loop() {
-		move((Left + Right), (Up + Down));
 		statsUpdate();
 	}
 
 	public void render(Graphics g) {
 		g.setColor(Color.black);
-		g.fillOval(super.CellPosition.get_x() * Constants.CellSize + Constants.CellSize / 2 - psize,
-				super.CellPosition.get_y() * Constants.CellSize + Constants.CellSize / 2 - psize, psize * 2, psize * 2);
-	}
-
-	public void MovementDir(char k, int act) {
-		switch (k) {
-		case 'w':
-			Up = -act;
-			break;
-		case 's':
-			Down = act;
-			break;
-		case 'd':
-			Right = act;
-			break;
-		case 'a':
-			Left = -act;
-			break;
-		}
+		g.fillOval(super.Position.x - psize, super.Position.y - psize, psize * 2, psize * 2);
 	}
 
 	public int getCurrentHealth() {

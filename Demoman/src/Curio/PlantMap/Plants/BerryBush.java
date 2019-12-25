@@ -14,7 +14,20 @@ public class BerryBush implements Plant {
 	private int maxGrowth = 100;
 	private int maxHealth = 100;
 	private int itemID = 8;
+	private String name = "Berrybush";
+	private String desc = "null";
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
 
+	@Override
+	public String getDesc() {
+		// TODO Auto-generated method stub
+		return desc;
+	}
 	@Override
 	public boolean plantCondition(Player player, TileMap level,int x, int y) {
 		// TODO Auto-generated method stub

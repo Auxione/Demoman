@@ -35,14 +35,14 @@ public class Vector {
 		float output = (float) sqrt((pow(x, 2) + pow(y, 2) + pow(z, 2)));
 		return (float) atan(output);
 	}
-	
+
 	public Vector inverse() {
 		this.x *= -1;
 		this.y *= -1;
 		this.z *= -1;
 		return this;
 	}
-	
+
 	public Vector normalize() {
 		float m = magnitude();
 		if (m != 0 && m != 1) {
@@ -57,10 +57,10 @@ public class Vector {
 		return this;
 	}
 
-	public Vector multiply(float val) {
-		this.x *= val;
-		this.y *= val;
-		this.z *= val;
+	public Vector multiply(float d) {
+		this.x *= d;
+		this.y *= d;
+		this.z *= d;
 		return this;
 	}
 

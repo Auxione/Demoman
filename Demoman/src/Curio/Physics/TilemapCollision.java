@@ -10,7 +10,6 @@ import Default.Main;
 
 public class TilemapCollision {
 	private DynamicObject dynamicObject = null;
-	private CellularObject cellularObject = null;
 
 	static boolean canMoveEast, canMoveWest, canMoveNorth, canMoveSouth;
 	// CollisionMap: [x][y][edge points of the cell]:
@@ -36,25 +35,10 @@ public class TilemapCollision {
 		console.Add(0, cmd);
 	}
 
-	public TilemapCollision(TileMap level, CellularObject cellularObject, ConsoleDisplay console) {
-		this.level = level;
-		this.cellularObject = cellularObject;
-		this.console = console;
-		
-		String cmd = "TilemapCollision: Initialized and assigned.";
-		Main.console.Add(0, cmd);
-	}
-
 	public TilemapCollision(TileMap _level, DynamicObject _dynamicObject) {
 		this.console = null;
 		level = _level;
 		dynamicObject = _dynamicObject;
-	}
-
-	public TilemapCollision(TileMap level, CellularObject cellularObject) {
-		this.level = level;
-		this.cellularObject = cellularObject;
-		this.console = null;
 	}
 
 	public void checkCollisions() {
@@ -64,50 +48,6 @@ public class TilemapCollision {
 			checkWest(radius);
 			checkNorth(radius);
 			checkSouth(radius);
-		}
-		if (cellularObject != null) {
-			checkWorld();
-		}
-	}
-
-	private void checkWorld() {
-		int cellx = cellularObject.CellPosition.get_x();
-		int celly = cellularObject.CellPosition.get_y();
-
-		if (cellx < 0) {
-			cellularObject.CellPosition.set_x(0);
-		} else if (cellx >= level.get_MaxCellX()) {
-			cellularObject.CellPosition.set_x(level.get_MaxCellX());
-		}
-
-		if (celly < 0) {
-			cellularObject.CellPosition.set_y(0);
-		} else if (celly >= level.get_MaxCellY()) {
-			cellularObject.CellPosition.set_y(level.get_MaxCellX());
-		}
-
-		if (Tileset.canMove(level.get_Tile(cellx + 1, celly))) {
-			canMoveEast = true;
-		} else if (!Tileset.canMove(level.get_Tile(cellx + 1, celly))) {
-			canMoveEast = false;
-		}
-
-		if (Tileset.canMove(level.get_Tile(cellx - 1, celly))) {
-			canMoveWest = true;
-		} else if (!Tileset.canMove(level.get_Tile(cellx - 1, celly))) {
-			canMoveWest = false;
-		}
-
-		if (Tileset.canMove(level.get_Tile(cellx, celly - 1))) {
-			canMoveNorth = true;
-		} else if (!Tileset.canMove(level.get_Tile(cellx, celly - 1))) {
-			canMoveNorth = false;
-		}
-
-		if (Tileset.canMove(level.get_Tile(cellx, celly + 1))) {
-			canMoveSouth = true;
-		} else if (!Tileset.canMove(level.get_Tile(cellx, celly + 1))) {
-			canMoveSouth = false;
 		}
 	}
 
