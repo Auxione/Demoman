@@ -8,10 +8,14 @@ import Curio.Viewport;
 import Curio.HUD.BarDisplay;
 import Curio.HUD.ConsoleDisplay;
 import Curio.HUD.InventoryDisplay;
+import Curio.HUD.ObjectiveDisplay;
 import Curio.HUD.TextDisplay;
 import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
 import Curio.LogicMap.LogicMap;
+import Curio.ObjectiveSystem.Objective;
+import Curio.ObjectiveSystem.ObjectiveSystem;
+import Curio.ObjectiveSystem.Objectives.MoveToTile;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
 import Curio.PlantMap.PlantMap;
@@ -43,6 +47,9 @@ public class SinglePlayer {
 	private PlantMap plantMap;
 	private ConsoleDisplay console;
 
+	private ObjectiveSystem objectiveSystem;
+	private ObjectiveDisplay objDisplay;
+
 	public SinglePlayer(ConsoleDisplay console) {
 		this.console = console;
 		console.Add(0, "Creating Singleplayer Game");
@@ -62,7 +69,7 @@ public class SinglePlayer {
 		hpBar = new BarDisplay(0, 0, 100, 10, Color.red);
 		foodBar = new BarDisplay(0, 0, 100, 10, Color.green);
 		inventoryDisplay = new InventoryDisplay(500, 500, playerInventory, itemMap);
-		PlayerName = new TextDisplay(20, 20, 0, 0, "Name", "cem");
+		PlayerName = new TextDisplay(20, 20, "Name", "user \n cem");
 
 		fm = new FireManager(tileMap);
 		bm = new BombManager(fm, tileMap);
@@ -79,13 +86,13 @@ public class SinglePlayer {
 		itemMap.put(4, 5, 5);
 		itemMap.put(4, 5, 5);
 		itemMap.put(4, 5, 5);
-		
+
 		itemMap.put(2, 2, 9);
 		itemMap.put(2, 2, 9);
 		itemMap.put(2, 2, 9);
 		itemMap.put(2, 2, 9);
 		itemMap.put(2, 2, 9);
-		
+
 		plantMap.put(4, 6, 1);
 		plantMap.put(4, 7, 1);
 		plantMap.put(4, 8, 1);
@@ -113,11 +120,17 @@ public class SinglePlayer {
 		plantMap.put(7, 8, 2);
 		plantMap.put(7, 9, 2);
 
+		objectiveSystem = new ObjectiveSystem(player, tileMap, itemMap, plantMap);
+				
+		objectiveSystem.add(new MoveToTile(5,5));
+		
+		objDisplay = new ObjectiveDisplay(20, 50, new MoveToTile(5,5));
 	}
 
 	public void update(int delta) {
 		controller.Pressed();
 		controller.update();
+		objectiveSystem.update(player, tileMap, itemMap, plantMap);
 
 		logicMap.update();
 		plantMap.update(Functions.millis());
@@ -141,6 +154,7 @@ public class SinglePlayer {
 
 		actions();
 
+		objectiveSystem.updateEnd();
 		controller.ActionEnd();
 	}
 
@@ -160,7 +174,8 @@ public class SinglePlayer {
 
 		viewPort.renderEnd(g);
 		//
-
+		
+		objDisplay.render(g);
 		inventoryDisplay.render(g);
 		PlayerName.render(g);
 		g.translate(40, 500);

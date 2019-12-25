@@ -23,6 +23,12 @@ public abstract class HUD {
 		this.height = height;
 	}
 
+	HUD(float xPosition, float yPosition) {
+		Position = new Vector(xPosition, yPosition);
+		this.width = 0;
+		this.height = 0;
+	}
+
 	public void setPosition(Vector _position) {
 		Position = _position;
 	}

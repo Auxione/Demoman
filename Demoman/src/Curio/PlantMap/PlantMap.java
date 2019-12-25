@@ -75,11 +75,11 @@ public class PlantMap {
 			}
 		}
 	}
-	
+
 	public boolean canPlant(Player player, int plantID) {
 		int x = player.CellPosition.get_x();
 		int y = player.CellPosition.get_y();
-		if (plantList.get(plantID).plantCondition(player, tilemap, x, y)) {
+		if (plantList.get(plantID).plantCondition(player, tilemap, x, y) && plantMap[x][y][0] == 0) {
 			return true;
 		} else {
 			return false;

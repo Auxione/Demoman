@@ -15,13 +15,13 @@ public class TextDisplay extends HUD {
 	private TrueTypeFont trueTypeFont = super.getTTF();
 private int xOffset = 4;
 private int yOffset = 4;
-	public TextDisplay(int Xposition, int Yposition, int width, int height, String _displayText, String _displayValue) {
-		super(Xposition, Yposition, width, height);
+	public TextDisplay(int Xposition, int Yposition, String displayText, String displayValue) {
+		super(Xposition, Yposition);
 
-		displayText = _displayText;
-		displayValue = _displayValue;
+		this.displayText = displayText;
+		this.displayValue = displayValue;
 
-		displayString = displayText + " : " + displayValue;
+		this.displayString = displayText + " : " + displayValue;
 		super.resize(trueTypeFont.getWidth(displayString)+xOffset*2, trueTypeFont.getHeight(displayString)+yOffset*2);
 	}
 

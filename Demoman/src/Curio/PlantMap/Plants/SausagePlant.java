@@ -3,6 +3,7 @@ package Curio.PlantMap.Plants;
 import org.newdawn.slick.Image;
 
 import Curio.PlantMap.Plant;
+import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.TileMap;
 import Default.Constants;
 import Default.Player;
