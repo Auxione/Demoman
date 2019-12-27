@@ -12,9 +12,9 @@ import Default.Player;
 public class Stimpack implements Item {
 	public int value = 10;
 	private Image image = Constants.stimpack;
-	
+
 	private String name = "Stimpack";
-	private String description = "Heals for "+value+" HP.";
+	private String description = "Heals for " + value + " HP.";
 
 	@Override
 	public String getName() {
@@ -27,24 +27,33 @@ public class Stimpack implements Item {
 		// TODO Auto-generated method stub
 		return description;
 	}
-	
+
 	@Override
 	public Image getImage() {
 		return image;
 	}
 
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm,PlantMap plantMap) {
+	public void apply(Player dp, TileMap level, BombManager bm, PlantMap plantMap) {
 		dp.addHealth(value);
-		
+
 	}
 
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm,PlantMap plantMap) {
+	public boolean condition(Player dp, TileMap level, BombManager bm, PlantMap plantMap) {
 		if (dp.getCurrentHealth() < dp.getMaxHealth()) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+	private int health = 100;
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return health;
+	}
+
 }

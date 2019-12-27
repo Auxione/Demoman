@@ -46,11 +46,11 @@ public class ConsoleDisplay extends HUD {
 		if (active) {
 			g.pushTransform();
 			// background
-			g.translate(super.Position.x, super.Position.y);
+			g.translate(super.transform.position.x, super.transform.position.y);
 			g.setColor(new Color(100, 100, 100, 190));
-			g.fillRect(super.Position.x, super.Position.y, super.width, super.height);
+			g.fillRect(super.transform.position.x, super.transform.position.y, super.width, super.height);
 			// texts
-			g.setWorldClip(super.Position.x, super.Position.y, super.width, super.height);
+			g.setWorldClip(super.transform.position.x, super.transform.position.y, super.width, super.height);
 			for (int i = commandHistory.size() - 1; i >= 0; i--) {
 				Color c = null;
 				if (commandType.get(i) == 0) {
@@ -62,15 +62,15 @@ public class ConsoleDisplay extends HUD {
 				int stringLineWidth = trueTypeFont.getWidth(commandHistory.get(i));
 				int stringLineHeight = trueTypeFont.getHeight(commandHistory.get(i));
 				
-				float Stringx = super.Position.x;
-				float Stringy = super.Position.y + super.height + i * textSize - commandHistory.size() * (textSize + 1)
+				float Stringx = super.transform.position.x;
+				float Stringy = super.transform.position.y + super.height + i * textSize - commandHistory.size() * (textSize + 1)
 						- barSize;
 
 				trueTypeFont.drawString(Stringx, Stringy, commandHistory.get(i), c);
 			}
 			// bottombar
 			g.setColor(Color.black);
-			g.fillRect(super.Position.x, super.Position.y + super.height - barSize, super.width, barSize);
+			g.fillRect(super.transform.position.x, super.transform.position.y + super.height - barSize, super.width, barSize);
 
 			g.clearWorldClip();
 			g.popTransform();

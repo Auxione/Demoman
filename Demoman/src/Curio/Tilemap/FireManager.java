@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import Curio.Tileset;
 import Default.Player;
 
-public class FireManager implements Runnable{
+public class FireManager implements Runnable {
 	private ArrayList<Fire> fireList;
 	private TileMap level;
 
@@ -22,27 +22,27 @@ public class FireManager implements Runnable{
 		while (f.hasNext()) {
 			Fire fire = f.next(); // must be called before you can call f.remove()
 			fire.update(dp);
-			
+
 			if (fire.burnt == true) {
 				f.remove();
-				spread(f,fire);
+				spread(f, fire);
 			}
-			
+
 		}
 	}
 
-	void spread(ListIterator<Fire> f,Fire fire) {
+	void spread(ListIterator<Fire> f, Fire fire) {
 		for (int x = -1; x <= 1; x++) {
-			int cellx = fire.transform.get_x()+x;
-			int celly = fire.transform.get_y();
+			int cellx = fire.cellPosition.getCellX() + x;
+			int celly = fire.cellPosition.getCellY();
 			int tileid = level.get_Tile(cellx, celly);
 			if (Tileset.canBurn(tileid) == true) {
 				f.add(new Fire(level, cellx, celly));
 			}
 		}
 		for (int y = -1; y <= 1; y++) {
-			int cellx = fire.transform.get_x();
-			int celly = fire.transform.get_y()+y;
+			int cellx = fire.cellPosition.getCellX();
+			int celly = fire.cellPosition.getCellY() + y;
 			int tileid = level.get_Tile(cellx, celly);
 			if (Tileset.canBurn(tileid) == true) {
 				f.add(new Fire(level, cellx, celly));
@@ -60,7 +60,7 @@ public class FireManager implements Runnable{
 		boolean canPlace = false;
 		if (fireList.isEmpty() == false) {
 			for (Fire f : fireList) {
-				if (!f.transform.equals(x, y)) {
+				if (!f.cellPosition.equals(x, y, 0)) {
 					canPlace = true;
 					break;
 				}
@@ -78,6 +78,6 @@ public class FireManager implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -6,13 +6,13 @@ import org.newdawn.slick.Graphics;
 
 import Curio.Functions;
 import Curio.Utilities.Animation;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
 
 public class Fire {
 	private TileMap level;
-	public Transform transform;
+	public CellCoordinate cellPosition;
 	private Random r = new Random();
 	private Animation FireAnimation;
 
@@ -26,7 +26,7 @@ public class Fire {
 
 	public Fire(TileMap _level, int x, int y) {
 		level = _level;
-		transform = new Transform(x, y);
+		cellPosition = new CellCoordinate(x, y);
 
 		FireAnimation = new Animation(Constants.FireSprite, 32, 32, 7, timer);
 		FireAnimation.Play();
@@ -37,10 +37,10 @@ public class Fire {
 
 	private void newBurn(Player dp) {
 		if (burnTime < Functions.millis()) {
-			if (level.applyDamage(transform.get_x(), transform.get_y(), burnTileDamage) == false) {
+			if (level.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), burnTileDamage) == false) {
 				dp.addHealth(burnDamage);
 				burnTime = Functions.millis() + timer;
-			} else if (level.applyDamage(transform.get_x(), transform.get_y(), burnTileDamage) == true) {
+			} else if (level.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), burnTileDamage) == true) {
 				burnt = true;
 			}
 		}
@@ -51,7 +51,7 @@ public class Fire {
 	}
 
 	public void render(Graphics g) {
-		FireAnimation.render(g, transform);
+		FireAnimation.render(g, cellPosition);
 	}
 
 	public boolean spreadChance() {

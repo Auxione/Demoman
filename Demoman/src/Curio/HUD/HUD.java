@@ -6,10 +6,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
-import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Math.Transform;
 
 public abstract class HUD {
-	public Vector Position;
+	public Transform transform;
 	public float width;
 	public float height;
 
@@ -18,25 +18,31 @@ public abstract class HUD {
 	private TrueTypeFont ttf = new TrueTypeFont(font, true);
 
 	HUD(float xPosition, float yPosition, float width, float height) {
-		Position = new Vector(xPosition, yPosition);
+		this.transform = new Transform(xPosition, yPosition, 0);
+		this.width = width;
+		this.height = height;
+	}
+
+	HUD(Transform transform, float width, float height) {
+		this.transform = transform;
 		this.width = width;
 		this.height = height;
 	}
 
 	HUD(float xPosition, float yPosition) {
-		Position = new Vector(xPosition, yPosition);
+		this.transform = new Transform(xPosition, yPosition, 0);
 		this.width = 0;
 		this.height = 0;
 	}
 
 	HUD() {
-		Position = new Vector();
+		transform = new Transform();
 		this.width = 0;
 		this.height = 0;
 	}
 
-	public void setPosition(Vector _position) {
-		Position = _position;
+	public void setPosition(Transform transform) {
+		this.transform = transform;
 	}
 
 	public TrueTypeFont getTTF() {
@@ -49,7 +55,8 @@ public abstract class HUD {
 	}
 
 	protected boolean inRange(float x, float y) {
-		if (x > Position.x && x < Position.x + width && y > Position.y && y < Position.y + height) {
+		if (x > transform.position.x && x < transform.position.x + width && y > transform.position.y
+				&& y < transform.position.y + height) {
 			return true;
 		} else {
 			return false;

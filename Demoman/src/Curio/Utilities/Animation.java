@@ -4,8 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import Curio.Functions;
-import Curio.Utilities.Math.Transform;
-import Default.Constants;
 
 public class Animation {
 	private int frames;
@@ -41,7 +39,7 @@ public class Animation {
 	}
 
 	// display animation on position
-	public void render(Graphics g, Transform transform) {
+	public void render(Graphics g,  CellCoordinate cell) {
 		// check if the animation started
 		if (active == true) {
 			// return false every time
@@ -65,7 +63,7 @@ public class Animation {
 				timer_current_t = Functions.millis() + timer_goal;
 			}
 			// display image if its active
-			g.drawImage(currimg, transform.get_x() * Constants.CellSize, transform.get_y() * Constants.CellSize);
+			g.drawImage(currimg, cell.getWorldX(), cell.getWorldY());
 
 		}
 	}
@@ -94,7 +92,7 @@ public class Animation {
 				timer_current_t = Functions.millis() + timer_goal;
 			}
 			// display image if its active
-			g.drawImage(currimg, x * Constants.CellSize, y * Constants.CellSize);
+			g.drawImage(currimg, x, y);
 		}
 	}
 }

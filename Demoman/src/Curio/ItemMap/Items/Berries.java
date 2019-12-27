@@ -14,7 +14,7 @@ public class Berries implements Item {
 
 	private int foodValue = 5;
 	private int healthValue = 5;
-	
+
 	private String name = "Berry";
 	private String description = "Fresh berries.";
 
@@ -29,19 +29,20 @@ public class Berries implements Item {
 		// TODO Auto-generated method stub
 		return description;
 	}
+
 	@Override
 	public Image getImage() {
 		return img;
 	}
 
 	@Override
-	public void apply(Player p, TileMap level, BombManager bm,PlantMap plantMap) {
+	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap) {
 		p.addFood(foodValue);
 		p.addHealth(healthValue);
 	}
 
 	@Override
-	public boolean condition(Player p, TileMap level, BombManager bm,PlantMap plantMap) {
+	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap) {
 		if (p.getCurrentFood() < p.getMaxFood()) {
 			return true;
 		} else {
@@ -49,5 +50,12 @@ public class Berries implements Item {
 		}
 	}
 
+	private int health = 100;
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return health;
+	}
 
 }

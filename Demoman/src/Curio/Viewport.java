@@ -3,10 +3,10 @@ package Curio;
 import org.newdawn.slick.Graphics;
 
 import Curio.Tilemap.TileMap;
+import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 import Default.Constants;
-import Default.Main;
 
 public class Viewport {
 	public Vector Position, Velocity, Acceleration, ScreenMid;
@@ -49,9 +49,14 @@ public class Viewport {
 		Position.y = v.y - Screen_Size_Y / 2;
 	}
 	
-	public void move(Transform tr) {
-		Position.x = tr.get_x()*Constants.CellSize - Screen_Size_X / 2 ;
-		Position.y = tr.get_y()*Constants.CellSize - Screen_Size_Y / 2;
+	public void move(Transform transform) {
+		Position.x = transform.position.x - Screen_Size_X / 2 ;
+		Position.y = transform.position.y - Screen_Size_Y / 2;
+	}
+	
+	public void move(CellCoordinate tr) {
+		Position.x = tr.getCellX()*Constants.CellSize - Screen_Size_X / 2 ;
+		Position.y = tr.getCellY()*Constants.CellSize - Screen_Size_Y / 2;
 	}
 	
 	public void renderStart(Graphics g) {
@@ -66,8 +71,8 @@ public class Viewport {
 		// stay on screen
 	}
 
-	public Vector ScreenToWorldPos(TileMap level, float x, float y) {
-		Vector out = new Vector(x+Position.x, y+Position.y);
+	public Transform ScreenToWorldPos(TileMap level, float x, float y) {
+		Transform out = new Transform(x+Position.x, y+Position.y,0);
 		return out;
 	}
 }

@@ -12,9 +12,9 @@ import Curio.Tileset;
 import Curio.HUD.ConsoleDisplay;
 import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
-import Curio.Network.CellPlayerPositionPackage;
 import Curio.Network.Credentials;
 import Curio.Network.PlayerListPackage;
+import Curio.Network.PlayerPositionPackage;
 import Curio.Physics.TilemapCollision;
 import Curio.Tilemap.FireManager;
 import Curio.Tilemap.TileMap;
@@ -135,8 +135,8 @@ public class ServerStarter {
 				}
 
 				DisplayUsers();
-			} else if (object instanceof CellPlayerPositionPackage) {
-				CellPlayerPositionPackage cpp = (CellPlayerPositionPackage) object;
+			} else if (object instanceof PlayerPositionPackage) {
+				PlayerPositionPackage cpp = (PlayerPositionPackage) object;
 				Player p = playerList.get(cpp.credentials);
 
 				//p.set(cpp.position);

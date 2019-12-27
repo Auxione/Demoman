@@ -4,16 +4,16 @@ import Curio.ItemMap.ItemMap;
 import Curio.ObjectiveSystem.Objective;
 import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.TileMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Player;
 
 public class MoveToTile implements Objective {
 	private String goalText;
-	private Transform targetPosition;
+	private CellCoordinate targetCellPosition;
 	private boolean status = false;
 
 	public MoveToTile(int x, int y) {
-		this.targetPosition = new Transform(x, y);
+		this.targetCellPosition = new CellCoordinate(x, y);
 		this.goalText = "Current Goal: \n" + "Move to location: \n" + "x: " + x + " y: " + y + ".";
 	}
 
@@ -24,7 +24,7 @@ public class MoveToTile implements Objective {
 
 	@Override
 	public void objectiveUpdate(Player player, TileMap tileMap, ItemMap itemMap, PlantMap plantMap) {
-		if (player.CellPosition.equals(targetPosition) == true) {
+		if (player.CellPosition.equals(targetCellPosition) == true) {
 			status = true;
 		}
 	}

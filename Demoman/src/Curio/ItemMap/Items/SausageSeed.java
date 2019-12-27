@@ -36,12 +36,19 @@ public class SausageSeed implements Item {
 
 	@Override
 	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap) {
-		plantMap.put(p.CellPosition.get_x(), p.CellPosition.get_y(), 2);
+		plantMap.put(p.CellPosition.getCellX(), p.CellPosition.getCellY(), 2);
 	}
 
 	@Override
 	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap) {
 		return plantMap.canPlant(p, 2);
+	}
+	private int health = 100;
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return health;
 	}
 
 }

@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Math.Transform;
 
 public class Button extends HUD {
 	private String buttonText;
@@ -24,20 +24,20 @@ public class Button extends HUD {
 		buttonText = _text;
 	}
 
-	public Button(Vector _position, int _width, int _height, String _text) {
-		super(_position.x,_position.y,_width,_height);
+	public Button(Transform transform, int _width, int _height, String _text) {
+		super(transform,_width,_height);
 		buttonText = _text;
 	}
 
 	public void render(Graphics g) {
 		g.flush();
 		g.setColor(buttonColor);
-		g.fillRoundRect(Position.x, Position.y, width, height, 10);
-		float textx = Position.x + width / 2 - buttonText.length() * fontWidth; // Subtract the length of string
+		g.fillRoundRect(transform.position.x, transform.position.y, width, height, 10);
+		float textx = transform.position.x + width / 2 - buttonText.length() * fontWidth; // Subtract the length of string
 																						// multiplied
 		// by char size in pixel from middle
 		// point.
-		float texty =Position.y + height / 2 - fontHeight;
+		float texty =transform.position.y + height / 2 - fontHeight;
 
 		g.setColor(Color.black);
 		g.setLineWidth(width);
@@ -63,8 +63,5 @@ public class Button extends HUD {
 		} else {
 			buttonColor = defaultColor;
 		}
-	}
-	public void setPosition(Vector _position) {
-		Position = _position;
 	}
 }

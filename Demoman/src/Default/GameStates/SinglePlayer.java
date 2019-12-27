@@ -18,10 +18,13 @@ import Curio.ObjectiveSystem.Objectives.MoveToTile;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
 import Curio.PlantMap.PlantMap;
+import Curio.Tilemap.Area;
 import Curio.Tilemap.FireManager;
 import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
 import Curio.Tilemap.Bomb.BombManager;
+import Curio.Utilities.CellCoordinate;
+import Curio.Utilities.Math.Transform;
 import Default.Constants;
 import Default.Controller;
 import Default.Main;
@@ -52,6 +55,8 @@ public class SinglePlayer {
 
 	private MouseStatsDisplay mouseStatsDisplay;
 
+	Area scnroom;
+
 	public SinglePlayer(ConsoleDisplay console) {
 		console.Add(0, "Creating Singleplayer Game");
 
@@ -61,6 +66,9 @@ public class SinglePlayer {
 		logicMap = new LogicMap(tileMap, itemMap);
 		plantMap = new PlantMap(tileMap, itemMap);
 		oxygenMap = new FluidMap(tileMap);
+		tileMap.put_TileObj(Constants.obj_Building, 10, 10);
+
+		scnroom = new Area(tileMap, new CellCoordinate(11, 11));
 
 		player = new Player(tileMap, 250, 250);
 		controller = new Controller(1, player);
@@ -70,12 +78,12 @@ public class SinglePlayer {
 		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
 		hpBar = new BarDisplay(500, 500 + 32, 128, 10, Color.red);
 		foodBar = new BarDisplay(500, 500 + 32 + 10, 128, 10, Color.green);
-		inventoryDisplay = new InventoryDisplay(500, 500, playerInventory, itemMap);
+		inventoryDisplay = new InventoryDisplay(new Transform(500, 500, 0), playerInventory, itemMap);
 		PlayerName = new TextDisplay(20, 20, "Cem");
 		mouseStatsDisplay = new MouseStatsDisplay(viewPort, player, tileMap, itemMap, plantMap, oxygenMap);
 
 		fm = new FireManager(tileMap);
-		bm = new BombManager(fm, tileMap);
+		bm = new BombManager(fm, tileMap, itemMap, plantMap, oxygenMap);
 
 		itemMap.put(4, 4, 3);
 
@@ -113,25 +121,17 @@ public class SinglePlayer {
 		tileMap.set_Tile(7, 7, 6);
 		tileMap.set_Tile(7, 8, 6);
 		tileMap.set_Tile(7, 9, 6);
-
-		tileMap.set_Tile(11, 11, 2);
-		tileMap.set_Tile(11, 12, 2);
-		tileMap.set_Tile(11, 13, 2);
-		tileMap.set_Tile(11, 14, 2);
-		tileMap.set_Tile(11, 15, 2);
-		tileMap.set_Tile(12, 11, 2);
-		tileMap.set_Tile(12, 15, 2);
-		tileMap.set_Tile(13, 11, 2);
-		tileMap.set_Tile(13, 15, 2);
-		tileMap.set_Tile(14, 11, 2);
-		tileMap.set_Tile(14, 15, 2);
-		tileMap.set_Tile(15, 11, 2);
-		tileMap.set_Tile(15, 12, 2);
-		tileMap.set_Tile(15, 13, 2);
-		tileMap.set_Tile(15, 14, 2);
-		tileMap.set_Tile(15, 15, 2);
-		oxygenMap.put(12, 12, 32);
-
+		/*
+		 * tileMap.set_Tile(11, 11, 2); tileMap.set_Tile(11, 12, 2);
+		 * tileMap.set_Tile(11, 13, 2); tileMap.set_Tile(11, 14, 2);
+		 * tileMap.set_Tile(11, 15, 2); tileMap.set_Tile(12, 11, 2);
+		 * tileMap.set_Tile(12, 15, 2); tileMap.set_Tile(13, 11, 2);
+		 * tileMap.set_Tile(13, 15, 2); tileMap.set_Tile(14, 11, 2);
+		 * tileMap.set_Tile(14, 15, 2); tileMap.set_Tile(15, 11, 2);
+		 * tileMap.set_Tile(15, 12, 2); tileMap.set_Tile(15, 13, 2);
+		 * tileMap.set_Tile(15, 14, 2); tileMap.set_Tile(15, 15, 2); oxygenMap.put(12,
+		 * 12, 32);
+		 */
 		plantMap.put(6, 6, 2);
 		plantMap.put(6, 7, 2);
 		plantMap.put(6, 8, 2);
@@ -149,6 +149,7 @@ public class SinglePlayer {
 	}
 
 	public void update(int delta) {
+
 		controller.Pressed();
 		controller.update();
 		objectiveSystem.update(player, tileMap, itemMap, plantMap);
@@ -161,7 +162,7 @@ public class SinglePlayer {
 		bm.update(player);
 
 		player.loop();
-		viewPort.move(player.Position);
+		viewPort.move(player.transform);
 
 		hpBar.Percentage(player.getCurrentHealth(), player.getMaxHealth());
 		foodBar.Percentage(player.getCurrentFood(), player.getMaxFood());
@@ -189,6 +190,8 @@ public class SinglePlayer {
 		itemMap.render(g);
 		plantMap.render(g);
 		oxygenMap.render(g);
+
+		scnroom.render(g);
 
 		fm.render(g);
 		bm.render(g);

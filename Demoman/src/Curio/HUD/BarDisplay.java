@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Math.Transform;
 
 public class BarDisplay extends HUD {
 	private Color barColor;
@@ -18,8 +18,8 @@ public class BarDisplay extends HUD {
 		barColor = _color;
 	}
 
-	public BarDisplay(Vector _vector, int _width, int _height, Color _color) {
-		super(_vector.x, _vector.y,_width, _height);
+	public BarDisplay(Transform transform, int _width, int _height, Color _color) {
+		super(transform,_width, _height);
 		barColor = _color;
 	}
 
@@ -28,13 +28,13 @@ public class BarDisplay extends HUD {
 		g.flush();
 		g.setLineWidth(0);
 		g.setColor(Color.black);
-		g.fillRect(Position.x, Position.y, width, height);
+		g.fillRect(transform.position.x, transform.position.y, width, height);
 		
 		g.setColor(backgroundColor);
-		g.fillRect(Position.x + xsize, Position.y + ysize, (width - xsize * 2), height - ysize * 2);
+		g.fillRect(transform.position.x + xsize, transform.position.y + ysize, (width - xsize * 2), height - ysize * 2);
 		
 		g.setColor(barColor);
-		g.fillRect(Position.x + xsize, Position.y + ysize, (width - xsize * 2) * ratio, height - ysize * 2);
+		g.fillRect(transform.position.x + xsize, transform.position.y + ysize, (width - xsize * 2) * ratio, height - ysize * 2);
 	}
 
 	public void Percentage(float currentValue, float maxValue) {

@@ -1,6 +1,6 @@
 package Curio;
 
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Main;
 
 public class Functions {
@@ -11,8 +11,8 @@ public class Functions {
 	}
 
 	// check if the two positions is in the same tile
-	public static boolean isOnTop(Transform tr1, Transform tr2) {
-		if ((tr1.get_x() == tr2.get_x()) && (tr1.get_y() == tr2.get_y())) {
+	public static boolean isOnTop(CellCoordinate tr1, CellCoordinate tr2) {
+		if ((tr1.getCellX() == tr2.getCellX()) && (tr1.getCellY() == tr2.getCellY())) {
 			return true;
 		} else {
 			return false;

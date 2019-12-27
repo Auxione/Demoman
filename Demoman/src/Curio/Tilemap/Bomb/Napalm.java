@@ -2,63 +2,54 @@ package Curio.Tilemap.Bomb;
 
 import org.newdawn.slick.Graphics;
 
+import Curio.ItemMap.ItemMap;
+import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.FireManager;
+import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
 
 public class Napalm extends Bomb {
-	public Transform transform;
-	private TileMap level;
 	private FireManager fireManager;
-	
-	private int playerDamage = 75;
-	private int tileDamage = 1000;
+	private int damage = 15;
 	private int bombSize = 2;
-	
-	public Napalm(FireManager _fireManager, TileMap _level, Transform _transform, int _time) {
-		super(_time, Constants.blueBombNapalm, _transform);
 
-		transform = _transform;
-		level = _level;
-		fireManager = _fireManager;
+	public Napalm(CellCoordinate cellPosition, int time, FireManager fireManager) {
+		super(time, Constants.blueBombNapalm, cellPosition);
+		this.fireManager = fireManager;
 	}
 
 	@Override
-	public void Effect(TileMap _level, Player dp) {
-		for (int x = 0; x <= bombSize; x++) {
-			level.applyDamage(transform.get_x() + x, transform.get_y(), tileDamage);
+	public void Effect(Player player, TileMap tileMap, ItemMap itemMap, PlantMap plantMap, FluidMap fluidMap) {
+		player.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
+		tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
+		itemMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
+		plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
 
-			if (dp.CellPosition.equals(transform.get_x() + x, transform.get_y())) {
-				dp.applyDamage(playerDamage);
-			}
+		for (int x = 1; x <= bombSize; x++) {
+			player.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
+			tileMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
+			itemMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
+			plantMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
+
+			player.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
+			tileMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
+			itemMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
+			plantMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
 		}
+		for (int y = 1; y <= bombSize; y++) {
+			player.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
+			tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
+			itemMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
+			plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
 
-		for (int x = 0; x <= bombSize; x++) {
-			level.applyDamage(transform.get_x() - x, transform.get_y(), tileDamage);
-
-			if (dp.CellPosition.equals(transform.get_x() - x, transform.get_y())) {
-				dp.applyDamage(playerDamage);
-			}
+			player.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
+			tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
+			itemMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
+			plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
 		}
-
-		for (int y = 0; y <= bombSize; y++) {
-			level.applyDamage(transform.get_x(), transform.get_y() + y, tileDamage);
-
-			if (dp.CellPosition.equals(transform.get_x(), transform.get_y() + y)) {
-				dp.applyDamage(playerDamage);
-			}
-		}
-
-		for (int y = 0; y <= bombSize; y++) {
-			level.applyDamage(transform.get_x(), transform.get_y() - y, tileDamage);
-
-			if (dp.CellPosition.equals(transform.get_x(), transform.get_y() - y)) {
-				dp.applyDamage(playerDamage);
-			}
-		}
-		fireManager.create(transform.get_x(), transform.get_y());
 	}
 
 	@Override

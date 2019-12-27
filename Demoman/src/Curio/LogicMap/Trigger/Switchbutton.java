@@ -4,32 +4,33 @@ import org.newdawn.slick.Graphics;
 
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class Switchbutton implements Logic {
 	final String debugcode = "<Pushbutton>:";
 	final boolean debugActive = false;
 
-	public Transform transform;
-	private Transform outputTile;
+	public CellCoordinate objectCellPosition;
+	private CellCoordinate outputCellPosition;
 
 	private boolean state = false;
 	private boolean Activated = false;
 
-	public Switchbutton(int x, int y, Transform _outputTile) {
-		transform = new Transform(x, y);
-		outputTile = _outputTile;
+	public Switchbutton(int x, int y, CellCoordinate outputCellPosition) {
+		this.objectCellPosition = new CellCoordinate(x, y);
+		this.outputCellPosition = outputCellPosition;
 	}
 
 	public void render(Graphics g) {
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
 		if (state == true) {
-			g.drawImage(Constants.switchon, transform.get_x() * Constants.CellSize,
-					transform.get_y() * Constants.CellSize);
+			g.drawImage(Constants.switchon, 0, 0);
 		} else if (state == false) {
-			g.drawImage(Constants.switchoff, transform.get_x() * Constants.CellSize,
-					transform.get_y() * Constants.CellSize);
+			g.drawImage(Constants.switchoff, 0, 0);
 		}
+		g.popTransform();
 	}
 
 	public void keyEvent() {
@@ -39,7 +40,7 @@ public class Switchbutton implements Logic {
 
 	public void update(LogicMap logicMap) {
 		if (Activated == true) {
-			logicMap.setState(outputTile, state);
+			logicMap.setState(outputCellPosition, state);
 			Activated = false;
 		}
 	}

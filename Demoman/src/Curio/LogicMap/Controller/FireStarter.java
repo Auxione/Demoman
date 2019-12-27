@@ -5,23 +5,25 @@ import org.newdawn.slick.Graphics;
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
 import Curio.Tilemap.FireManager;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class FireStarter implements Logic {
-	public Transform transform;
+	public CellCoordinate objectCellPosition;
 	public FireManager fm;
 	private boolean Activate = false;
 
-	public FireStarter(FireManager _fm,int x, int y) {
-		fm = _fm;
-		transform = new Transform(x, y);
-		
+	public FireStarter(FireManager fm, int x, int y) {
+		this.fm = fm;
+		this.objectCellPosition = new CellCoordinate(x, y);
+
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(Constants.firestarter, transform.get_x() * Constants.CellSize,
-				transform.get_y() * Constants.CellSize);
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
+		g.drawImage(Constants.firestarter, 0, 0);
+		g.popTransform();
 	}
 
 	@Override
@@ -29,12 +31,12 @@ public class FireStarter implements Logic {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void update(LogicMap logicMap) {
-		Activate = logicMap.getState(transform);
+		Activate = logicMap.getState(objectCellPosition);
 		if (Activate == true) {
-			fm.create(transform.get_x(), transform.get_y());
+			fm.create(objectCellPosition.getCellX(), objectCellPosition.getCellY());
 			Activate = false;
 		}
 	}

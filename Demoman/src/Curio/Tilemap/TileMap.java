@@ -7,8 +7,8 @@ import org.newdawn.slick.Graphics;
 import Curio.Tileset;
 import Curio.Viewport;
 import Curio.HUD.ConsoleDisplay;
+import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
-import Curio.Utilities.Math.Vector;
 import Default.Constants;
 
 public class TileMap {
@@ -132,16 +132,16 @@ public class TileMap {
 		}
 	}
 
-	public int[][][] get_Tilemap() {
+	public int[][][] getMap() {
 		return tileMap;
 	}
 
-	public Transform worldPostoMapPos(Vector vpos) {
-		Transform out = new Transform();
-		if (vpos.x >= 0 && vpos.x <= tileMap.length * Constants.CellSize && vpos.y >= 0
-				&& vpos.y <= tileMap[0].length * Constants.CellSize) {
-			out.set_x((int) (Math.floor(vpos.x / Constants.CellSize)));
-			out.set_y((int) (Math.floor(vpos.y / Constants.CellSize)));
+	public CellCoordinate worldPostoMapPos(Transform vpos) {
+		CellCoordinate out = new CellCoordinate();
+		if (vpos.position.x >= 0 && vpos.position.x <= tileMap.length * Constants.CellSize && vpos.position.y >= 0
+				&& vpos.position.y <= tileMap[0].length * Constants.CellSize) {
+			out.setCellX((int) (Math.floor(vpos.position.x / Constants.CellSize)));
+			out.setCellY((int) (Math.floor(vpos.position.y / Constants.CellSize)));
 		}
 		return out;
 	}
@@ -171,14 +171,13 @@ public class TileMap {
 		} else
 			return 0;
 	}
- 
-	public int get_Tile(Transform cellPos) {
+
+	public int get_Tile(CellCoordinate cell) {
 		// if any request from this function exceeds tilemap borders
 		// return only the border value
-		if (cellPos.get_x() >= 0 && cellPos.get_x() < tileMap.length && cellPos.get_y() >= 0
-				&& cellPos.get_y() < tileMap[0].length) {
+		if (cell.getCellX() >= 0 && cell.getCellX() < tileMap.length && cell.getCellY() >= 0 && cell.getCellY() < tileMap[0].length) {
 			// if its inside the tilemap array
-			return tileMap[cellPos.get_x()][cellPos.get_y()][0];
+			return tileMap[cell.getCellX()][cell.getCellY()][0];
 		} else
 			return 0;
 	}

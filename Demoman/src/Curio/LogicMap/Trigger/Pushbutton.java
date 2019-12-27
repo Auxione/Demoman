@@ -4,19 +4,19 @@ import org.newdawn.slick.Graphics;
 
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class Pushbutton implements Logic {
 
-	public Transform transform;
-	private Transform outputTile;
+	public CellCoordinate objectCellPosition;
+	private CellCoordinate outputCellPosition;
 
 	private boolean activated = false;
 
-	public Pushbutton(int x, int y, Transform _outputTile) {
-		transform = new Transform(x, y);
-		outputTile = _outputTile;
+	public Pushbutton(int x, int y, CellCoordinate outputCellPosition) {
+		this.objectCellPosition = new CellCoordinate(x, y);
+		this.outputCellPosition = outputCellPosition;
 	}
 
 	@Override
@@ -27,14 +27,16 @@ public class Pushbutton implements Logic {
 	@Override
 	public void update(LogicMap logicMap) {
 		if (activated == true) {
-			logicMap.sendTick(outputTile, activated);
+			logicMap.sendTick(outputCellPosition, activated);
 			activated = false;
 		}
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(Constants.pushbutton, transform.get_x() * Constants.CellSize,
-				transform.get_y() * Constants.CellSize);
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
+		g.drawImage(Constants.pushbutton, 0, 0);
+		g.popTransform();
 	}
 
 }

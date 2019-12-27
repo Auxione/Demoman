@@ -4,26 +4,28 @@ import org.newdawn.slick.Graphics;
 
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class MoveTrigger implements Logic {
 	final String debugcode = "<MoveTrigger>: ";
 	final boolean debugActive = false;
 
-	public Transform transform;
-	public Transform outputTile;
+	public CellCoordinate objectCellPosition;
+	public CellCoordinate outputCellPosition;
 
 	public boolean activated = false;
 
-	public MoveTrigger(int x, int y, Transform _outputTile) {
-		transform = new Transform(x, y);
-		outputTile = _outputTile;
+	public MoveTrigger(int x, int y, CellCoordinate outputCellPosition) {
+		this.objectCellPosition = new CellCoordinate(x, y);
+		this.outputCellPosition = outputCellPosition;
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(Constants.movetrigger, transform.get_x() * Constants.CellSize,
-				transform.get_y() * Constants.CellSize);
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
+		g.drawImage(Constants.movetrigger, 0, 0);
+		g.popTransform();
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class MoveTrigger implements Logic {
 	@Override
 	public void update(LogicMap logicMap) {
 		if (activated == true) {
-			logicMap.sendTick(outputTile, activated);
+			logicMap.sendTick(outputCellPosition, activated);
 			activated = false;
 		}
 	}

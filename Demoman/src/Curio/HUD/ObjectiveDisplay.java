@@ -32,7 +32,7 @@ public class ObjectiveDisplay extends HUD {
 	@Override
 	public void render(Graphics g) {
 		g.pushTransform();
-		g.translate(super.Position.x, super.Position.y);
+		g.translate(super.transform.position.x, super.transform.position.y);
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, super.width, super.height);
 

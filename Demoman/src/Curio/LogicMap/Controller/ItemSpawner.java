@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import Curio.ItemMap.ItemMap;
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 //test edilmedi
@@ -13,7 +13,7 @@ public class ItemSpawner implements Logic {
 	final String debugcode = "<ItemSpawner>: ";
 	final boolean debugActive = true;
 
-	public Transform transform;
+	public CellCoordinate objectCellPosition;
 
 	private boolean spawn = false;
 	private int itemID;
@@ -22,14 +22,16 @@ public class ItemSpawner implements Logic {
 
 	public ItemSpawner(int x, int y, int id, ItemMap itemMap) {
 		this.itemMap = itemMap;
-		transform = new Transform(x, y);
+		objectCellPosition = new CellCoordinate(x, y);
 		itemID = id;
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(Constants.itemspawner, transform.get_x() * Constants.CellSize,
-				transform.get_y() * Constants.CellSize);
-	}
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
+		g.drawImage(Constants.itemspawner, 0, 0);
+		g.popTransform();
+		}
 
 	@Override
 	public void keyEvent() {
@@ -38,9 +40,9 @@ public class ItemSpawner implements Logic {
 
 	@Override
 	public void update(LogicMap logicMap) {
-		spawn = logicMap.getState(transform);
+		spawn = logicMap.getState(objectCellPosition);
 		if (spawn == true) {
-			itemMap.put(transform.get_x(), transform.get_y(), itemID);
+			itemMap.put(objectCellPosition.getCellX(), objectCellPosition.getCellY(), itemID);
 		}
 	}
 }

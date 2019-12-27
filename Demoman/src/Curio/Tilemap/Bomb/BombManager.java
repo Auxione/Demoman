@@ -5,30 +5,41 @@ import java.util.Iterator;
 
 import org.newdawn.slick.Graphics;
 
+import Curio.ItemMap.ItemMap;
+import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.FireManager;
+import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Player;
 
 public class BombManager {
 	private ArrayList<Bomb> bombList = new ArrayList<Bomb>();
 
-	private TileMap level;
+	private TileMap tileMap;
 	private FireManager fireManager;
+	private ItemMap itemMap;
+	private PlantMap plantMap;
+	private FluidMap fluidMap;
 
-	public BombManager(FireManager _fireManager, TileMap _level) {
-		level = _level;
-		fireManager = _fireManager;
+	public BombManager(FireManager fireManager, TileMap tileMap, ItemMap itemMap, PlantMap plantMap,
+			FluidMap fluidMap) {
+		this.tileMap = tileMap;
+		this.itemMap = itemMap;
+		this.plantMap = plantMap;
+		this.fluidMap = fluidMap;
+		this.fireManager = fireManager;
 	}
 
-	public void update(Player dp) {
+	public void update(Player player) {
 		Iterator<Bomb> b = bombList.iterator();
 
 		while (b.hasNext()) {
 			Bomb bomb = b.next(); // must be called before you can call f.remove()
 			bomb.update();
 			if (bomb.Exploded == true) {
-				bomb.Effect(level,dp);;
+				bomb.Effect(player, tileMap, itemMap, plantMap, fluidMap);
+
 				b.remove();
 			}
 		}
@@ -40,10 +51,10 @@ public class BombManager {
 		}
 	}
 
-	public boolean canPlace(Transform _transform) {
+	public boolean canPlace(CellCoordinate cpos) {
 		if (bombList.isEmpty() == false) {
 			for (Bomb b : bombList) {
-				if (!b.transform.equals(_transform)) {
+				if (!b.cellPosition.equals(cpos)) {
 					return true;
 				}
 			}
@@ -53,12 +64,12 @@ public class BombManager {
 		}
 	}
 
-	public void create(Transform _transform, int _type, int _time) {
-		Transform bombpos = new Transform(_transform.get_x(), _transform.get_y());
-		if (_type == 1) {
-			bombList.add(new Default(level, bombpos, _time));
-		} else if (_type == 2) {
-			bombList.add(new Napalm(fireManager, level, bombpos, _time));
+	public void create(CellCoordinate cpos, int type, int time,int damage) {
+		CellCoordinate bombpos = new CellCoordinate(cpos.getCellX(), cpos.getCellY());
+		if (type == 1) {
+			bombList.add(new Default(bombpos, time,damage));
+		} else if (type == 2) {
+			bombList.add(new Napalm(bombpos, time,fireManager));
 		}
 
 	}

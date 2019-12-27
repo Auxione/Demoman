@@ -8,22 +8,28 @@ public class Vector {
 	public Vector() {
 	}
 
-	public Vector(float _x, float _y) {
-		x = _x;
-		y = _y;
-		z = 0;
+	public Vector(float x, float y) {
+		this.x = x;
+		this.y = y;
+		this.z = 0;
 	}
 
-	public Vector(float _x, float _y, float _z) {
-		x = _x;
-		y = _y;
-		z = _z;
+	public Vector(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
+	public Vector(double x, double y, double z) {
+		this.x = (float) x;
+		this.y = (float) y;
+		this.z = (float) z;
 	}
 
 	public Vector(Transform tr) {
-		x = tr.get_x();
-		y = tr.get_y();
-		z = 0;
+		x = tr.position.x;
+		y = tr.position.y;
+		z = tr.position.z;
 	}
 
 	public float get_Angle() {

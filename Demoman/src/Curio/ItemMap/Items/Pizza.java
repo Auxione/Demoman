@@ -47,4 +47,13 @@ public class Pizza implements Item {
 			return false;
 		}
 	}
+
+	private int health = 100;
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return health;
+	}
+
 }

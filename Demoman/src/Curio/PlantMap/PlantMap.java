@@ -63,8 +63,8 @@ public class PlantMap {
 	}
 
 	public void harvest(Player player) {
-		int x = player.CellPosition.get_x();
-		int y = player.CellPosition.get_y();
+		int x = player.CellPosition.getCellX();
+		int y = player.CellPosition.getCellY();
 		int plantID = plantMap[x][y][0];
 
 		boolean readyToHarvest = (plantMap[x][y][4] == plantMap[x][y][5]);
@@ -77,8 +77,8 @@ public class PlantMap {
 	}
 
 	public boolean canPlant(Player player, int plantID) {
-		int x = player.CellPosition.get_x();
-		int y = player.CellPosition.get_y();
+		int x = player.CellPosition.getCellX();
+		int y = player.CellPosition.getCellY();
 		if (plantList.get(plantID).plantCondition(player, tilemap, x, y) && plantMap[x][y][0] == 0) {
 			return true;
 		} else {
@@ -94,6 +94,7 @@ public class PlantMap {
 
 	public void update() {
 		updateGrowth();
+		checkHealth();
 	}
 
 	public void render(Graphics g) {
@@ -164,5 +165,25 @@ public class PlantMap {
 	private int calculateState(int x, int y) {
 		int out = (int) Functions.map(plantMap[x][y][2], 0, plantMap[x][y][3], 0, plantMap[x][y][5]);
 		return out;
+	}
+
+	public void applyDamage(int x, int y, int damage) {
+		plantMap[x][y][1] -= damage;
+	}
+
+	public void checkHealth() {
+		for (int x = 0; x < plantMap.length; x++) {
+			for (int y = 0; y < plantMap[0].length; y++) {
+				if (plantMap[x][y][1] < 0) {
+					clearCell(x, y);
+				} else if (plantMap[x][y][1] > getHealth(x, y)) {
+					plantMap[x][y][1] = getHealth(x, y);
+				}
+			}
+		}
+	}
+
+	public int[][][] getMap() {
+		return plantMap;
 	}
 }

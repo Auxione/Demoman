@@ -11,7 +11,7 @@ import Curio.LogicMap.Controller.*;
 import Curio.LogicMap.Processor.*;
 import Curio.Tilemap.FireManager;
 import Curio.Tilemap.TileMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 
 public class LogicMap {
 	ConsoleDisplay console;
@@ -83,47 +83,47 @@ public class LogicMap {
 		}
 	}
 
-	public void put_Delay(int x, int y, Transform output, int time) {
-		delayList.add(new Delay(x, y, output, time));
+	public void put_Delay(int x, int y,CellCoordinate cpos, int time) {
+		delayList.add(new Delay(x, y, cpos, time));
 		if (console != null) {
-			String cmd = "Delay: timer: " + time + " created at:" + x + "-" + y + ". Output set to: " + output.get_x()
-					+ "-" + output.get_y();
+			String cmd = "Delay: timer: " + time + " created at:" + x + "-" + y + ". Output set to: " + cpos.getCellX()
+					+ "-" + cpos.getCellY();
 			console.Add(0, cmd);
 		}
 	}
 
-	public void put_MoveTrigger(int x, int y, Transform output) {
-		movetriggerList.add(new MoveTrigger(x, y, output));
+	public void put_MoveTrigger(int x, int y, CellCoordinate cpos) {
+		movetriggerList.add(new MoveTrigger(x, y, cpos));
 		if (console != null) {
-			String cmd = "MoveTrigger: created at:" + x + "-" + y + ". Output set to: " + output.get_x() + "-"
-					+ output.get_y();
+			String cmd = "MoveTrigger: created at:" + x + "-" + y + ". Output set to: " + cpos.getCellX() + "-"
+					+ cpos.getCellY();
 			console.Add(0, cmd);
 		}
 	}
 
-	public void put_PushButton(int x, int y, Transform output) {
-		pushbuttonList.add(new Pushbutton(x, y, output));
+	public void put_PushButton(int x, int y, CellCoordinate cpos) {
+		pushbuttonList.add(new Pushbutton(x, y, cpos));
 		if (console != null) {
-			String cmd = "Pushbutton: created at:" + x + "-" + y + ". Output set to: " + output.get_x() + "-"
-					+ output.get_y();
+			String cmd = "Pushbutton: created at:" + x + "-" + y + ". Output set to: " + cpos.getCellX() + "-"
+					+ cpos.getCellY();
 			console.Add(0, cmd);
 		}
 	}
 
-	public void put_SwitchButton(int x, int y, Transform output) {
-		switchbuttonList.add(new Switchbutton(x, y, output));
+	public void put_SwitchButton(int x, int y,CellCoordinate cpos) {
+		switchbuttonList.add(new Switchbutton(x, y, cpos));
 		if (console != null) {
-			String cmd = "Switchbutton: created at:" + x + "-" + y + ". Output set to: " + output.get_x() + "-"
-					+ output.get_y();
+			String cmd = "Switchbutton: created at:" + x + "-" + y + ". Output set to: " +cpos.getCellX() + "-"
+					+ cpos.getCellY();
 			console.Add(0, cmd);
 		}
 	}
 
-	public void put_PushToSwitch(int x, int y, Transform output) {
-		pushtoswitchList.add(new PushToSwitch(x, y, output));
+	public void put_PushToSwitch(int x, int y, CellCoordinate cpos) {
+		pushtoswitchList.add(new PushToSwitch(x, y, cpos));
 		if (console != null) {
-			String cmd = "PushToSwitch: created at:" + x + "-" + y + ". Output set to: " + output.get_x() + "-"
-					+ output.get_y();
+			String cmd = "PushToSwitch: created at:" + x + "-" + y + ". Output set to: " + cpos.getCellX() + "-"
+					+ cpos.getCellY();
 			console.Add(0, cmd);
 		}
 	}
@@ -206,27 +206,31 @@ public class LogicMap {
 		}
 	}
 
-	public void sendTick(Transform outputTile, boolean state) {
+	public void sendTick(CellCoordinate cpos, boolean state) {
 		if (state == true) {
-			logicMap[outputTile.get_x()][outputTile.get_y()][0] = 1;
+			logicMap[cpos.getCellX()][cpos.getCellY()][0] = 1;
 		}
 	}
 
-	public void setState(Transform outputTile, boolean state) {
+	public void setState(CellCoordinate cpos, boolean state) {
 		if (state == true) {
-			logicMap[outputTile.get_x()][outputTile.get_y()][1] = 1;
+			logicMap[cpos.getCellX()][cpos.getCellY()][1] = 1;
 		} else if (state == false) {
-			logicMap[outputTile.get_x()][outputTile.get_y()][1] = 0;
+			logicMap[cpos.getCellX()][cpos.getCellY()][1] = 0;
 		}
 	}
 
-	public boolean getState(Transform inputTile) {
-		if (logicMap[inputTile.get_x()][inputTile.get_y()][0] == 1) {
+	public boolean getState(CellCoordinate cpos) {
+		if (logicMap[cpos.getCellX()][cpos.getCellY()][0] == 1) {
 			return true;
-		} else if (logicMap[inputTile.get_x()][inputTile.get_y()][1] == 1) {
+		} else if (logicMap[cpos.getCellX()][cpos.getCellY()][1] == 1) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public int[][][] getMap() {
+		return logicMap;
 	}
 }

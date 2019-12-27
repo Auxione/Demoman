@@ -1,74 +1,53 @@
 package Curio.Utilities.Math;
 
+import static java.lang.Math.sqrt;
+
 public class Transform {
-	private int[] Position;
-	private float Rotation;
+	public Quaternion quaternion;
+	public Position position;
 
+	// needs quaternion class to rotation
 	public Transform() {
-		Position = new int[2];
+		this.position = new Position(0, 0, 0);
 	}
 
-	public Transform(int x, int y) {
-		Position = new int[2];
-		Position[0] = x;
-		Position[1] = y;
-		Rotation = 0;
+	public Transform(float x, float y, float z) {
+		this.position = new Position(x, y, z);
+		this.quaternion = new Quaternion(0, 0, 0, 0);
 	}
 
-	public Transform(float x, float y) {
-		Position = new int[2];
-		Position[0] = (int) x;
-		Position[1] = (int) y;
-		Rotation = 0;
+	public Transform(float x, float y, float z, Quaternion quaternion) {
+		this.position = new Position(x, y, z);
+		this.quaternion = quaternion;
 	}
 
 	public Transform(Transform tr) {
-		this.Position = tr.Position;
-		this.Rotation = tr.Rotation;
-	}
-
-	public Transform multiply(int mul) {
-		Transform out = new Transform(Position[0] * mul, Position[1] * mul);
-		return out;
-	}
-
-	public boolean equals(int x, int y) {
-		if (x == this.Position[0] && y == this.Position[1]) {
-			return true;
-		} else {
-			return false;
-		}
+		this.position = tr.position;
+		this.quaternion = tr.quaternion;
 	}
 
 	public boolean equals(Transform transform) {
-		if (transform.get_x() == this.Position[0] && transform.get_y() == this.Position[1]) {
+		if (transform.position.x == this.position.x && transform.position.y == this.position.y
+				&& transform.position.z == this.position.z) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public int get_x() {
-		return Position[0];
+	public float dist(Transform transform) {
+		float dx = position.x - transform.position.x;
+		float dy = position.y - transform.position.y;
+		float dz = position.z - transform.position.z;
+		return (float) sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
-	public int get_y() {
-		return Position[1];
-	}
-
-	public float get_rotation() {
-		return Rotation;
-	}
-
-	public void set_x(int x) {
-		Position[0] = x;
-	}
-
-	public void set_y(int y) {
-		Position[1] = y;
-	}
-
-	public void set_rotation(float rot) {
-		Rotation = rot;
+	public class Position {
+		public float x, y, z;
+		Position(float x, float y, float z) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
 	}
 }

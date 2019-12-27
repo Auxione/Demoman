@@ -75,8 +75,8 @@ public class Inventory {
 	}
 
 	public void drop() {
-		playerCellX = player.CellPosition.get_x();
-		playerCellY = player.CellPosition.get_y();
+		playerCellX = player.CellPosition.getCellX();
+		playerCellY = player.CellPosition.getCellY();
 
 		if (itemMap.put(playerCellX, playerCellY, inventoryMap[itemIndex][0]) == true) {
 			remove(inventoryMap[itemIndex][0]);
@@ -88,13 +88,13 @@ public class Inventory {
 	}
 
 	public void take() {
-		playerCellX = player.CellPosition.get_x();
-		playerCellY = player.CellPosition.get_y();
+		playerCellX = player.CellPosition.getCellX();
+		playerCellY = player.CellPosition.getCellY();
 
-		if (itemMap.get(playerCellX, playerCellY) != 0) {
+		if (itemMap.getItemID(playerCellX, playerCellY) != 0) {
 			for (int x = 0; x < inventoryMap.length; x++) {
 				// check if the id exists in inv
-				if (inventoryMap[x][0] == itemMap.get(playerCellX, playerCellY) && inventoryMap[x][1] < tileMaxItem) {
+				if (inventoryMap[x][0] == itemMap.getItemID(playerCellX, playerCellY) && inventoryMap[x][1] < tileMaxItem) {
 					inventoryMap[x][1] += 1;
 					itemMap.remove(playerCellX, playerCellY);
 
@@ -105,7 +105,7 @@ public class Inventory {
 					break;
 				} else if (inventoryMap[x][0] == 0 && inventoryMap[x][1] < tileMaxItem) {
 					// put it into inv
-					inventoryMap[x][0] = itemMap.get(playerCellX, playerCellY);
+					inventoryMap[x][0] = itemMap.getItemID(playerCellX, playerCellY);
 					inventoryMap[x][1] += 1;
 					itemMap.remove(playerCellX, playerCellY);
 

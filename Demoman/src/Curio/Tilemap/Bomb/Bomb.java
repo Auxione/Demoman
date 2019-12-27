@@ -4,16 +4,19 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import Curio.Functions;
+import Curio.ItemMap.ItemMap;
+import Curio.PlantMap.PlantMap;
+import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
 import Curio.Utilities.Animation;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
 
 public abstract class Bomb {
-	public Transform transform;
+	public CellCoordinate cellPosition;
 	public Animation ExplosionA;
-	
+
 	private Image bombImage = null;
 
 	private int timer;
@@ -21,18 +24,18 @@ public abstract class Bomb {
 
 	public boolean Exploded = false;
 	private int state;
-	
-	public Bomb(int _time,Image _bombImage,Transform _transform) {
-		bombImage = _bombImage;
-		timer = _time;
-		transform =_transform ;
-		
+
+	public Bomb(int time, Image bombImage, CellCoordinate cellPosition) {
+		this.bombImage = bombImage;
+		this.timer = time;
+		this.cellPosition = cellPosition;
+
 		ExplosionA = new Animation(Constants.ExplosionSprite, 32, 32, 6, 200);
 		// calculate the time when bomb explodes
 		ExplodeTime = timer + Functions.millis();
 		state = 1;
 	}
-	
+
 	public void update() {
 		switch (state) {
 		case 1:
@@ -54,13 +57,15 @@ public abstract class Bomb {
 	public void render(Graphics g) {
 		switch (state) {
 		case 1:
-			g.drawImage(bombImage, transform.get_x() * Constants.CellSize, transform.get_y() * Constants.CellSize);
+			g.drawImage(bombImage,cellPosition.getWorldX(), cellPosition.getWorldY());
 			break;
 		case 2:
-			ExplosionA.render(g, transform);
+			ExplosionA.render(g, cellPosition);
 			break;
 		}
 	}
-	public abstract void Effect(TileMap _level,Player dp);
+
+	public abstract void Effect(Player player, TileMap tileMap, ItemMap itemMap, PlantMap plantMap, FluidMap fluidMap);
+
 	public abstract void effectRender(Graphics g);
 }

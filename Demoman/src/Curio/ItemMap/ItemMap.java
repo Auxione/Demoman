@@ -19,10 +19,14 @@ import Curio.Tilemap.TileMap;
 import Default.Constants;
 
 public class ItemMap {
-	public int[][][] itemMap;
+	private int[][][] itemMap;
 	public HashMap<Integer, Item> itemList;
 	private int tileMaxItems = 5;
 	private ConsoleDisplay console;
+	
+	public int[][][] getMap() {
+		return itemMap;
+	}
 
 	private void putItems() {
 		itemList.put(1, new Medpack());
@@ -110,6 +114,10 @@ public class ItemMap {
 		}
 	}
 
+	public void applyDamage(int x, int y, int damage) {
+		clearCell(x, y);
+	}
+
 	private void clearCell(int x, int y) {
 		for (int i = 0; i < itemMap[0][0].length; i++) {
 			itemMap[x][y][i] = 0;
@@ -117,7 +125,7 @@ public class ItemMap {
 	}
 
 	// this function returns item id if conditions are met
-	public int get(int x, int y) {
+	public int getItemID(int x, int y) {
 		// check if theres a item on position
 		if (x >= 0 && x < itemMap.length && y >= 0 && y < itemMap[0].length) {
 			// if its inside the tilemap array
@@ -128,20 +136,8 @@ public class ItemMap {
 		return 0;
 	}
 
-	public String getItemName(int itemID) {
-		if (itemID > 0 && itemID < itemList.size()) {
-			return this.itemList.get(itemID).getName();
-		} else {
-			return null;
-		}
-	}
-
-	public String getItemDesc(int itemID) {
-		if (itemID > 0 && itemID < itemList.size()) {
-			return this.itemList.get(itemID).getDescription();
-		} else {
-			return null;
-		}
+	public Item getItem(int itemID) {
+		return this.itemList.get(itemID);
 	}
 
 	public void remove(int x, int y) {

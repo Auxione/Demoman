@@ -5,28 +5,30 @@ import org.newdawn.slick.Graphics;
 
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class PushToSwitch implements Logic {
 	final String debugcode = "<PushToSwitch>:";
 	final boolean debugActive = false;
 
-	public Transform transform;
-	private Transform outputTile;
+	public CellCoordinate objectCellPosition;
+	public CellCoordinate outputCellPosition;
 
 	private boolean state = false;
 	private boolean activated = false;
 
-	public PushToSwitch(int x, int y, Transform _outputTile) {
-		transform = new Transform(x, y);
-		outputTile = _outputTile;
+	public PushToSwitch(int x, int y, CellCoordinate outputCellPosition) {
+		this.objectCellPosition = new CellCoordinate(x, y);
+		this.outputCellPosition = outputCellPosition;
 	}
 
 	public void render(Graphics g) {
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
 		g.setColor(Color.blue);
-		g.fillRect(transform.get_x() * Constants.CellSize, transform.get_y() * Constants.CellSize, Constants.CellSize,
-				Constants.CellSize);
+		g.fillRect(0, 0, Constants.CellSize, Constants.CellSize);
+		g.popTransform();
 	}
 
 	@Override
@@ -36,13 +38,13 @@ public class PushToSwitch implements Logic {
 
 	@Override
 	public void update(LogicMap logicMap) {
-		if (logicMap.getState(transform) == true) {
+		if (logicMap.getState(objectCellPosition) == true) {
 			state = !state;
 			activated = true;
 		}
 
 		if (activated == true) {
-			logicMap.setState(outputTile, state);
+			logicMap.setState(outputCellPosition, state);
 			activated = false;
 		}
 	}

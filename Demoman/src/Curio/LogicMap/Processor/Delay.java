@@ -6,22 +6,22 @@ import org.newdawn.slick.Graphics;
 import Curio.Functions;
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class Delay implements Logic {
 	final String debugcode = "<TimedTrigger>:";
 	final boolean debugActive = false;
 
-	public Transform transform;
-	public Transform outputTile;
+	public CellCoordinate objectCellPosition;
+	public CellCoordinate outputCellPosition;
 
 	private float goal, timer;
 	private boolean activated = false;
 
-	public Delay(int x, int y, Transform _outputTile, int t) {
-		transform = new Transform(x, y);
-		outputTile = _outputTile;
+	public Delay(int x, int y, CellCoordinate outputCellPosition, int t) {
+		this.objectCellPosition = new CellCoordinate(x, y);
+		this.outputCellPosition = outputCellPosition;
 
 		timer = (float) (t);
 	}
@@ -35,9 +35,11 @@ public class Delay implements Logic {
 	}
 
 	public void render(Graphics g) {
+		g.pushTransform();
+		g.translate(objectCellPosition.getWorldX(), objectCellPosition.getWorldY());
 		g.setColor(Color.orange);
-		g.fillRect(transform.get_x() * Constants.CellSize, transform.get_y() * Constants.CellSize, Constants.CellSize,
-				Constants.CellSize);
+		g.fillRect(0, 0, Constants.CellSize, Constants.CellSize);
+		g.popTransform();
 	}
 
 	@Override
@@ -48,13 +50,13 @@ public class Delay implements Logic {
 
 	@Override
 	public void update(LogicMap logicMap) {
-		if (logicMap.getState(transform) == true) {
+		if (logicMap.getState(objectCellPosition) == true) {
 			activated = true;
 			goal = Functions.millis() + timer;
 		}
 
 		if (startTimer(goal) == true && activated == true) {
-			logicMap.sendTick(outputTile, true);
+			logicMap.sendTick(outputCellPosition, true);
 			activated = false;
 		}
 	}

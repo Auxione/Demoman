@@ -5,12 +5,12 @@ import org.newdawn.slick.Graphics;
 import Curio.LogicMap.Logic;
 import Curio.LogicMap.LogicMap;
 import Curio.Tilemap.TileMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 
 public class DynamicWall implements Logic {
 	private Boolean state = false;
 
-	private Transform transform;
+	private CellCoordinate objectCellPosition;
 	private int changedTileID, originalTileID;
 
 	private TileMap lvl;
@@ -22,9 +22,9 @@ public class DynamicWall implements Logic {
 
 	public DynamicWall(TileMap l, int x, int y, int changeID) {
 		lvl = l;
-		transform = new Transform(x, y);
+		objectCellPosition = new CellCoordinate(x, y);
 
-		originalTileID = lvl.get_Tile(transform.get_x(), transform.get_y());
+		originalTileID = lvl.get_Tile(objectCellPosition.getCellX(), objectCellPosition.getCellY());
 		changedTileID = changeID;
 	}
 
@@ -46,15 +46,15 @@ public class DynamicWall implements Logic {
 		// if tile is activated and not broken
 		// check the tile if its not changed outside our func.
 		// change the state
-		state = logicMap.getState(transform);
+		state = logicMap.getState(objectCellPosition);
 
 		if (state == true) {
 			// change the tile id on the current level to tileid1
-			lvl.set_Tile(transform.get_x(), transform.get_y(), changedTileID);
+			lvl.set_Tile(objectCellPosition.getCellX(), objectCellPosition.getCellY(), changedTileID);
 
 		} else if (state == false) {
 			// change the tile id on the current level to tileid2
-			lvl.set_Tile(transform.get_x(), transform.get_y(), originalTileID);
+			lvl.set_Tile(objectCellPosition.getCellX(), objectCellPosition.getCellY(), originalTileID);
 
 		}
 	}

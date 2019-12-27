@@ -45,4 +45,12 @@ public class Medpack implements Item {
 		return description;
 	}
 
+	private int health = 100;
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return health;
+	}
+
 }

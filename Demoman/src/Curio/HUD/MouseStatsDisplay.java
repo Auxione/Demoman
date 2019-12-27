@@ -9,8 +9,8 @@ import Curio.ItemMap.ItemMap;
 import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
+import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
-import Curio.Utilities.Math.Vector;
 import Default.Player;
 
 public class MouseStatsDisplay extends TextDisplay {
@@ -21,9 +21,9 @@ public class MouseStatsDisplay extends TextDisplay {
 	private TileMap tileMap;
 	private FluidMap fluidMap;
 
-	private Vector worldPosition;
-	private Vector screenPosition;
-	private Transform cellPosition;
+	private Transform worldPosition;
+	private Transform screenPosition;
+	private CellCoordinate cellPosition;
 
 	private boolean tileDisplayActive = false;
 
@@ -37,52 +37,49 @@ public class MouseStatsDisplay extends TextDisplay {
 		this.plantMap = plantMap;
 		this.fluidMap = fluidMap;
 
-		this.screenPosition = new Vector();
-		this.worldPosition = new Vector();
-		this.cellPosition = new Transform();
+		this.screenPosition = new Transform();
+		this.worldPosition = new Transform();
+		this.cellPosition = new CellCoordinate();
 	}
 
 	public void getCellData() {
 		String data = "";
-		if (worldPosition.dist(player.Position) < player.psize) {
+		if (worldPosition.dist(player.transform) < player.psize) {
 			data += " \n";
 			data += "Player: \n";
-			data += "HP: " + player.getCurrentHealth() + " \n";
-			data += "Food: " + player.getCurrentFood() + " \n";
+			data += "HP: " + player.getCurrentHealth() + "\n";
+			data += "Food: " + player.getCurrentFood() + "\n";
 		}
-		int itemID = itemMap.get(cellPosition.get_x(), cellPosition.get_y());
+		int itemID = itemMap.getItemID(cellPosition.getCellX(), cellPosition.getCellY());
 		if (itemID != 0) {
 			data += " \n";
-			data += "Item: \n";
-			data += "ID: " + itemID + " \n";
-			data += "Name: " + itemMap.getItemName(itemID) + " \n";
-			data += "Description: " + itemMap.getItemDesc(itemID) + " \n";
+			data += "Item ID: " + itemID + "\n";
+			data += "Name: " + itemMap.getItem(itemID).getName() + "\n";
+			data += "Description: " + itemMap.getItem(itemID).getDescription() + "\n";
 		}
-		int plantID = plantMap.get_Cell(cellPosition.get_x(), cellPosition.get_y());
+		int plantID = plantMap.get_Cell(cellPosition.getCellX(), cellPosition.getCellY());
 		if (plantID != 0) {
 			data += " \n";
-			data += "Plant: \n";
-			data += "ID: " + plantID + " \n";
-			data += "Name: " + plantMap.getName(plantID) + " \n";
-			data += "Description: " + plantMap.getDescription(plantID) + " \n";
-			data += "HP: " + plantMap.getHealth(cellPosition.get_x(), cellPosition.get_y()) + " \n";
+			data += "Plant ID:" + plantID + "\n";
+			data += "Name: " + plantMap.getName(plantID) + "\n";
+			data += "Description: " + plantMap.getDescription(plantID) + "\n";
+			data += "HP: " + plantMap.getHealth(cellPosition.getCellX(), cellPosition.getCellY()) + "\n";
 		}
-		int fluidCount = fluidMap.get(cellPosition.get_x(), cellPosition.get_y());
+		int fluidCount = fluidMap.get(cellPosition.getCellX(), cellPosition.getCellY());
 		if (fluidCount > 0) {
 			data += " \n";
 			data += "Fluid: \n";
-			data += "Count:" + fluidCount + " \n";
+			data += "Count:" + fluidCount + "\n";
 		}
 		if (tileDisplayActive == true) {
 			int tileID = tileMap.get_Tile(cellPosition);
 			data += " \n";
-			data += "Tile: \n";
-			data += "ID: " + tileID + " \n";
-			data += "Name: " + Tileset.getname(tileID) + " \n";
-			data += "canBreak: " + Tileset.canBreak(tileID) + " \n";
-			data += "canBurn: " + Tileset.canBurn(tileID) + " \n";
-			data += "canMove: " + Tileset.canMove(tileID) + " \n";
-			data += "HP: " + Tileset.getHP(tileID) + " \n";
+			data += "Tile ID: " + tileID + "\n";
+			data += "Name: " + Tileset.getname(tileID) + "\n";
+			data += "canBreak: " + Tileset.canBreak(tileID) + "\n";
+			data += "canBurn: " + Tileset.canBurn(tileID) + "\n";
+			data += "canMove: " + Tileset.canMove(tileID) + "\n";
+			data += "HP: " + Tileset.getHP(tileID) + "\n";
 		}
 		super.updateString(data);
 		super.setPosition(screenPosition);
@@ -96,10 +93,10 @@ public class MouseStatsDisplay extends TextDisplay {
 
 	@Override
 	public void inputEvent(Input input) {
-		screenPosition.x = input.getMouseX();
-		screenPosition.y = input.getMouseY();
+		screenPosition.position.x = input.getMouseX();
+		screenPosition.position.y = input.getMouseY();
 
-		worldPosition = viewPort.ScreenToWorldPos(tileMap, screenPosition.x, screenPosition.y);
+		worldPosition = viewPort.ScreenToWorldPos(tileMap, screenPosition.position.x, screenPosition.position.y);
 		cellPosition = tileMap.worldPostoMapPos(worldPosition);
 	}
 

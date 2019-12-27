@@ -3,18 +3,18 @@ package Curio.Physics;
 import java.util.ArrayList;
 
 import Curio.Tilemap.TileMap;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.CellCoordinate;
 
 public class CellularObject {
 	public static ArrayList<CellularObject> cellularObjectList = new ArrayList<CellularObject>();
 	TileMap level;
 
-	public Transform CellPosition;
+	public CellCoordinate CellPosition;
 
 	protected CellularObject(TileMap level, int positionX, int positionY) {
 		this.level = level;
 
-		CellPosition = new Transform(positionX, positionY);
+		CellPosition = new CellCoordinate(positionX, positionY);
 		cellularObjectList.add(this);
 	}
 
@@ -22,14 +22,14 @@ public class CellularObject {
 		switch (y) {
 		case -1:
 			if (TilemapCollision.canMoveNorth == true) {
-				CellPosition.set_y(CellPosition.get_y() - 1);
+				CellPosition.setCellY(CellPosition.getCellY() - 1);
 			}
 			break;
 		case 0:
 			break;
 		case +1:
 			if (TilemapCollision.canMoveSouth == true) {
-				CellPosition.set_y(CellPosition.get_y() + 1);
+				CellPosition.setCellY(CellPosition.getCellY() + 1);
 			}
 			break;
 		}
@@ -37,26 +37,26 @@ public class CellularObject {
 		switch (x) {
 		case -1:
 			if (TilemapCollision.canMoveWest == true) {
-				CellPosition.set_x(CellPosition.get_x() - 1);
+				CellPosition.setCellX(CellPosition.getCellX() - 1);
 			}
 			break;
 		case 0:
 			break;
 		case +1:
 			if (TilemapCollision.canMoveEast == true) {
-				CellPosition.set_x(CellPosition.get_x() + 1);
+				CellPosition.setCellX(CellPosition.getCellX() + 1);
 			}
 			break;
 		}
 	}
 
 	public void set(int x, int y) {
-		CellPosition.set_x(x);
-		CellPosition.set_y(y);
+		CellPosition.setCellX(x);
+		CellPosition.setCellY(y);
 	}
 
-	public void set(Transform tr) {
-		CellPosition.set_x(tr.get_x());
-		CellPosition.set_y(tr.get_y());
+	public void set( CellCoordinate tr) {
+		CellPosition.setCellX(tr.getCellX());
+		CellPosition.setCellY(tr.getCellY());
 	}
 }

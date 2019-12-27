@@ -8,6 +8,7 @@ import org.newdawn.slick.TrueTypeFont;
 import Curio.Functions;
 import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
+import Curio.Utilities.Math.Transform;
 
 public class InventoryDisplay extends HUD {
 	Inventory inventory;
@@ -17,16 +18,16 @@ public class InventoryDisplay extends HUD {
 
 	private TrueTypeFont trueTypeFont = super.getTTF();
 
-	public InventoryDisplay(float x, float y, Inventory _inventory, ItemMap itemMap) {
-		super(x, y, _inventory.getInventoryMap().length * itemIconSize, itemIconSize);
+	public InventoryDisplay(Transform transform, Inventory inventory, ItemMap itemMap) {
+		super(transform, inventory.getInventoryMap().length * itemIconSize, itemIconSize);
 		this.itemMap = itemMap;
-		inventory = _inventory;
+		this.inventory = inventory;
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.pushTransform();
-		g.translate(Position.x, Position.y);
+		g.translate(transform.position.x, transform.position.y);
 		g.setLineWidth(2);
 		// background
 		g.setColor(Color.lightGray);
@@ -67,7 +68,7 @@ public class InventoryDisplay extends HUD {
 	public void inputEvent(Input input) {
 		if (inRange(input.getMouseX(), input.getMouseY()) == true) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				inventory.itemIndex = (int) Functions.map(input.getMouseX(), Position.x, Position.x + width, 0,
+				inventory.itemIndex = (int) Functions.map(input.getMouseX(), transform.position.x, transform.position.x + width, 0,
 						inventory.inventorySize);
 			}
 		}

@@ -46,7 +46,7 @@ public class Player extends DynamicObject {
 
 	public void render(Graphics g) {
 		g.setColor(Color.black);
-		g.fillOval(super.Position.x - psize, super.Position.y - psize, psize * 2, psize * 2);
+		g.fillOval(super.transform.position.x - psize, super.transform.position.y - psize, psize * 2, psize * 2);
 	}
 
 	public int getCurrentHealth() {
@@ -70,7 +70,7 @@ public class Player extends DynamicObject {
 			this.currentHealth = 0;
 			Dead = true;
 			if (console != null) {
-				String cmd = "Player at: " + super.CellPosition.get_x() + "-" + super.CellPosition.get_y()
+				String cmd = "Player at: " + super.CellPosition.getCellX() + "-" + super.CellPosition.getCellY()
 						+ " is dead.";
 				console.Add(0, cmd);
 			}
@@ -83,7 +83,6 @@ public class Player extends DynamicObject {
 		} else if (currentFood > maxFood && Dead == false) {
 			this.currentFood = maxFood;
 		}
-
 	}
 
 	public void addFood(int val) {
@@ -98,9 +97,13 @@ public class Player extends DynamicObject {
 		}
 	}
 
-	public void applyDamage(int val) {
-		if (currentHealth >= 0 && currentHealth <= maxHealth) {
-			this.currentHealth -= val;
+	public void applyDamage(int x, int y, int val) {
+		if (CellPosition.getCellX() == x) {
+			if (CellPosition.getCellY() == y) {
+				if (currentHealth >= 0 && currentHealth <= maxHealth) {
+					this.currentHealth -= val;
+				}
+			}
 		}
 	}
 

@@ -34,7 +34,7 @@ public class TextDisplay extends HUD {
 	@Override
 	public void render(Graphics g) {
 		g.pushTransform();
-		g.translate(Position.x, Position.y);
+		g.translate(super.transform.position.x, super.transform.position.y);
 
 		g.setLineWidth(1);
 		// background color
