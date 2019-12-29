@@ -20,7 +20,7 @@ public class SinglePlayerSetup {
 	public SinglePlayerSetup(Console console) {
 		this.mapSizeXInputBox = new Inputbox(20, 20, 200, 50, "Map Size x: ", 1);
 		this.mapSizeYInputBox = new Inputbox(20, 80, 200, 50, "Map Size y: ", 1);
-		
+
 		this.startGameButton = new Button(20, 140, 200, 50, "Start");
 		this.backButton = new Button(20, 200, 200, 50, "Back");
 
@@ -31,16 +31,20 @@ public class SinglePlayerSetup {
 	public void update(Input input) {
 		startGameButton.inputEvent(input);
 		backButton.inputEvent(input);
-		
+
 		this.mapSizeXInputBox.inputEvent(input);
 		this.mapSizeYInputBox.inputEvent(input);
 
 		if (mapSizeXInputBox.Completed == true) {
-			mapSizeXVal = Integer.parseInt(mapSizeXInputBox.getInput());
+			if (mapSizeXInputBox.getInput() != "") {
+				mapSizeXVal = Integer.parseInt(mapSizeXInputBox.getInput());
+			}
 		}
 
-		if (mapSizeYInputBox.Completed == true) {
-			mapSizeYVal = Integer.parseInt(mapSizeYInputBox.getInput());
+		else if (mapSizeYInputBox.Completed == true) {
+			if (mapSizeYInputBox.getInput() != "") {
+				mapSizeYVal = Integer.parseInt(mapSizeYInputBox.getInput());
+			}
 		}
 
 		if (startGameButton.pressed == true) {
@@ -48,7 +52,7 @@ public class SinglePlayerSetup {
 			Main.GameState = 11;
 		}
 
-		if (backButton.pressed == true) {
+		else if (backButton.pressed == true) {
 			Main.GameState = 0;
 		}
 

@@ -15,6 +15,7 @@ public class Inputbox extends HUD implements HUDInterface {
 
 	private int mode;
 	private boolean ClearWhenCompleted;
+	private boolean CompleteWhenFocusLoss;
 
 	public Inputbox(float x, float y, float width, float height, String text, int mode) {
 		super(x, y, width, height);
@@ -57,7 +58,9 @@ public class Inputbox extends HUD implements HUDInterface {
 		} else if (this.inRange(input.getMouseX(), input.getMouseY()) == false) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) == true) {
 				this.active = false;
-				this.Completed = true;
+				if (CompleteWhenFocusLoss == true) {
+					this.Completed = true;
+				}
 			}
 		}
 	}
@@ -75,8 +78,12 @@ public class Inputbox extends HUD implements HUDInterface {
 		this.Completed = false;
 	}
 
-	void setClearWhenCompleted(boolean b) {
+	public void setClearWhenCompleted(boolean b) {
 		ClearWhenCompleted = b;
+	}
+
+	public void setCompleteWhenFocusLoss(boolean b) {
+		CompleteWhenFocusLoss = b;
 	}
 
 	@Override
@@ -92,7 +99,7 @@ public class Inputbox extends HUD implements HUDInterface {
 			}
 
 			else if (key == 14) {
-				//backspace keycode
+				// backspace keycode
 				if (outputText.length() > 0) {
 					this.outputText = outputText.substring(0, outputText.length() - 1);
 				}

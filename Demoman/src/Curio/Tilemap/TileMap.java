@@ -14,14 +14,13 @@ import Default.Constants;
 public class TileMap {
 	// create tile array that holds informations
 	// coords x, coord y, and tile value
-	private int[][][] tileMap;
+	private int[][][] tileMap = null;
 
 	private int Cellsize;
 	Console console;
 
 	public TileMap(int sx, int sy, int cellsize, Console console) {
 		this.tileMap = new int[sx][sy][2];
-
 		this.Cellsize = cellsize;
 		this.console = console;
 		this.console.Add(0, "Map Initialized with parameters: x= " + sx + " y= " + sy + " CellSize= " + cellsize);
@@ -29,14 +28,13 @@ public class TileMap {
 
 	public TileMap(int sx, int sy, int cellsize) {
 		this.tileMap = new int[sx][sy][2];
-
 		this.Cellsize = cellsize;
-		this.console = null;
 	}
 
 	// create new map or load from the server.
 	// x dimensions, y dim.
 	public void create_BlankLevel() {
+
 		createBlankTileMap();
 		generateTileHPs();
 		if (console != null) {
@@ -104,13 +102,12 @@ public class TileMap {
 	}
 
 	public void render(Graphics g, Viewport vp) {
-		// make background white
-		// put dots in every corner of the cells
 		for (int x = 0; x < tileMap.length; x++) {
 			for (int y = 0; y < tileMap[0].length; y++) {
 				g.drawImage(Tileset.getTexture(tileMap[x][y][0]), x * Cellsize, y * Cellsize);
 			}
 		}
+
 	}
 
 	// -----------------------------------functions-----------------------------------

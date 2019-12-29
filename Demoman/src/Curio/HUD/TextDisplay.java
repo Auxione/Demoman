@@ -57,7 +57,7 @@ public class TextDisplay extends HUD implements HUDInterface{
 			displayStringArray.add(split[i]);
 		}
 	}
-
+	
 	private String[] splitText(String text) {
 		String[] texts = text.split("\\r?\\n");
 		for (String s : texts) {

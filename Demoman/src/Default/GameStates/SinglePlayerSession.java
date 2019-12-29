@@ -52,11 +52,12 @@ public class SinglePlayerSession {
 
 	private MouseStatsDisplay mouseStatsDisplay;
 
-	public SinglePlayerSession(int mapSizeX,int mapSizeY,Console console) {
+	public SinglePlayerSession(int mapSizeX, int mapSizeY, Console console) {
 		console.Add(0, "Creating Singleplayer Game");
 
 		tileMap = new TileMap(mapSizeX, mapSizeY, Constants.CellSize, console);
 		tileMap.create_BlankLevel();
+		
 		itemMap = new ItemMap(tileMap, 15);
 		logicMap = new LogicMap(tileMap, itemMap);
 		plantMap = new PlantMap(tileMap, itemMap);
@@ -65,7 +66,7 @@ public class SinglePlayerSession {
 
 		player = new Player(tileMap);
 		player.spawn(250, 250);
-		
+
 		controller = new Controller(1, player);
 		collision = new TilemapCollision(tileMap, player);
 		playerInventory = new Inventory(itemMap, player, 4, 5);
@@ -144,7 +145,6 @@ public class SinglePlayerSession {
 	}
 
 	public void update(int delta) {
-
 		controller.Pressed();
 		controller.update();
 		objectiveSystem.update(player, tileMap, itemMap, plantMap);

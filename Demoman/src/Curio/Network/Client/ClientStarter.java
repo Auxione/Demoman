@@ -1,6 +1,8 @@
 package Curio.Network.Client;
 
 import com.jmr.wrapper.client.Client;
+import com.jmr.wrapper.common.Connection;
+
 import Curio.Console;
 
 public class ClientStarter {
@@ -16,10 +18,16 @@ public class ClientStarter {
 
 		if (client.isConnected() == true) {
 			this.console.Add(0, "Connected.");
+		} else if (client.isConnected() == false) {
+			this.console.Add(0, "Failed to connect.");
 		}
 	}
 
 	public boolean isConnected() {
 		return client.isConnected();
+	}
+
+	public Connection getConnection() {
+		return client.getServerConnection();
 	}
 }

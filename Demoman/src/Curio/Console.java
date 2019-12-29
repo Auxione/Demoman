@@ -23,6 +23,8 @@ public class Console {
 			type = "INFO:";
 		} else if (typ3 == 1) {
 			type = "WARNING:";
+		} else if (typ3 == 2) {
+			type = "MESSAGE:";
 		}
 		String command = timestamp + " " + type + " " + input;
 		commandHistory.add(command);

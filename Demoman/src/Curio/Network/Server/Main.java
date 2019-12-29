@@ -3,9 +3,12 @@ package Curio.Network.Server;
 import java.util.HashMap;
 
 import Curio.Console;
+import Curio.Tileset;
 import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
 import Curio.Network.Credentials;
+import Curio.Network.GameRulesPackage;
+import Curio.Network.MapPackage;
 import Curio.Physics.TilemapCollision;
 import Curio.Tilemap.TileMap;
 import Default.Constants;
@@ -20,18 +23,28 @@ public class Main {
 	public static HashMap<Credentials, Inventory> playerInventoryList = new HashMap<Credentials, Inventory>();
 	public static HashMap<Credentials, TilemapCollision> collisionList = new HashMap<Credentials, TilemapCollision>();
 
-	private static TileMap tileMap;
-	private static ItemMap itemMap;
+	public static TileMap tileMap;
+	public static int tileMapX = 30, tileMapY = 30;
+	public static ItemMap itemMap;
+	public static GameRulesPackage gameRules;
+	public static MapPackage mapPackage;
 
 	public static void main(String[] args) {
 		console = new Console();
+		Tileset.InitTileset();
 		console.Add(0, "Started");
 
+		tileMap = new TileMap(tileMapX, tileMapY, Constants.CellSize, console);
+		tileMap.create_BlankLevel();
+		itemMap = new ItemMap(tileMap, 5, console);
+		
+
+		mapPackage = new MapPackage(tileMap,itemMap);
+		gameRules = new GameRulesPackage(tileMapX, tileMapY);
+		console.Add(0, "Setup packages created");
+		
 		serverListener = new ServerListener(console);
 		server = new ServerStarter(200, serverListener);
-
-		tileMap = new TileMap(30, 30, Constants.CellSize, console);
-		itemMap = new ItemMap(tileMap, 5, console);
 	}
 
 	static void addPlayer(Credentials credentials) {
@@ -45,8 +58,5 @@ public class Main {
 		playerList.remove(credentials);
 		playerInventoryList.remove(credentials);
 		collisionList.remove(credentials);
-
-		String uname = credentials.username;
-		console.Add(0, uname + " disconnected.");
 	}
 }

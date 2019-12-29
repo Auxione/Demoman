@@ -11,6 +11,7 @@ import Curio.Console;
 import Curio.Tileset;
 import Curio.HUD.ConsoleDisplay;
 import Default.GameStates.MainMenu;
+import Default.GameStates.MultiplayerSession;
 import Default.GameStates.MultiplayerSetup;
 import Default.GameStates.SinglePlayerSession;
 import Default.GameStates.SinglePlayerSetup;
@@ -30,6 +31,7 @@ public class Main extends BasicGame {
 	public static SinglePlayerSession singlePlayerSession;
 
 	public static MultiplayerSetup multiplayerSetup;
+	public static MultiplayerSession multiplayerSession;
 
 	public static Console console;
 	public static ConsoleDisplay consoleDisplay;
@@ -69,6 +71,9 @@ public class Main extends BasicGame {
 		case 20:
 			multiplayerSetup.update(input);
 			break;
+		case 21:
+			multiplayerSession.update(input);
+			break;
 		}
 	}
 
@@ -88,6 +93,9 @@ public class Main extends BasicGame {
 			break;
 		case 20:
 			multiplayerSetup.render(g);
+			break;
+		case 21:
+			multiplayerSession.render(g);
 			break;
 		}
 
@@ -110,6 +118,9 @@ public class Main extends BasicGame {
 		case 20:
 			multiplayerSetup.KeyPressed(key, c);
 			break;
+		case 21:
+			multiplayerSession.KeyPressed(key, c);
+			break;
 		}
 	}
 
@@ -128,6 +139,9 @@ public class Main extends BasicGame {
 			break;
 		case 20:
 			multiplayerSetup.KeyReleased(key, c);
+			break;
+		case 21:
+			multiplayerSession.KeyReleased(key, c);
 			break;
 		}
 	}
