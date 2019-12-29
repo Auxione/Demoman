@@ -22,12 +22,12 @@ public class MainMenu {
 		mpButton.inputEvent(input);
 
 		if (spButton.pressed) {
-			Main.singlePlayerMenu = new SinglePlayerMenu(console);
+			Main.singlePlayerSetup = new SinglePlayerSetup(console);
 			Main.GameState = 10;
 		}
 
 		else if (mpButton.pressed) {
-			Main.multiplayer = new Multiplayer(console);
+			Main.multiplayerSetup = new MultiplayerSetup(console);
 			Main.GameState = 20;
 		}
 

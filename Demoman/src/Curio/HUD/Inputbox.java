@@ -14,6 +14,7 @@ public class Inputbox extends HUD implements HUDInterface {
 	private TrueTypeFont trueTypeFont = super.getTTF();
 
 	private int mode;
+	private boolean ClearWhenCompleted;
 
 	public Inputbox(float x, float y, float width, float height, String text, int mode) {
 		super(x, y, width, height);
@@ -48,16 +49,16 @@ public class Inputbox extends HUD implements HUDInterface {
 		g.popTransform();
 	}
 
-	@Override
 	public void inputEvent(Input input) {
-		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {
-			if (inRange(input.getMouseX(), input.getMouseY()) == true) {
+		if (this.inRange(input.getMouseX(), input.getMouseY()) == true) {
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) == true) {
 				this.active = true;
 			}
-			else if (inRange(input.getMouseX(), input.getMouseY()) == false) {
+		} else if (this.inRange(input.getMouseX(), input.getMouseY()) == false) {
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) == true) {
 				this.active = false;
+				this.Completed = true;
 			}
-
 		}
 	}
 
@@ -74,6 +75,10 @@ public class Inputbox extends HUD implements HUDInterface {
 		this.Completed = false;
 	}
 
+	void setClearWhenCompleted(boolean b) {
+		ClearWhenCompleted = b;
+	}
+
 	@Override
 	public void keyPressed(int key, char chr) {
 		if (active == true) {
@@ -81,9 +86,13 @@ public class Inputbox extends HUD implements HUDInterface {
 				this.outputText = outputText.trim();
 				this.Completed = true;
 				this.active = false;
+				if (ClearWhenCompleted == true) {
+					outputText = "";
+				}
 			}
 
-			else if (key == Input.KEY_DELETE) {
+			else if (key == 14) {
+				//backspace keycode
 				if (outputText.length() > 0) {
 					this.outputText = outputText.substring(0, outputText.length() - 1);
 				}

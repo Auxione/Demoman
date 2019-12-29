@@ -8,18 +8,19 @@ import Curio.HUD.Button;
 import Curio.HUD.Inputbox;
 import Default.Main;
 
-public class SinglePlayerMenu {
+public class SinglePlayerSetup {
 	private Inputbox mapSizeXInputBox, mapSizeYInputBox;
 	private Button startGameButton, backButton;
 
 	private Console console;
 
-	private int mapSizeXVal = 10;
-	private int mapSizeYVal = 10;
+	private int mapSizeXVal = 20;
+	private int mapSizeYVal = 20;
 
-	public SinglePlayerMenu(Console console) {
+	public SinglePlayerSetup(Console console) {
 		this.mapSizeXInputBox = new Inputbox(20, 20, 200, 50, "Map Size x: ", 1);
 		this.mapSizeYInputBox = new Inputbox(20, 80, 200, 50, "Map Size y: ", 1);
+		
 		this.startGameButton = new Button(20, 140, 200, 50, "Start");
 		this.backButton = new Button(20, 200, 200, 50, "Back");
 
@@ -30,8 +31,9 @@ public class SinglePlayerMenu {
 	public void update(Input input) {
 		startGameButton.inputEvent(input);
 		backButton.inputEvent(input);
-		mapSizeXInputBox.inputEvent(input);
-		mapSizeYInputBox.inputEvent(input);
+		
+		this.mapSizeXInputBox.inputEvent(input);
+		this.mapSizeYInputBox.inputEvent(input);
 
 		if (mapSizeXInputBox.Completed == true) {
 			mapSizeXVal = Integer.parseInt(mapSizeXInputBox.getInput());

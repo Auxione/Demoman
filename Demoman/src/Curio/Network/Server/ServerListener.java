@@ -34,8 +34,12 @@ public class ServerListener implements SocketListener {
 	@Override
 	public void received(Connection connection, Object object) {
 		if (object instanceof Credentials) {
-			credentialsList.put(connection, (Credentials) object);
-			Main.addPlayer((Credentials) object);
+			Credentials credentials = (Credentials) object;
+			
+			credentialsList.put(connection, credentials);
+			Main.addPlayer(credentials);
+			
+			DisplayUsers();
 		}
 	}
 

@@ -18,4 +18,8 @@ public class ClientStarter {
 			this.console.Add(0, "Connected.");
 		}
 	}
+
+	public boolean isConnected() {
+		return client.isConnected();
+	}
 }

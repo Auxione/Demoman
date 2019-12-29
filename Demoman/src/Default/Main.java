@@ -6,15 +6,14 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 
 import Curio.Console;
 import Curio.Tileset;
 import Curio.HUD.ConsoleDisplay;
 import Default.GameStates.MainMenu;
-import Default.GameStates.Multiplayer;
-import Default.GameStates.SinglePlayerMenu;
+import Default.GameStates.MultiplayerSetup;
 import Default.GameStates.SinglePlayerSession;
+import Default.GameStates.SinglePlayerSetup;
 
 public class Main extends BasicGame {
 	public static long millis_start_time = 0;
@@ -26,11 +25,11 @@ public class Main extends BasicGame {
 	public static int GameState;
 
 	public static MainMenu mainmenu;
-	public static SinglePlayerMenu singlePlayerMenu;
 
+	public static SinglePlayerSetup singlePlayerSetup;
 	public static SinglePlayerSession singlePlayerSession;
 
-	public static Multiplayer multiplayer;
+	public static MultiplayerSetup multiplayerSetup;
 
 	public static Console console;
 	public static ConsoleDisplay consoleDisplay;
@@ -58,9 +57,9 @@ public class Main extends BasicGame {
 		case 0:
 			mainmenu.update(input);
 			break;
-		// singleplayer menu
+		// singleplayer setup
 		case 10:
-			singlePlayerMenu.update(input);
+			singlePlayerSetup.update(input);
 			break;
 		// singleplayer session
 		case 11:
@@ -68,6 +67,7 @@ public class Main extends BasicGame {
 			break;
 		// multiplayer
 		case 20:
+			multiplayerSetup.update(input);
 			break;
 		}
 	}
@@ -78,13 +78,16 @@ public class Main extends BasicGame {
 		case 0:
 			mainmenu.render(g);
 			break;
-		// singleplayer menu
+		// singleplayer setup
 		case 10:
-			singlePlayerMenu.render(g);
+			singlePlayerSetup.render(g);
 			break;
 		// singleplayer ingame
 		case 11:
 			singlePlayerSession.render(g);
+			break;
+		case 20:
+			multiplayerSetup.render(g);
 			break;
 		}
 
@@ -96,13 +99,16 @@ public class Main extends BasicGame {
 		// main menu
 		case 0:
 			break;
-		// singleplayer menu
+		// singleplayer setup
 		case 10:
-			singlePlayerMenu.KeyPressed(key, c);
+			singlePlayerSetup.KeyPressed(key, c);
 			break;
 		// singleplayer ingame
 		case 11:
 			singlePlayerSession.KeyPressed(key, c);
+			break;
+		case 20:
+			multiplayerSetup.KeyPressed(key, c);
 			break;
 		}
 	}
@@ -112,13 +118,16 @@ public class Main extends BasicGame {
 		// main menu
 		case 0:
 			break;
-		// singleplayer menu
+		// singleplayer setup
 		case 10:
-			singlePlayerMenu.KeyReleased(key, c);
+			singlePlayerSetup.KeyReleased(key, c);
 			break;
 		// singleplayer ingame
 		case 11:
 			singlePlayerSession.KeyReleased(key, c);
+			break;
+		case 20:
+			multiplayerSetup.KeyReleased(key, c);
 			break;
 		}
 	}

@@ -7,17 +7,18 @@ import Curio.Console;
 import Curio.Network.Credentials;
 
 public class ClientListener implements SocketListener {
-	private Credentials crendentials;
+	private Credentials selfCredentials;
 	private Console console;
 
-	public ClientListener(String clientName, Console console) {
-		this.crendentials = new Credentials(clientName);
+	public ClientListener(Credentials selfCredentials, Console console) {
+		this.selfCredentials = selfCredentials;
 		this.console = console;
 	}
 
 	@Override
 	public void connected(Connection connection) {
-		connection.sendUdp(crendentials);
+		connection.sendTcp(selfCredentials);
+		
 	}
 
 	@Override
