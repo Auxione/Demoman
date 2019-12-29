@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
-public class TextDisplay extends HUD {
+public class TextDisplay extends HUD implements HUDInterface{
 	private Color backgroundColor = Color.lightGray;
 	private ArrayList<String> displayStringArray;
 	private TrueTypeFont trueTypeFont = super.getTTF();
@@ -82,5 +82,17 @@ public class TextDisplay extends HUD {
 	public void loopEnd() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void keyPressed(int key, char chr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int key, char chr) {
+		// TODO Auto-generated method stub
+		
 	}
 }

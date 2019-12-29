@@ -6,7 +6,7 @@ import org.newdawn.slick.Input;
 
 import Curio.Utilities.Math.Transform;
 
-public class BarDisplay extends HUD {
+public class BarDisplay extends HUD implements HUDInterface{
 	private Color barColor;
 	private Color backgroundColor = Color.lightGray;
 	public float ratio = 1;
@@ -54,6 +54,18 @@ public class BarDisplay extends HUD {
 
 	@Override
 	public void inputEvent(Input input) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(int key, char chr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int key, char chr) {
 		// TODO Auto-generated method stub
 		
 	}

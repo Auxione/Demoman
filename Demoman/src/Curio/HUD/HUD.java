@@ -2,18 +2,16 @@ package Curio.HUD;
 
 import java.awt.Font;
 
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
 import Curio.Utilities.Math.Transform;
 
-public abstract class HUD {
-	public Transform transform;
-	public float width;
-	public float height;
+public class HUD {
+	protected Transform transform;
+	protected float width;
+	protected float height;
 
-	int textSize = 16;
+	protected int textSize = 16;
 	private Font font = new Font("Arial", Font.BOLD, textSize);
 	private TrueTypeFont ttf = new TrueTypeFont(font, true);
 
@@ -55,20 +53,10 @@ public abstract class HUD {
 	}
 
 	protected boolean inRange(float x, float y) {
-		if (x > transform.position.x && x < transform.position.x + width && y > transform.position.y
-				&& y < transform.position.y + height) {
+		if (x > this.transform.position.x && x < this.transform.position.x + width && y > this.transform.position.y
+				&& y < this.transform.position.y + height) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
-
-	public abstract void render(Graphics g);
-
-	public abstract void inputEvent(Input input);
-
-	public abstract void loopStart();
-
-	public abstract void loopEnd();
-
 }

@@ -1,45 +1,23 @@
 package Curio.HUD;
 
-import java.util.ArrayList;
-import java.awt.Font;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
-public class ConsoleDisplay extends HUD {
+import Curio.Console;
+
+public class ConsoleDisplay extends HUD implements HUDInterface{
 	int textSize = 16;
 	boolean active = false;
 	private float barSize = 4.0f;
-
-	ArrayList<String> commandHistory = new ArrayList<String>();
-	ArrayList<Integer> commandType = new ArrayList<Integer>();
-
-	Calendar cal = Calendar.getInstance();
-	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-
 	private TrueTypeFont trueTypeFont = super.getTTF();
 
-	public ConsoleDisplay(float x, float y, float w, float h) {
-		super(x, y, w, h);
-	}
+	private Console console;
 
-	public void Add(int typ3, String input) {
-		String timestamp = sdf.format(cal.getTime());
-		String type = "";
-		if (typ3 == 0) {
-			type = "INFO:";
-		} else if (typ3 == 1) {
-			type = "WARNING:";
-			active = true;
-		}
-		String command = timestamp + " " + type + " " + input;
-		commandHistory.add(command);
-		commandType.add(typ3);
-		System.out.println(command);
+	public ConsoleDisplay(float x, float y, float w, float h, Console console) {
+		super(x, y, w, h);
+		this.console = console;
 	}
 
 	public void render(Graphics g) {
@@ -51,26 +29,27 @@ public class ConsoleDisplay extends HUD {
 			g.fillRect(super.transform.position.x, super.transform.position.y, super.width, super.height);
 			// texts
 			g.setWorldClip(super.transform.position.x, super.transform.position.y, super.width, super.height);
-			for (int i = commandHistory.size() - 1; i >= 0; i--) {
+			for (int i = console.commandHistory.size() - 1; i >= 0; i--) {
 				Color c = null;
-				if (commandType.get(i) == 0) {
+				if (console.commandType.get(i) == 0) {
 					c = (Color.black);
-				} else if (commandType.get(i) == 1) {
+				} else if (console.commandType.get(i) == 1) {
 					c = (Color.red);
 				}
 
-				int stringLineWidth = trueTypeFont.getWidth(commandHistory.get(i));
-				int stringLineHeight = trueTypeFont.getHeight(commandHistory.get(i));
-				
-				float Stringx = super.transform.position.x;
-				float Stringy = super.transform.position.y + super.height + i * textSize - commandHistory.size() * (textSize + 1)
-						- barSize;
+				int stringLineWidth = trueTypeFont.getWidth(console.commandHistory.get(i));
+				int stringLineHeight = trueTypeFont.getHeight(console.commandHistory.get(i));
 
-				trueTypeFont.drawString(Stringx, Stringy, commandHistory.get(i), c);
+				float Stringx = super.transform.position.x;
+				float Stringy = super.transform.position.y + super.height + i * textSize
+						- console.commandHistory.size() * (textSize + 1) - barSize;
+
+				trueTypeFont.drawString(Stringx, Stringy, console.commandHistory.get(i), c);
 			}
 			// bottombar
 			g.setColor(Color.black);
-			g.fillRect(super.transform.position.x, super.transform.position.y + super.height - barSize, super.width, barSize);
+			g.fillRect(super.transform.position.x, super.transform.position.y + super.height - barSize, super.width,
+					barSize);
 
 			g.clearWorldClip();
 			g.popTransform();
@@ -93,6 +72,18 @@ public class ConsoleDisplay extends HUD {
 
 	@Override
 	public void loopEnd() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyPressed(int key, char chr) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(int key, char chr) {
 		// TODO Auto-generated method stub
 
 	}

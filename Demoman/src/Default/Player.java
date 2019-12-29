@@ -3,9 +3,11 @@ package Default;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import Curio.HUD.ConsoleDisplay;
+import Curio.Console;
+import Curio.Network.PlayerPositionPackage;
 import Curio.Physics.DynamicObject;
 import Curio.Tilemap.TileMap;
+import Curio.Utilities.Math.Transform;
 
 public class Player extends DynamicObject {
 
@@ -21,20 +23,19 @@ public class Player extends DynamicObject {
 
 	public int psize = 10;
 
-	public boolean Dead;
-	private ConsoleDisplay console;
+	public boolean alive;
+	private Console console;
 
-	public Player(TileMap level, int positionX, int positionY, ConsoleDisplay console) {
-		super(level, positionX, positionY);
+	public Player(TileMap level, Console console) {
+		super(level);
 		super.setSize(psize);
 		this.console = console;
 		// TODO Auto-generated constructor stub
-		String cmd = "Player: initialized and spawned to: " + positionX + "-" + positionY + ".";
-		console.Add(0, cmd);
+		console.Add(0, "Player: initialized");
 	}
 
-	public Player(TileMap level, int positionX, int positionY) {
-		super(level, positionX, positionY);
+	public Player(TileMap level) {
+		super(level);
 		super.setSize(psize);
 		this.console = null;
 		// TODO Auto-generated constructor stub
@@ -49,40 +50,29 @@ public class Player extends DynamicObject {
 		g.fillOval(super.transform.position.x - psize, super.transform.position.y - psize, psize * 2, psize * 2);
 	}
 
-	public int getCurrentHealth() {
-		return currentHealth;
-	}
-
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
-	public int getCurrentFood() {
-		return currentFood;
-	}
-
-	public int getMaxFood() {
-		return maxFood;
-	}
-
 	private void statsUpdate() {
-		if (currentHealth < 0 && Dead == false) {
-			this.currentHealth = 0;
-			Dead = true;
-			if (console != null) {
-				String cmd = "Player at: " + super.CellPosition.getCellX() + "-" + super.CellPosition.getCellY()
-						+ " is dead.";
-				console.Add(0, cmd);
+		if (alive == true) {
+			if (currentHealth < 0) {
+				this.currentHealth = 0;
+				alive = false;
+				if (console != null) {
+					console.Add(0, "Player at: " + super.CellPosition.getCellX() + "-" + super.CellPosition.getCellY()
+							+ " is dead.");
+				}
+			} else if (currentHealth >= maxHealth) {
+				this.currentHealth = maxHealth;
 			}
-		} else if (currentHealth > maxHealth && Dead == false) {
-			this.currentHealth = maxHealth;
-		}
 
-		if (currentFood < 0 && Dead == false) {
-			this.currentFood = 0;
-		} else if (currentFood > maxFood && Dead == false) {
-			this.currentFood = maxFood;
+			if (currentFood < 0) {
+				this.currentFood = 0;
+			} else if (currentFood >= maxFood) {
+				this.currentFood = maxFood;
+			}
 		}
+	}
+
+	public void spawn(float x, float y) {
+		super.setPosition(x, y);
 	}
 
 	public void addFood(int val) {
@@ -110,4 +100,26 @@ public class Player extends DynamicObject {
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
 	}
+
+	public void ServerPackage(PlayerPositionPackage pack) {
+		Transform position = pack.position;
+		super.setPosition(position);
+	}
+
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public int getCurrentFood() {
+		return currentFood;
+	}
+
+	public int getMaxFood() {
+		return maxFood;
+	}
+
 }

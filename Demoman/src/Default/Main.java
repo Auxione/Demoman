@@ -6,12 +6,15 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
 
+import Curio.Console;
 import Curio.Tileset;
 import Curio.HUD.ConsoleDisplay;
 import Default.GameStates.MainMenu;
 import Default.GameStates.Multiplayer;
-import Default.GameStates.SinglePlayer;
+import Default.GameStates.SinglePlayerMenu;
+import Default.GameStates.SinglePlayerSession;
 
 public class Main extends BasicGame {
 	public static long millis_start_time = 0;
@@ -20,46 +23,53 @@ public class Main extends BasicGame {
 	public static Input input;
 	static AppGameContainer app;
 
-	public static int GameState = 0;
+	public static int GameState;
 
-	MainMenu mainmenu;
-	SinglePlayer singleplayer;
-	Multiplayer multiplayer;
+	public static MainMenu mainmenu;
+	public static SinglePlayerMenu singlePlayerMenu;
 
-	public static ConsoleDisplay console;
+	public static SinglePlayerSession singlePlayerSession;
+
+	public static Multiplayer multiplayer;
+
+	public static Console console;
+	public static ConsoleDisplay consoleDisplay;
 
 	public Main(String title) {
 		super(title);
 	}
 
 	public void init(GameContainer container) throws SlickException {
-		console = new ConsoleDisplay(10, 10, 600, 400);
+		console = new Console();
+		consoleDisplay = new ConsoleDisplay(20, 20, 600, 400, console);
+
 		Constants.loadData();
 		Tileset.InitTileset();
 
-		mainmenu = new MainMenu();
-		singleplayer = new SinglePlayer(console);
-		multiplayer = new Multiplayer();
+		mainmenu = new MainMenu(console);
+		GameState = 0;
 	}
 
 	public void update(GameContainer container, int delta) throws SlickException {
 		input = container.getInput();
-		console.inputEvent(input);
-
+		consoleDisplay.inputEvent(input);
 		switch (GameState) {
 		// main menu
 		case 0:
 			mainmenu.update(input);
 			break;
-		// singleplayer
-		case 1:
-			singleplayer.update(delta);
+		// singleplayer menu
+		case 10:
+			singlePlayerMenu.update(input);
+			break;
+		// singleplayer session
+		case 11:
+			singlePlayerSession.update(delta);
 			break;
 		// multiplayer
-		case 2:
+		case 20:
 			break;
 		}
-		// manager
 	}
 
 	public void render(GameContainer container, Graphics g) throws SlickException {
@@ -68,12 +78,17 @@ public class Main extends BasicGame {
 		case 0:
 			mainmenu.render(g);
 			break;
-		case 1:
-			singleplayer.render(g);
+		// singleplayer menu
+		case 10:
+			singlePlayerMenu.render(g);
+			break;
+		// singleplayer ingame
+		case 11:
+			singlePlayerSession.render(g);
 			break;
 		}
 
-		console.render(g);
+		consoleDisplay.render(g);
 	}
 
 	public void keyPressed(int key, char c) {
@@ -81,11 +96,15 @@ public class Main extends BasicGame {
 		// main menu
 		case 0:
 			break;
-		case 1:
-			singleplayer.KeyPressed(key, c);
+		// singleplayer menu
+		case 10:
+			singlePlayerMenu.KeyPressed(key, c);
+			break;
+		// singleplayer ingame
+		case 11:
+			singlePlayerSession.KeyPressed(key, c);
 			break;
 		}
-		// manager.KeyPressed(key, c);
 	}
 
 	public void keyReleased(int key, char c) {
@@ -93,11 +112,15 @@ public class Main extends BasicGame {
 		// main menu
 		case 0:
 			break;
-		case 1:
-			singleplayer.KeyReleased(key, c);
+		// singleplayer menu
+		case 10:
+			singlePlayerMenu.KeyReleased(key, c);
+			break;
+		// singleplayer ingame
+		case 11:
+			singlePlayerSession.KeyReleased(key, c);
 			break;
 		}
-		// manager.KeyReleased(key, c);
 	}
 
 	public static void main(String[] args) throws SlickException {

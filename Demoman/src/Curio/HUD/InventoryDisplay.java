@@ -10,7 +10,7 @@ import Curio.ItemMap.Inventory;
 import Curio.ItemMap.ItemMap;
 import Curio.Utilities.Math.Transform;
 
-public class InventoryDisplay extends HUD {
+public class InventoryDisplay extends HUD implements HUDInterface{
 	Inventory inventory;
 	private ItemMap itemMap;
 	static int itemIconSize = 32;
@@ -84,6 +84,18 @@ public class InventoryDisplay extends HUD {
 	public void loopEnd() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void keyPressed(int key, char chr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int key, char chr) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

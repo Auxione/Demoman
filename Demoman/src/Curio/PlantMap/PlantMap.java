@@ -50,7 +50,11 @@ public class PlantMap {
 		this.plantList.put(1, new BerryBush());
 		this.plantList.put(2, new SausagePlant());
 	}
-
+	
+	public void updateMap(int[][][] map) {
+		plantMap = map;
+	}
+	
 	public void put(int x, int y, int id) {
 		if (plantMap[x][y][0] == 0 && Tileset.canPlant(tilemap.get_Tile(x, y))) {
 			plantMap[x][y][0] = id;

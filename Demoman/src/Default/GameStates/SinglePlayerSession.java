@@ -3,9 +3,9 @@ package Default.GameStates;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import Curio.Console;
 import Curio.Viewport;
 import Curio.HUD.BarDisplay;
-import Curio.HUD.ConsoleDisplay;
 import Curio.HUD.InventoryDisplay;
 import Curio.HUD.MouseStatsDisplay;
 import Curio.HUD.ObjectiveDisplay;
@@ -18,20 +18,17 @@ import Curio.ObjectiveSystem.Objectives.MoveToTile;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
 import Curio.PlantMap.PlantMap;
-import Curio.Tilemap.Area;
 import Curio.Tilemap.FireManager;
 import Curio.Tilemap.FluidMap;
 import Curio.Tilemap.TileMap;
 import Curio.Tilemap.Bomb.BombManager;
-import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
 import Default.Constants;
 import Default.Controller;
 import Default.Main;
 import Default.Player;
 
-public class SinglePlayer {
-
+public class SinglePlayerSession {
 	private Controller controller;
 	private Player player;
 	private TilemapCollision collision;
@@ -55,12 +52,10 @@ public class SinglePlayer {
 
 	private MouseStatsDisplay mouseStatsDisplay;
 
-	Area scnroom;
-
-	public SinglePlayer(ConsoleDisplay console) {
+	public SinglePlayerSession(int mapSizeX,int mapSizeY,Console console) {
 		console.Add(0, "Creating Singleplayer Game");
 
-		tileMap = new TileMap(30, 30, Constants.CellSize, console);
+		tileMap = new TileMap(mapSizeX, mapSizeY, Constants.CellSize, console);
 		tileMap.create_BlankLevel();
 		itemMap = new ItemMap(tileMap, 15);
 		logicMap = new LogicMap(tileMap, itemMap);
@@ -68,9 +63,9 @@ public class SinglePlayer {
 		oxygenMap = new FluidMap(tileMap);
 		tileMap.put_TileObj(Constants.obj_Building, 10, 10);
 
-		scnroom = new Area(tileMap, new CellCoordinate(11, 11));
-
-		player = new Player(tileMap, 250, 250);
+		player = new Player(tileMap);
+		player.spawn(250, 250);
+		
 		controller = new Controller(1, player);
 		collision = new TilemapCollision(tileMap, player);
 		playerInventory = new Inventory(itemMap, player, 4, 5);
@@ -190,8 +185,6 @@ public class SinglePlayer {
 		itemMap.render(g);
 		plantMap.render(g);
 		oxygenMap.render(g);
-
-		scnroom.render(g);
 
 		fm.render(g);
 		bm.render(g);

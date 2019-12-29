@@ -7,7 +7,7 @@ import org.newdawn.slick.TrueTypeFont;
 
 import Curio.ObjectiveSystem.Objective;
 
-public class ObjectiveDisplay extends HUD {
+public class ObjectiveDisplay extends HUD implements HUDInterface{
 
 	private Objective objective;
 	private TrueTypeFont trueTypeFont = super.getTTF();
@@ -63,5 +63,17 @@ public class ObjectiveDisplay extends HUD {
 	public void loopEnd() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void keyPressed(int key, char chr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int key, char chr) {
+		// TODO Auto-generated method stub
+		
 	}
 }

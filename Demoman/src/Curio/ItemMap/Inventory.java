@@ -1,6 +1,6 @@
 package Curio.ItemMap;
 
-import Curio.HUD.ConsoleDisplay;
+import Curio.Console;
 import Curio.PlantMap.PlantMap;
 import Curio.Tilemap.TileMap;
 import Curio.Tilemap.Bomb.BombManager;
@@ -20,9 +20,9 @@ public class Inventory {
 	public final int tileMaxItem;
 	public int inventorySize;
 	private ItemMap itemMap;
-	private ConsoleDisplay console;
+	private Console console;
 
-	public Inventory(ItemMap itemMap, Player player, int inventorySize, int tileMaxItem, ConsoleDisplay console) {
+	public Inventory(ItemMap itemMap, Player player, int inventorySize, int tileMaxItem, Console console) {
 		this.itemMap = itemMap;
 		this.player = player;
 		this.inventorySize = inventorySize;
@@ -41,12 +41,12 @@ public class Inventory {
 		console.Add(0, cmd);
 	}
 
-	public Inventory(ItemMap itemMap, Player player, int inventorySize, int tileMaxItem) {
+	public Inventory(ItemMap itemMap, Player player, int inventorySize, int inventoryTileMaxItem) {
 		this.itemMap = itemMap;
 		this.player = player;
 		this.inventorySize = inventorySize;
 		this.console = null;
-		this.tileMaxItem = tileMaxItem;
+		this.tileMaxItem = inventoryTileMaxItem;
 
 		inventoryMap = new int[inventorySize][2];
 		// Position = new Vector(0, 0);

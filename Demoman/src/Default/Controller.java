@@ -2,8 +2,8 @@ package Default;
 
 import org.newdawn.slick.Input;
 
+import Curio.Console;
 import Curio.Functions;
-import Curio.HUD.ConsoleDisplay;
 import Curio.Physics.DynamicObject;
 
 public class Controller {
@@ -25,10 +25,10 @@ public class Controller {
 			ActionBomb = false, ActionSwitchItem = false, ActionTake = false, ActionDrop = false;
 
 	public boolean KeyLock;
-	DynamicObject obj;
-	private ConsoleDisplay console;
+	private DynamicObject obj;
+	private Console console;
 
-	public Controller(int Mode, DynamicObject obj, ConsoleDisplay console) {
+	public Controller(int Mode, DynamicObject obj, Console console) {
 		this.Mode = Mode;
 		this.obj = obj;
 		this.console = console;

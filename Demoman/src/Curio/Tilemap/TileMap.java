@@ -4,9 +4,9 @@ import java.util.Random;
 
 import org.newdawn.slick.Graphics;
 
+import Curio.Console;
 import Curio.Tileset;
 import Curio.Viewport;
-import Curio.HUD.ConsoleDisplay;
 import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
 import Default.Constants;
@@ -17,20 +17,20 @@ public class TileMap {
 	private int[][][] tileMap;
 
 	private int Cellsize;
-	ConsoleDisplay console;
+	Console console;
 
-	public TileMap(int sx, int sy, int cellsize, ConsoleDisplay console) {
-		tileMap = new int[sx][sy][2];
+	public TileMap(int sx, int sy, int cellsize, Console console) {
+		this.tileMap = new int[sx][sy][2];
 
-		Cellsize = cellsize;
+		this.Cellsize = cellsize;
 		this.console = console;
-		console.Add(0, "Map Initialized with parameters: x= " + sx + " y= " + sy + " CellSize= " + cellsize);
+		this.console.Add(0, "Map Initialized with parameters: x= " + sx + " y= " + sy + " CellSize= " + cellsize);
 	}
 
 	public TileMap(int sx, int sy, int cellsize) {
-		tileMap = new int[sx][sy][2];
+		this.tileMap = new int[sx][sy][2];
 
-		Cellsize = cellsize;
+		this.Cellsize = cellsize;
 		this.console = null;
 	}
 
@@ -116,8 +116,8 @@ public class TileMap {
 	// -----------------------------------functions-----------------------------------
 	// when you receive new level data from the server, load new data and render map
 	// again
-	public void update_Level(int[][][] lvl) {
-		tileMap = lvl;
+	public void updateMap(int[][][] map) {
+		tileMap = map;
 	}
 
 	// use this to update tiles in level when server level data taking too much to
@@ -175,7 +175,8 @@ public class TileMap {
 	public int get_Tile(CellCoordinate cell) {
 		// if any request from this function exceeds tilemap borders
 		// return only the border value
-		if (cell.getCellX() >= 0 && cell.getCellX() < tileMap.length && cell.getCellY() >= 0 && cell.getCellY() < tileMap[0].length) {
+		if (cell.getCellX() >= 0 && cell.getCellX() < tileMap.length && cell.getCellY() >= 0
+				&& cell.getCellY() < tileMap[0].length) {
 			// if its inside the tilemap array
 			return tileMap[cell.getCellX()][cell.getCellY()][0];
 		} else

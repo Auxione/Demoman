@@ -10,7 +10,8 @@ public class FloodFill {
 	private TileMap tilemap;
 	private boolean[][] array;
 	private ArrayList<CellCoordinate> list = new ArrayList<CellCoordinate>();
-
+	//private HashMap<CellCoordinate,Boolean> list = new ArrayList<CellCoordinate>();
+	
 	public FloodFill(TileMap tilemap, int x, int y) {
 		this.tilemap = tilemap;
 		this.array = new boolean[tilemap.get_MaxCellX()][tilemap.get_MaxCellY()];
@@ -34,6 +35,9 @@ public class FloodFill {
 			return;
 		} else if (Tileset.canMove(tilemap.get_Tile(x, y)) == true) {
 			array[x][y] = true;
+			for(CellCoordinate l :list) {
+				
+			}
 			list.add(new CellCoordinate(x, y));
 			Floodfill(x + 1, y);
 			Floodfill(x, y + 1);

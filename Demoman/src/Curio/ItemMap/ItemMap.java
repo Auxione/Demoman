@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import Curio.HUD.ConsoleDisplay;
+import Curio.Console;
 import Curio.ItemMap.Items.Berries;
 import Curio.ItemMap.Items.DefaultBomb;
 import Curio.ItemMap.Items.Medpack;
@@ -22,7 +22,7 @@ public class ItemMap {
 	private int[][][] itemMap;
 	public HashMap<Integer, Item> itemList;
 	private int tileMaxItems = 5;
-	private ConsoleDisplay console;
+	private Console console;
 	
 	public int[][][] getMap() {
 		return itemMap;
@@ -40,7 +40,7 @@ public class ItemMap {
 		itemList.put(9, new SausageSeed());
 	}
 
-	public ItemMap(TileMap level, int tileMaxItems, ConsoleDisplay console) {
+	public ItemMap(TileMap level, int tileMaxItems, Console console) {
 		this.console = console;
 		this.tileMaxItems = tileMaxItems;
 		// coordinate system x,y
@@ -51,7 +51,7 @@ public class ItemMap {
 		itemList = new HashMap<Integer, Item>();
 
 		for (int x = 0; x < itemMap.length; x++) {
-			for (int y = 0; y < itemMap[0].length; y++) {
+			for (int y = 0; y < itemMap[x].length; y++) {
 				itemMap[x][y][0] = 0;
 				itemMap[x][y][1] = 0;
 			}
@@ -59,7 +59,11 @@ public class ItemMap {
 		putItems();
 		console.Add(0, "Item: System initialized");
 	}
-
+	
+	public void updateMap(int[][][] map) {
+		itemMap = map;
+	}
+	
 	public ItemMap(TileMap level, int tileMaxItems) {
 		this.console = null;
 		this.tileMaxItems = tileMaxItems;

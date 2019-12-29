@@ -3,31 +3,40 @@ package Default.GameStates;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import Curio.Console;
 import Curio.HUD.Button;
 import Default.Main;
 
 public class MainMenu {
-	private Button sp, mp;
+	private Button spButton, mpButton;
+	private Console console;
 
-	public MainMenu() {
-		sp = new Button(20, 20, 200, 50, "sp");
-		mp = new Button(20, 80, 200, 50, "mp");
+	public MainMenu(Console console) {
+		this.spButton = new Button(20, 20, 200, 50, "Singleplayer");
+		this.mpButton = new Button(20, 80, 200, 50, "Multiplayer");
+		this.console = console;
 	}
 
 	public void update(Input input) {
-		sp.inputEvent(input);
-		mp.inputEvent(input);
+		spButton.inputEvent(input);
+		mpButton.inputEvent(input);
 
-		if (sp.pressed) {
-			Main.GameState = 1;
+		if (spButton.pressed) {
+			Main.singlePlayerMenu = new SinglePlayerMenu(console);
+			Main.GameState = 10;
 		}
-		else if (mp.pressed) {
-			Main.GameState = 2;
+
+		else if (mpButton.pressed) {
+			Main.multiplayer = new Multiplayer(console);
+			Main.GameState = 20;
 		}
+
+		spButton.loopEnd();
+		mpButton.loopEnd();
 	}
 
 	public void render(Graphics g) {
-		sp.render(g);
-		mp.render(g);
+		spButton.render(g);
+		mpButton.render(g);
 	}
 }

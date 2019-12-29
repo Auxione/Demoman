@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 
-import Curio.HUD.ConsoleDisplay;
+import Curio.Console;
 import Curio.ItemMap.ItemMap;
 import Curio.LogicMap.Trigger.*;
 import Curio.LogicMap.Controller.*;
@@ -14,7 +14,7 @@ import Curio.Tilemap.TileMap;
 import Curio.Utilities.CellCoordinate;
 
 public class LogicMap {
-	ConsoleDisplay console;
+	private Console console;
 
 	private int[][][] logicMap;
 	private TileMap level;
@@ -29,7 +29,7 @@ public class LogicMap {
 	public ArrayList<PushToSwitch> pushtoswitchList = new ArrayList<PushToSwitch>();
 	public ArrayList<FireStarter> firestarterList = new ArrayList<FireStarter>();
 
-	public LogicMap(TileMap lvl, ItemMap itemMap, ConsoleDisplay console) {
+	public LogicMap(TileMap lvl, ItemMap itemMap, Console console) {
 		this.console = console;
 		this.itemMap = itemMap;
 
@@ -47,6 +47,10 @@ public class LogicMap {
 			}
 		}
 		console.Add(0, "Logic: created");
+	}
+
+	public void updateMap(int[][][] map) {
+		logicMap = map;
 	}
 
 	public LogicMap(TileMap lvl, ItemMap itemMap) {
@@ -83,7 +87,7 @@ public class LogicMap {
 		}
 	}
 
-	public void put_Delay(int x, int y,CellCoordinate cpos, int time) {
+	public void put_Delay(int x, int y, CellCoordinate cpos, int time) {
 		delayList.add(new Delay(x, y, cpos, time));
 		if (console != null) {
 			String cmd = "Delay: timer: " + time + " created at:" + x + "-" + y + ". Output set to: " + cpos.getCellX()
@@ -110,10 +114,10 @@ public class LogicMap {
 		}
 	}
 
-	public void put_SwitchButton(int x, int y,CellCoordinate cpos) {
+	public void put_SwitchButton(int x, int y, CellCoordinate cpos) {
 		switchbuttonList.add(new Switchbutton(x, y, cpos));
 		if (console != null) {
-			String cmd = "Switchbutton: created at:" + x + "-" + y + ". Output set to: " +cpos.getCellX() + "-"
+			String cmd = "Switchbutton: created at:" + x + "-" + y + ". Output set to: " + cpos.getCellX() + "-"
 					+ cpos.getCellY();
 			console.Add(0, cmd);
 		}
@@ -229,7 +233,7 @@ public class LogicMap {
 			return false;
 		}
 	}
-	
+
 	public int[][][] getMap() {
 		return logicMap;
 	}
