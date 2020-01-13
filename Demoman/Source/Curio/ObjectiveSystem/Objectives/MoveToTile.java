@@ -1,9 +1,9 @@
 package Curio.ObjectiveSystem.Objectives;
 
-import Curio.ItemMap.ItemMap;
+import Curio.TileMap;
+import Curio.ItemSystem.ItemMap;
 import Curio.ObjectiveSystem.Objective;
-import Curio.PlantMap.PlantMap;
-import Curio.Tilemap.TileMap;
+import Curio.PlantSystem.PlantMap;
 import Curio.Utilities.CellCoordinate;
 import Default.Player;
 
@@ -24,7 +24,7 @@ public class MoveToTile implements Objective {
 
 	@Override
 	public void objectiveUpdate(Player player, TileMap tileMap, ItemMap itemMap, PlantMap plantMap) {
-		if (player.CellPosition.equals(targetCellPosition) == true) {
+		if (player.cellCoordinate.equals(targetCellPosition) == true) {
 			status = true;
 		}
 	}

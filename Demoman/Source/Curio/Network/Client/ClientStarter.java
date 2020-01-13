@@ -13,6 +13,7 @@ public class ClientStarter {
 		this.console = console;
 
 		this.client = new Client(ip, port, port);
+		this.client.getConfig().PACKET_BUFFER_SIZE = 64000;
 		this.client.setListener(clientListener);
 		this.client.connect();
 

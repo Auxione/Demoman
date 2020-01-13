@@ -33,6 +33,7 @@ public class Constants {
 	public static Image sausage;
 	public static Image berries;
 	public static Image SausageSeed;
+	public static Image torch;
 //anims
 	public static Image ExplosionSprite;
 	public static Image FireSprite;
@@ -44,6 +45,8 @@ public class Constants {
 //plants
 	public static Image berryBushState1, berryBushState2, berryBushState3;
 	public static Image sausagePlant1, sausagePlant2, sausagePlant3, sausagePlant4, sausagePlant5;
+
+	public static Image CircularAlphaMap;
 
 	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
@@ -84,6 +87,7 @@ public class Constants {
 		stimpack = new Image("Data/Sprites/Items/stimpack.png");
 		bombSizeUpgrade = new Image("Data/Sprites/Items/sizeupgrade.png");
 		bombFlameUpgrade = new Image("Data/Sprites/Items/flameupgr.png");
+		torch = new Image("Data/Sprites/Items/Torch.png");
 
 		pizzaSlice = new Image("Data/Sprites/Items/Food/PizzaSlice.png");
 		pizza = new Image("Data/Sprites/Items/Food/Pizza.png");
@@ -101,6 +105,8 @@ public class Constants {
 		sausagePlant3 = new Image("Data/Sprites/Plants/sausagePlant3.png");
 		sausagePlant4 = new Image("Data/Sprites/Plants/sausagePlant4.png");
 		sausagePlant5 = new Image("Data/Sprites/Plants/sausagePlant5.png");
+
+		CircularAlphaMap = new Image("Data/Sprites/AlphaMaps/CircularAlphaMap.png");
 
 		Main.console.Add(0, "Textures Loaded");
 	}

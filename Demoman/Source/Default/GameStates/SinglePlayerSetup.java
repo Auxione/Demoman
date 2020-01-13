@@ -4,8 +4,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import Curio.Console;
-import Curio.HUD.Button;
-import Curio.HUD.Inputbox;
+import Curio.Renderer.Button;
+import Curio.Renderer.Inputbox;
 import Default.Main;
 
 public class SinglePlayerSetup {
@@ -14,12 +14,14 @@ public class SinglePlayerSetup {
 
 	private Console console;
 
-	private int mapSizeXVal = 20;
-	private int mapSizeYVal = 20;
+	private int mapSizeXVal = 200;
+	private int mapSizeYVal = 200;
 
 	public SinglePlayerSetup(Console console) {
 		this.mapSizeXInputBox = new Inputbox(20, 20, 200, 50, "Map Size x: ", 1);
 		this.mapSizeYInputBox = new Inputbox(20, 80, 200, 50, "Map Size y: ", 1);
+		this.mapSizeXInputBox.setCompleteWhenFocusLoss(true);
+		this.mapSizeYInputBox.setCompleteWhenFocusLoss(true);
 
 		this.startGameButton = new Button(20, 140, 200, 50, "Start");
 		this.backButton = new Button(20, 200, 200, 50, "Back");

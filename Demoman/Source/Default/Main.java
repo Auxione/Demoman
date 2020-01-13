@@ -8,8 +8,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import Curio.Console;
-import Curio.Tileset;
-import Curio.HUD.ConsoleDisplay;
+import Curio.Renderer.ConsoleDisplay;
 import Default.GameStates.MainMenu;
 import Default.GameStates.MultiplayerSession;
 import Default.GameStates.MultiplayerSetup;
@@ -45,7 +44,6 @@ public class Main extends BasicGame {
 		consoleDisplay = new ConsoleDisplay(20, 20, 600, 400, console);
 
 		Constants.loadData();
-		Tileset.InitTileset();
 
 		mainmenu = new MainMenu(console);
 		GameState = 0;

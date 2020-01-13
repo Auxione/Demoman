@@ -2,17 +2,16 @@ package Curio.Physics;
 
 import java.util.ArrayList;
 
-import Curio.Tilemap.TileMap;
-import Curio.Utilities.CellCoordinate;
+import Curio.TileMap;
+import Curio.GameObject.GameObject;
 import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 
 public class DynamicObject {
 	public static ArrayList<DynamicObject> dynamicObjectList = new ArrayList<DynamicObject>();
-	TileMap level;
+	private TileMap tileMap;
 
-	public Transform transform;
-	public CellCoordinate CellPosition;
+	public GameObject gameObject;
 
 	public Vector Velocity;
 	public Vector Acceleration;
@@ -20,30 +19,28 @@ public class DynamicObject {
 
 	float size;
 
-	protected DynamicObject(TileMap _level) {
-		level = _level;
+	public DynamicObject(TileMap tileMap, GameObject gameObject) {
+		this.tileMap = tileMap;
+		this.gameObject = gameObject;
 
-		transform = new Transform(0, 0, 0);
-		Velocity = new Vector(0, 0);
-		Acceleration = new Vector(0, 0);
+		this.Velocity = new Vector(0, 0);
+		this.Acceleration = new Vector(0, 0);
+
 		dynamicObjectList.add(this);
-
-		CellPosition = new CellCoordinate();
-
 	}
 
-	protected void setSize(float size) {
+	public DynamicObject setSize(float size) {
 		this.size = size;
+		return this;
 	}
 
 	public void updatePhysics(float deltaTime) {
-		float time = deltaTime / 1000;
+		deltaTime /= 1000.0f;
+		Velocity.x += Acceleration.x * deltaTime;
+		Velocity.y += Acceleration.y * deltaTime;
 
-		Velocity.x += Acceleration.x * time;
-		Velocity.y += Acceleration.y * time;
-
-		transform.position.x += Velocity.x * time;
-		transform.position.y += Velocity.y * time;
+		gameObject.transform.position.x += Velocity.x * deltaTime;
+		gameObject.transform.position.y += Velocity.y * deltaTime;
 
 		updateCellPosition();
 		updateWithfriction();
@@ -59,7 +56,7 @@ public class DynamicObject {
 	}
 
 	void updateCellPosition() {
-		CellPosition = level.worldPostoMapPos(transform);
+		gameObject.cellCoordinate = tileMap.worldPostoCellPosition(gameObject.transform);
 	}
 
 	public void addAcceleration(float x, float y) {
@@ -68,12 +65,12 @@ public class DynamicObject {
 	}
 
 	public void setPosition(float x, float y) {
-		transform.position.x = x;
-		transform.position.y = y;
+		gameObject.transform.position.x = x;
+		gameObject.transform.position.y = y;
 	}
 
 	public void setPosition(Transform tr) {
-		transform.position.x = tr.position.x;
-		transform.position.y = tr.position.y;
+		gameObject.transform.position.x = tr.position.x;
+		gameObject.transform.position.y = tr.position.y;
 	}
 }

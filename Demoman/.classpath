@@ -5,7 +5,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Demoman/Libraries/native/windows"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="Curio/Physics/CellularObject.java|Curio/Utilities/PathFinder.java" kind="src" path="Source"/>
 	<classpathentry kind="lib" path="Libraries/slick.jar"/>
 	<classpathentry kind="lib" path="Libraries/jar/lwjgl.jar">
 		<attributes>

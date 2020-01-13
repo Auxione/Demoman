@@ -1,6 +1,8 @@
 package Curio.Utilities.Math;
 
-public class Quaternion {
+import java.io.Serializable;
+
+public class Quaternion implements Serializable{
 //w + xj + yj + zk
 	private Vector imaginary;
 	private double w;

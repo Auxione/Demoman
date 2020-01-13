@@ -8,17 +8,15 @@ import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
 
 import Curio.Console;
+import Curio.GameObject.Controllers.ControlPackage;
 import Curio.Network.ChatMessagePackage;
 import Curio.Network.Credentials;
-import Curio.Network.GameRulesPackage;
-import Curio.Network.PlayerListPackage;
 
 public class ServerListener implements SocketListener {
 	private Console console;
 	private ArrayList<Connection> connectionList = ConnectionManager.getConnections();
 	private HashMap<Connection, Credentials> credentialsList = new HashMap<Connection, Credentials>();
-
-	private PlayerListPackage playerListPackage = new PlayerListPackage();
+	private HashMap<Credentials, Connection> connectionsList = new HashMap<Credentials, Connection>();
 
 	public ServerListener(Console console) {
 		this.console = console;
@@ -32,12 +30,16 @@ public class ServerListener implements SocketListener {
 	@Override
 	public void disconnected(Connection connection) {
 		Credentials credentials = credentialsList.get(connection);
-		credentialsList.remove(connection);
 		Main.removePlayer(credentials);
 
 		String uname = credentials.username;
 		console.Add(0, uname + " disconnected.");
-		sendTCPEveryone(playerListPackage);
+
+		credentialsList.remove(connection);
+		connectionsList.remove(credentials);
+
+		sendTCPEveryone(Main.playerList);
+		connection.close();
 	}
 
 	@Override
@@ -45,27 +47,43 @@ public class ServerListener implements SocketListener {
 		if (object instanceof Credentials) {
 			Credentials credentials = (Credentials) object;
 			credentialsList.put(connection, credentials);
-			playerListPackage.add(credentials);
-			Main.addPlayer(credentials);
-
-			sendTCPEveryone(playerListPackage);
-			DisplayUsers();
+			connectionsList.put(credentials, connection);
 
 			connection.sendTcp(Main.gameRules);
-			// connection.sendTcp(Main.mapPackage);
+			connection.sendTcp(Main.mapPackage);
+
+			Main.addPlayer(credentials);
+			Main.playerList.addCredentials(credentials);
+
+			DisplayUsers();
+			sendTCPEveryone(Main.playerList);
 		}
 
 		else if (object instanceof ChatMessagePackage) {
 			ChatMessagePackage chatMessagePackage = (ChatMessagePackage) object;
-			console.Add(2, chatMessagePackage.credentials.username + " : " + chatMessagePackage.ChatMessage);
+			console.Add(2, credentialsList.get(connection).username + " : " + chatMessagePackage.ChatMessage);
 			sendTCPEveryone(chatMessagePackage);
+		}
+
+		else if (object instanceof ControlPackage) {
+			ControlPackage controlPackage = (ControlPackage) object;
+
+			Main.passControls(credentialsList.get(connection), controlPackage);
 		}
 	}
 
-	private void sendTCPEveryone(Object object) {
+	public void sendTCPEveryone(Object object) {
 		for (Connection connection : connectionList) {
 			connection.sendTcp(object);
 		}
+	}
+
+	public void sendUDPto(Credentials credentials, Object object) {
+		connectionsList.get(credentials).sendUdp(object);
+	}
+
+	public void sendTCPto(Credentials credentials, Object object) {
+		connectionsList.get(credentials).sendTcp(object);
 	}
 
 	private void DisplayUsers() {

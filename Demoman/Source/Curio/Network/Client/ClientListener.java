@@ -8,7 +8,8 @@ import Curio.Network.ChatMessagePackage;
 import Curio.Network.Credentials;
 import Curio.Network.GameRulesPackage;
 import Curio.Network.MapPackage;
-import Curio.Network.PlayerListPackage;
+import Curio.Network.PlayerDataPackage;
+import Curio.Network.PlayerList;
 import Default.Main;
 import Default.GameStates.MultiplayerSession;
 
@@ -24,13 +25,15 @@ public class ClientListener implements SocketListener {
 	@Override
 	public void connected(Connection connection) {
 		connection.sendTcp(selfCredentials);
-
 	}
 
 	@Override
 	public void disconnected(Connection connection) {
-		console.Add(0, "disconnected from: " + connection.getAddress());
+		console.Add(0, "disconnected from: " + connection.getAddress().getHostAddress());
 		connection.close();
+		Main.GameState = 0;
+		Main.multiplayerSession = null;
+		Main.multiplayerSetup = null;
 	}
 
 	@Override
@@ -42,21 +45,28 @@ public class ClientListener implements SocketListener {
 			Main.GameState = 21;
 		}
 
-		else if (object instanceof PlayerListPackage) {
-			console.Add(0, "Recieved Playerlist from server.");
-			PlayerListPackage playerListPackage = (PlayerListPackage) object;
-			MultiplayerSession.setPlayerList(playerListPackage);
-		}
-
 		else if (object instanceof MapPackage) {
 			console.Add(0, "Recieved map data from server.");
 			MapPackage mapPackage = (MapPackage) object;
-			MultiplayerSession.setMap(mapPackage);
+			MultiplayerSession.CreateNewMap(mapPackage);
+		}
+
+		else if (object instanceof PlayerList) {
+			PlayerList playerListPackage = (PlayerList) object;
+			MultiplayerSession.setPlayerList(playerListPackage);
+		}
+
+		else if (object instanceof PlayerDataPackage) {
+			PlayerDataPackage playerDataPackage = (PlayerDataPackage) object;
+			MultiplayerSession.setPlayerData(playerDataPackage);
 		}
 
 		else if (object instanceof ChatMessagePackage) {
 			ChatMessagePackage chatMessagePackage = (ChatMessagePackage) object;
-			console.Add(2, chatMessagePackage.credentials.username + " : " + chatMessagePackage.ChatMessage);
+
+			String MessageString = chatMessagePackage.ChatMessage;
+			String UsernameString = chatMessagePackage.credentials.username;
+			console.Add(2, UsernameString + " : " + MessageString);
 		}
 	}
 }

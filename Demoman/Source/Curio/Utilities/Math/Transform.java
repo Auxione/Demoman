@@ -2,22 +2,24 @@ package Curio.Utilities.Math;
 
 import static java.lang.Math.sqrt;
 
-public class Transform {
+import java.io.Serializable;
+
+public class Transform implements Serializable {
 	public Quaternion quaternion;
-	public Position position;
+	public Vector position;
 
 	// needs quaternion class to rotation
 	public Transform() {
-		this.position = new Position(0, 0, 0);
+		this.position = new Vector(0, 0, 0);
 	}
 
 	public Transform(float x, float y, float z) {
-		this.position = new Position(x, y, z);
+		this.position = new Vector(x, y, z);
 		this.quaternion = new Quaternion(0, 0, 0, 0);
 	}
 
 	public Transform(float x, float y, float z, Quaternion quaternion) {
-		this.position = new Position(x, y, z);
+		this.position = new Vector(x, y, z);
 		this.quaternion = quaternion;
 	}
 
@@ -40,14 +42,5 @@ public class Transform {
 		float dy = position.y - transform.position.y;
 		float dz = position.z - transform.position.z;
 		return (float) sqrt(dx * dx + dy * dy + dz * dz);
-	}
-
-	public class Position {
-		public float x, y, z;
-		Position(float x, float y, float z) {
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
 	}
 }

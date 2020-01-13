@@ -1,19 +1,19 @@
-package Curio.Tilemap.Bomb;
+package Curio.BombManager;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import Curio.FluidMap;
 import Curio.Functions;
-import Curio.ItemMap.ItemMap;
-import Curio.PlantMap.PlantMap;
-import Curio.Tilemap.FluidMap;
-import Curio.Tilemap.TileMap;
+import Curio.TileMap;
+import Curio.ItemSystem.ItemMap;
+import Curio.PlantSystem.PlantMap;
 import Curio.Utilities.Animation;
 import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
 
-public abstract class Bomb {
+public abstract class Bomb{
 	public CellCoordinate cellPosition;
 	public Animation ExplosionA;
 

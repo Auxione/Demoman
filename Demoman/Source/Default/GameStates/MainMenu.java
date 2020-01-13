@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import Curio.Console;
-import Curio.HUD.Button;
+import Curio.Renderer.Button;
 import Default.Main;
 
 public class MainMenu {

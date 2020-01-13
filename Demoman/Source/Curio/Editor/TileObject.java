@@ -1,9 +1,9 @@
 package Curio.Editor;
 
-import Curio.ItemMap.ItemMap;
-import Curio.LogicMap.LogicMap;
-import Curio.PlantMap.PlantMap;
-import Curio.Tilemap.TileMap;
+import Curio.TileMap;
+import Curio.ItemSystem.ItemMap;
+import Curio.LogicSystem.LogicMap;
+import Curio.PlantSystem.PlantMap;
 import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.FileUtilities;
 

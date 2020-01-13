@@ -1,12 +1,12 @@
-package Curio.Tilemap.Bomb;
+package Curio.BombManager;
 
 import org.newdawn.slick.Graphics;
 
-import Curio.ItemMap.ItemMap;
-import Curio.PlantMap.PlantMap;
-import Curio.Tilemap.FireManager;
-import Curio.Tilemap.FluidMap;
-import Curio.Tilemap.TileMap;
+import Curio.FluidMap;
+import Curio.TileMap;
+import Curio.FireManager.FireManager;
+import Curio.ItemSystem.ItemMap;
+import Curio.PlantSystem.PlantMap;
 import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;

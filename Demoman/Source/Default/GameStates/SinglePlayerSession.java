@@ -4,83 +4,156 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import Curio.Console;
+import Curio.FluidMap;
+import Curio.TileList;
+import Curio.TileMap;
 import Curio.Viewport;
-import Curio.HUD.BarDisplay;
-import Curio.HUD.InventoryDisplay;
-import Curio.HUD.MouseStatsDisplay;
-import Curio.HUD.ObjectiveDisplay;
-import Curio.HUD.TextDisplay;
-import Curio.ItemMap.Inventory;
-import Curio.ItemMap.ItemMap;
-import Curio.LogicMap.LogicMap;
-import Curio.ObjectiveSystem.ObjectiveSystem;
-import Curio.ObjectiveSystem.Objectives.MoveToTile;
+import Curio.BombManager.BombManager;
+import Curio.FireManager.FireManager;
+import Curio.GameObject.GameObjectManager;
+import Curio.GameObject.Controllers.UserInput;
+import Curio.ItemSystem.ItemList;
+import Curio.ItemSystem.ItemMap;
+import Curio.Lighting.RoundLightSource;
+import Curio.Lighting.RoundLightSourceRenderer;
+import Curio.LogicSystem.LogicMap;
 import Curio.Physics.DynamicObject;
-import Curio.Physics.TilemapCollision;
-import Curio.PlantMap.PlantMap;
-import Curio.Tilemap.FireManager;
-import Curio.Tilemap.FluidMap;
-import Curio.Tilemap.TileMap;
-import Curio.Tilemap.Bomb.BombManager;
+import Curio.PlantSystem.PlantList;
+import Curio.PlantSystem.PlantMap;
+import Curio.Renderer.BarDisplay;
+import Curio.Renderer.InventoryDisplay;
+import Curio.Renderer.ItemMapRenderer;
+import Curio.Renderer.MouseStatsDisplay;
+import Curio.Renderer.PlantMapRenderer;
+import Curio.Renderer.TextDisplay;
+import Curio.Renderer.TileMapRenderer;
 import Curio.Utilities.Math.Transform;
 import Default.Constants;
-import Default.Controller;
 import Default.Main;
 import Default.Player;
 
 public class SinglePlayerSession {
-	private Controller controller;
-	private Player player;
-	private TilemapCollision collision;
+	@SuppressWarnings("unused")
+	private ItemList itemlist = new ItemList();
+	@SuppressWarnings("unused")
+	private PlantList plantList = new PlantList();
+	@SuppressWarnings("unused")
+	private TileList tileList = new TileList();
+
+	private UserInput userInput;
 	private Viewport viewPort;
 
-	private Inventory playerInventory;
 	private InventoryDisplay inventoryDisplay;
 	private BarDisplay hpBar, foodBar;
 	private TextDisplay PlayerName;
+
 	private FireManager fm;
 	private BombManager bm;
+	private GameObjectManager gameObjectManager;
 
 	private TileMap tileMap;
+	private TileMapRenderer tileMapDisplay;
 	private LogicMap logicMap;
 	private ItemMap itemMap;
+	private ItemMapRenderer itemMapDisplay;
 	private PlantMap plantMap;
+	private PlantMapRenderer plantMapDisplay;
 	private FluidMap oxygenMap;
 
-	private ObjectiveSystem objectiveSystem;
-	private ObjectiveDisplay objDisplay;
-
 	private MouseStatsDisplay mouseStatsDisplay;
+	private Player selfPlayer;
 
 	public SinglePlayerSession(int mapSizeX, int mapSizeY, Console console) {
-		console.Add(0, "Creating Singleplayer Game");
+		console.Add(0, "Singleplayer launched.");
 
-		tileMap = new TileMap(mapSizeX, mapSizeY, Constants.CellSize, console);
+		userInput = new UserInput(Main.input);
+
+		tileMap = new TileMap(mapSizeX, mapSizeY);
 		tileMap.create_BlankLevel();
-		
 		itemMap = new ItemMap(tileMap, 15);
 		logicMap = new LogicMap(tileMap, itemMap);
 		plantMap = new PlantMap(tileMap, itemMap);
 		oxygenMap = new FluidMap(tileMap);
-		tileMap.put_TileObj(Constants.obj_Building, 10, 10);
-
-		player = new Player(tileMap);
-		player.spawn(250, 250);
-
-		controller = new Controller(1, player);
-		collision = new TilemapCollision(tileMap, player);
-		playerInventory = new Inventory(itemMap, player, 4, 5);
-
-		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
-		hpBar = new BarDisplay(500, 500 + 32, 128, 10, Color.red);
-		foodBar = new BarDisplay(500, 500 + 32 + 10, 128, 10, Color.green);
-		inventoryDisplay = new InventoryDisplay(new Transform(500, 500, 0), playerInventory, itemMap);
-		PlayerName = new TextDisplay(20, 20, "Cem");
-		mouseStatsDisplay = new MouseStatsDisplay(viewPort, player, tileMap, itemMap, plantMap, oxygenMap);
 
 		fm = new FireManager(tileMap);
 		bm = new BombManager(fm, tileMap, itemMap, plantMap, oxygenMap);
 
+		debugObjects();
+
+		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
+		plantMapDisplay = new PlantMapRenderer(plantMap, viewPort);
+		itemMapDisplay = new ItemMapRenderer(itemMap, viewPort);
+		tileMapDisplay = new TileMapRenderer(tileMap, viewPort);
+
+		hpBar = new BarDisplay(500, 500 + 32, 128, 10, Color.red);
+		foodBar = new BarDisplay(500, 500 + 32 + 10, 128, 10, Color.green);
+		PlayerName = new TextDisplay(20, 20, "Cem");
+		mouseStatsDisplay = new MouseStatsDisplay(viewPort, tileMap, itemMap, plantMap, oxygenMap);
+
+		gameObjectManager = new GameObjectManager(viewPort, bm, fm, tileMap, itemMap, plantMap, mouseStatsDisplay,
+				console);
+
+		selfPlayer = gameObjectManager.CreateNewPlayer(userInput.getPackage());
+		selfPlayer.spawn(6, 6);
+		gameObjectManager.CreateNewPlayer(null).spawn(6, 6);
+		gameObjectManager.CreateNewPlayer(null).spawn(6, 6);
+
+		inventoryDisplay = new InventoryDisplay(new Transform(500, 500, 0),
+				GameObjectManager.playerInventoryList.get(selfPlayer), itemMap);
+	}
+
+	public void update(int delta) {
+		userInput.updateStart();
+
+		gameObjectManager.playerUpdateStart();
+
+		mouseStatsDisplay.getCellData();
+		logicMap.update();
+		plantMap.update();
+		oxygenMap.update();
+
+		viewPort.move(selfPlayer.transform.position);
+
+		hpBar.Percentage(selfPlayer.getCurrentHealth(), selfPlayer.getMaxHealth());
+		foodBar.Percentage(selfPlayer.getCurrentFood(), selfPlayer.getMaxFood());
+
+		for (DynamicObject d : DynamicObject.dynamicObjectList) {
+			d.updatePhysics(delta);
+		}
+
+		inventoryDisplay.inputEvent(Main.input);
+		mouseStatsDisplay.inputEvent(Main.input);
+
+		gameObjectManager.playerupdateEnd();
+	}
+
+	public void render(Graphics g) {
+		viewPort.renderOnWorld(tileMapDisplay, g);
+		viewPort.renderOnWorld(logicMap, g);
+		viewPort.renderOnWorld(itemMapDisplay, g);
+		viewPort.renderOnWorld(plantMapDisplay, g);
+		viewPort.renderOnWorld(oxygenMap, g);
+		viewPort.renderOnWorld(fm, g);
+		viewPort.renderOnWorld(bm, g);
+
+		gameObjectManager.render(g);
+
+		viewPort.renderOnHUD(mouseStatsDisplay, g);
+		viewPort.renderOnHUD(inventoryDisplay, g);
+		viewPort.renderOnHUD(PlayerName, g);
+		viewPort.renderOnHUD(hpBar, g);
+		viewPort.renderOnHUD(foodBar, g);
+	}
+
+	public void KeyPressed(int key, char chr) {
+		userInput.keyPressed(key, chr);
+	}
+
+	public void KeyReleased(int key, char chr) {
+		userInput.keyReleased(key, chr);
+	}
+
+	private void debugObjects() {
 		itemMap.put(4, 4, 3);
 
 		itemMap.put(4, 5, 5);
@@ -93,6 +166,8 @@ public class SinglePlayerSession {
 		itemMap.put(4, 5, 5);
 		itemMap.put(4, 5, 5);
 		itemMap.put(4, 5, 5);
+
+		itemMap.put(4, 6, 10);
 
 		itemMap.put(2, 2, 9);
 		itemMap.put(2, 2, 9);
@@ -109,14 +184,14 @@ public class SinglePlayerSession {
 		plantMap.put(5, 8, 1);
 		plantMap.put(5, 9, 1);
 
-		tileMap.set_Tile(6, 6, 6);
-		tileMap.set_Tile(6, 7, 6);
-		tileMap.set_Tile(6, 8, 6);
-		tileMap.set_Tile(6, 9, 6);
-		tileMap.set_Tile(7, 6, 6);
-		tileMap.set_Tile(7, 7, 6);
-		tileMap.set_Tile(7, 8, 6);
-		tileMap.set_Tile(7, 9, 6);
+		tileMap.setTile(6, 6, 0, 6);
+		tileMap.setTile(6, 7, 0, 6);
+		tileMap.setTile(6, 8, 0, 6);
+		tileMap.setTile(6, 9, 0, 6);
+		tileMap.setTile(7, 6, 0, 6);
+		tileMap.setTile(7, 7, 0, 6);
+		tileMap.setTile(7, 8, 0, 6);
+		tileMap.setTile(7, 9, 0, 6);
 		/*
 		 * tileMap.set_Tile(11, 11, 2); tileMap.set_Tile(11, 12, 2);
 		 * tileMap.set_Tile(11, 13, 2); tileMap.set_Tile(11, 14, 2);
@@ -137,94 +212,6 @@ public class SinglePlayerSession {
 		plantMap.put(7, 8, 2);
 		plantMap.put(7, 9, 2);
 
-		objectiveSystem = new ObjectiveSystem(player, tileMap, itemMap, plantMap);
-
-		objectiveSystem.add(new MoveToTile(5, 5));
-
-		objDisplay = new ObjectiveDisplay(20, 50, new MoveToTile(5, 5));
-	}
-
-	public void update(int delta) {
-		controller.Pressed();
-		controller.update();
-		objectiveSystem.update(player, tileMap, itemMap, plantMap);
-		mouseStatsDisplay.getCellData();
-		logicMap.update();
-		plantMap.update();
-		oxygenMap.update();
-
-		fm.update(player);
-		bm.update(player);
-
-		player.loop();
-		viewPort.move(player.transform);
-
-		hpBar.Percentage(player.getCurrentHealth(), player.getMaxHealth());
-		foodBar.Percentage(player.getCurrentFood(), player.getMaxFood());
-
-		collision.checkCollisions();
-
-		for (DynamicObject d : DynamicObject.dynamicObjectList) {
-			d.updatePhysics(delta);
-		}
-
-		inventoryDisplay.inputEvent(Main.input);
-		mouseStatsDisplay.inputEvent(Main.input);
-		actions();
-		objectiveSystem.updateEnd();
-		controller.ActionEnd();
-
-	}
-
-	public void render(Graphics g) {
-		g.pushTransform();
-		viewPort.renderStart(g);
-		// render level
-		tileMap.render(g, viewPort);
-		logicMap.render(g);
-		itemMap.render(g);
-		plantMap.render(g);
-		oxygenMap.render(g);
-
-		fm.render(g);
-		bm.render(g);
-
-		player.render(g);
-
-		viewPort.renderEnd(g);
-		//
-		mouseStatsDisplay.render(g);
-		objDisplay.render(g);
-		inventoryDisplay.render(g);
-		PlayerName.render(g);
-		hpBar.render(g);
-		foodBar.render(g);
-
-		g.popTransform();
-	}
-
-	public void KeyPressed(int key, char chr) {
-	}
-
-	public void KeyReleased(int key, char chr) {
-	}
-
-	private void actions() {
-		if (controller.ActionTake == true) {
-			playerInventory.take();
-			plantMap.harvest(player);
-		}
-
-		if (controller.ActionUse == true) {
-			playerInventory.useSelf(bm, tileMap, plantMap);
-		}
-
-		if (controller.ActionSwitchItem == true) {
-			playerInventory.switchCurrentItem();
-		}
-
-		if (controller.ActionDrop == true) {
-			playerInventory.drop();
-		}
+		tileMap.setTile(15, 15, 0, Constants.obj_Building);
 	}
 }

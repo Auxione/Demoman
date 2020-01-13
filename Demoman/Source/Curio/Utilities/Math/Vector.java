@@ -2,7 +2,9 @@ package Curio.Utilities.Math;
 
 import static java.lang.Math.*;
 
-public class Vector {
+import java.io.Serializable;
+
+public class Vector implements Serializable{
 	public float x, y, z;
 
 	public Vector() {
