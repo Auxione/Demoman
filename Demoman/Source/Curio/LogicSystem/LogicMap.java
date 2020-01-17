@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import Curio.Console;
 import Curio.TileMap;
 import Curio.CellularMap.CellularMap;
-import Curio.FireManager.FireManager;
 import Curio.ItemSystem.ItemMap;
 import Curio.LogicSystem.Controller.DynamicWall;
 import Curio.LogicSystem.Controller.FireStarter;
@@ -17,6 +16,7 @@ import Curio.LogicSystem.Processor.PushToSwitch;
 import Curio.LogicSystem.Trigger.MoveTrigger;
 import Curio.LogicSystem.Trigger.Pushbutton;
 import Curio.LogicSystem.Trigger.Switchbutton;
+import Curio.SessionManagers.FireManager.FireManager;
 import Curio.Utilities.CellCoordinate;
 
 public class LogicMap extends CellularMap {

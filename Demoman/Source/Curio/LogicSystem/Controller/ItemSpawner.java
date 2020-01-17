@@ -2,6 +2,8 @@ package Curio.LogicSystem.Controller;
 
 import org.newdawn.slick.Graphics;
 
+import Curio.ItemSystem.Item;
+import Curio.ItemSystem.ItemList;
 import Curio.ItemSystem.ItemMap;
 import Curio.LogicSystem.Logic;
 import Curio.LogicSystem.LogicMap;
@@ -41,8 +43,9 @@ public class ItemSpawner implements Logic {
 	@Override
 	public void update(LogicMap logicMap) {
 		spawn = logicMap.getState(objectCellPosition);
+		Item item = ItemList.list.get(itemID);
 		if (spawn == true) {
-			itemMap.put(objectCellPosition.getCellX(), objectCellPosition.getCellY(), itemID);
+			itemMap.put(objectCellPosition, item);
 		}
 	}
 }

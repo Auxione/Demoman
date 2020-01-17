@@ -2,19 +2,19 @@ package Curio.ItemSystem;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Player;
 
 public interface Item {
 
 	public Image getImage();
 
-	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player);
 
-	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager);
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player);
 
 	public String getName();
 	
@@ -23,6 +23,7 @@ public interface Item {
 	//cat 2 = health
 	//cat 3 = explosive
 	//cat 4 = seed
+	//cat 5 = gameobj
 	
 	public String getDescription();
 

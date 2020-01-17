@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import Curio.Console;
 import Curio.TileMap;
-import Curio.Tileset;
 import Curio.GameObject.ObjectController;
 import Curio.GameObject.Controllers.ControlPackage;
 import Curio.ItemSystem.Inventory;

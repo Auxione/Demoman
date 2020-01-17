@@ -2,9 +2,9 @@ package Curio.LogicSystem.Controller;
 
 import org.newdawn.slick.Graphics;
 
-import Curio.FireManager.FireManager;
 import Curio.LogicSystem.Logic;
 import Curio.LogicSystem.LogicMap;
+import Curio.SessionManagers.FireManager.FireManager;
 import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 

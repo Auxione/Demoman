@@ -17,7 +17,7 @@ public class Area {
 	private ArrayList<CellCoordinate> areaList;
 
 	public Area(TileMap tilemap, CellCoordinate position) {
-		scanner = new FloodFill(tilemap, position.getCellX(), position.getCellY());
+		//scanner = new FloodFill(tilemap, position.getCellX(), position.getCellY());
 		this.position = position;
 		this.areaArray = scanner.getArray();
 		this.areaList = scanner.getCellList();

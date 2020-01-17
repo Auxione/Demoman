@@ -1,20 +1,19 @@
 package Curio.Utilities;
 
 import java.util.ArrayList;
-
-import Curio.TileMap;
-import Curio.TileList;;
+import Curio.CellularMap.CellularMap;
 
 public class FloodFill {
 
-	private TileMap tilemap;
+	private CellularMap cellularMap;
 	private boolean[][] array;
 	private ArrayList<CellCoordinate> list = new ArrayList<CellCoordinate>();
-	//private HashMap<CellCoordinate,Boolean> list = new ArrayList<CellCoordinate>();
-	
-	public FloodFill(TileMap tilemap, int x, int y) {
-		this.tilemap = tilemap;
-		this.array = new boolean[tilemap.getXAxisMaxCell()][tilemap.getYAxisMaxCell()];
+	private int wantedID;
+
+	public FloodFill(CellularMap cellularMap, int x, int y, int wantedID) {
+		this.cellularMap = cellularMap;
+		this.array = new boolean[cellularMap.getXAxisMaxCell()][cellularMap.getYAxisMaxCell()];
+		this.wantedID = wantedID;
 		Floodfill(x, y);
 	}
 
@@ -27,15 +26,15 @@ public class FloodFill {
 	}
 
 	public void Floodfill(int x, int y) {
-		if ((x <= 0) && (x >= tilemap.getXAxisMaxCell()) && (y <= 0) && (y >= tilemap.getYAxisMaxCell())) {
+		if ((x <= 0) && (x >= cellularMap.getXAxisMaxCell()) && (y <= 0) && (y >= cellularMap.getYAxisMaxCell())) {
 			return;
-		} else if (TileList.getTile(tilemap.getTile(x, y, 0)).isMoveable() == false) {
+		} else if (cellularMap.getTile(x, y, 0) != wantedID) {
 			return;
 		} else if (array[x][y] == true) {
 			return;
-		} else if (TileList.getTile(tilemap.getTile(x, y, 0)).isMoveable() == true) {
+		} else if (cellularMap.getTile(x, y, 0) == wantedID) {
 			array[x][y] = true;
-			
+
 			list.add(new CellCoordinate(x, y));
 			Floodfill(x + 1, y);
 			Floodfill(x, y + 1);

@@ -3,6 +3,7 @@ package Curio.Renderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import Curio.Functions;
 import Curio.Viewport;
 import Curio.PlantSystem.PlantList;
 import Curio.PlantSystem.PlantMap;
@@ -24,7 +25,7 @@ public class PlantMapRenderer implements Renderer {
 	}
 
 	public void render(Graphics g) {
-		renderStartCC = plantMap.worldPostoCellPosition(viewPort.transform);
+		renderStartCC = Functions.worldPostoCellPosition(viewPort.transform);
 		for (int x = renderStartCC.getCellX(); x < renderStartCC.getCellX() + renderSizeX + 1; x++) {
 			for (int y = renderStartCC.getCellY(); y < renderStartCC.getCellY() + renderSizeY + 2; y++) {
 				if (plantMap.getTile(x, y, 0) > 0 && plantMap.getTile(x, y, 1) > 0) {

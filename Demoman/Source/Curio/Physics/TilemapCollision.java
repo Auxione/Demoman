@@ -45,7 +45,7 @@ public class TilemapCollision {
 
 		int tileid = tilemap.getTile(cellx + 1, celly-1, 0);
 
-		if (TileList.getTile(tileid).isMoveable() == false) {
+		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point = new Vector((cellx + 1) * Constants.CellSize, (celly) * Constants.CellSize, 0);
 
 			if (point.dist(dynamicObject.gameObject.transform.position) <= radius) {
@@ -62,7 +62,7 @@ public class TilemapCollision {
 
 		int tileid = tilemap.getTile(cellx + 1, celly, 0);
 		
-		if (TileList.getTile(tileid).isMoveable() == false) {
+		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point1 = new Vector((cellx + 1) * Constants.CellSize, celly * Constants.CellSize, 0);
 			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly + 1) * Constants.CellSize, 0);
 			float[] intersectPoint = Functions.lineToLineIntersectionCord(point1.x, point1.y, point2.x, point2.y, Posx,
@@ -85,7 +85,7 @@ public class TilemapCollision {
 
 		int tileid = tilemap.getTile(cellx - 1, celly, 0);
 		
-		if (TileList.getTile(tileid).isMoveable() == false) {
+		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point1 = new Vector((cellx) * Constants.CellSize, celly * Constants.CellSize, 0);
 			Vector point2 = new Vector((cellx) * Constants.CellSize, (celly + 1) * Constants.CellSize, 0);
 			float[] intersectPoint = Functions.lineToLineIntersectionCord(point1.x, point1.y, point2.x, point2.y, Posx,
@@ -109,7 +109,7 @@ public class TilemapCollision {
 
 		int tileid = tilemap.getTile(cellx, celly - 1, 0);
 		
-		if (TileList.getTile(tileid).isMoveable() == false) {
+		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point1 = new Vector((cellx) * Constants.CellSize, celly * Constants.CellSize);
 			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly) * Constants.CellSize);
 			float[] intersectPoint = Functions.lineToLineIntersectionCord(point1.x, point1.y, point2.x, point2.y, Posx,
@@ -132,7 +132,7 @@ public class TilemapCollision {
 
 		int tileid = tilemap.getTile(cellx, celly + 1, 0);
 		
-		if (TileList.getTile(tileid).isMoveable() == false) {
+		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point1 = new Vector((cellx) * Constants.CellSize, (celly + 1) * Constants.CellSize);
 			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly + 1) * Constants.CellSize);
 			float[] intersectPoint = Functions.lineToLineIntersectionCord(point1.x, point1.y, point2.x, point2.y, Posx,

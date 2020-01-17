@@ -2,15 +2,15 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Constants;
 import Default.Player;
 
-public class PizzaSlice implements Item {
+public class ItemPizzaSlice implements Item {
 	public int value = 10;
 	private Image image = Constants.pizzaSlice;
 	private String name = "PizzaSlice";
@@ -42,14 +42,14 @@ public class PizzaSlice implements Item {
 	}
 
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		dp.addFood(value);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		player.addFood(value);
 
 	}
 
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		if (dp.getCurrentFood() < dp.getMaxFood()) {
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		if (player.getCurrentFood() < player.getMaxFood()) {
 			return true;
 		} else {
 			return false;

@@ -2,15 +2,15 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Constants;
 import Default.Player;
 
-public class Sausage implements Item {
+public class ItemSausage implements Item {
 	private Image img = Constants.sausage;
 	private int foodValue = 15;
 	private int healthValue = 5;
@@ -42,14 +42,14 @@ public class Sausage implements Item {
 	}
 
 	@Override
-	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		p.addFood(foodValue);
-		p.addHealth(healthValue);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		player.addFood(foodValue);
+		player.addHealth(healthValue);
 	}
 
 	@Override
-	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		if (p.getCurrentFood() < p.getMaxFood()) {
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		if (player.getCurrentFood() < player.getMaxFood()) {
 			return true;
 		} else {
 			return false;

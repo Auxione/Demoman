@@ -4,6 +4,8 @@ import org.newdawn.slick.Graphics;
 
 import Curio.GameObject.GameObject;
 import Curio.Renderer.Renderer;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 
@@ -68,6 +70,16 @@ public class Viewport {
 			((Renderer) Object).render(g);
 			g.popTransform();
 		}
+	}
+
+	public void renderOnWorld(WorldObjectManager wom, Graphics g) {
+		g.pushTransform();
+		g.translate(-transform.position.x, -transform.position.y);
+		g.setWorldClip(transform.position.x, transform.position.y, screenSizeX, screenSizeY);
+
+		wom.render(g);
+		wom.RenderToAlphaMap(g);
+		g.popTransform();
 	}
 
 	public Transform ScreenToWorldPosition(float x, float y) {

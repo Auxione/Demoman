@@ -2,15 +2,15 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Constants;
 import Default.Player;
 
-public class SausageSeed implements Item {
+public class ItemSausageSeed implements Item {
 	private int health = 100;
 	private Image image = Constants.SausageSeed;
 
@@ -43,13 +43,13 @@ public class SausageSeed implements Item {
 	}
 
 	@Override
-	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		plantMap.put(p.cellCoordinate.getCellX(), p.cellCoordinate.getCellY(), 2);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		plantManager.plant(player, 2);
 	}
 
 	@Override
-	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		return plantMap.canPlant(p, 2);
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		return plantManager.canPlant(player, 2);
 	}
 
 	@Override

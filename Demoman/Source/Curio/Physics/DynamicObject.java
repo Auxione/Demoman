@@ -2,14 +2,13 @@ package Curio.Physics;
 
 import java.util.ArrayList;
 
-import Curio.TileMap;
+import Curio.Functions;
 import Curio.GameObject.GameObject;
 import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 
 public class DynamicObject {
 	public static ArrayList<DynamicObject> dynamicObjectList = new ArrayList<DynamicObject>();
-	private TileMap tileMap;
 
 	public GameObject gameObject;
 
@@ -19,8 +18,7 @@ public class DynamicObject {
 
 	float size;
 
-	public DynamicObject(TileMap tileMap, GameObject gameObject) {
-		this.tileMap = tileMap;
+	public DynamicObject(GameObject gameObject) {
 		this.gameObject = gameObject;
 
 		this.Velocity = new Vector(0, 0);
@@ -56,7 +54,7 @@ public class DynamicObject {
 	}
 
 	void updateCellPosition() {
-		gameObject.cellCoordinate = tileMap.worldPostoCellPosition(gameObject.transform);
+		gameObject.cellCoordinate = Functions.worldPostoCellPosition(gameObject.transform);
 	}
 
 	public void addAcceleration(float x, float y) {

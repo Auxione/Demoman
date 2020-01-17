@@ -1,4 +1,4 @@
-package Curio.BombManager;
+package Curio.SessionManagers.BombManager;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -8,12 +8,15 @@ import Curio.Functions;
 import Curio.TileMap;
 import Curio.ItemSystem.ItemMap;
 import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.FireManager.FireManager;
 import Curio.Utilities.Animation;
 import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
 
-public abstract class Bomb{
+public abstract class Bomb {
 	public CellCoordinate cellPosition;
 	public Animation ExplosionA;
 
@@ -57,7 +60,7 @@ public abstract class Bomb{
 	public void render(Graphics g) {
 		switch (state) {
 		case 1:
-			g.drawImage(bombImage,cellPosition.getWorldX(), cellPosition.getWorldY());
+			g.drawImage(bombImage, cellPosition.getWorldX(), cellPosition.getWorldY());
 			break;
 		case 2:
 			ExplosionA.render(g, cellPosition);
@@ -65,7 +68,8 @@ public abstract class Bomb{
 		}
 	}
 
-	public abstract void Effect(Player player, TileMap tileMap, ItemMap itemMap, PlantMap plantMap, FluidMap fluidMap);
-
 	public abstract void effectRender(Graphics g);
+
+	protected abstract void Effect(WorldManager worldManager, FireManager fireManager, PlantManager plantManager,
+			ItemMap itemMap, Player player);
 }

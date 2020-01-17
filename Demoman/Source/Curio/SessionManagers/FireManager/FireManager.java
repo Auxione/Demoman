@@ -1,4 +1,4 @@
-package Curio.FireManager;
+package Curio.SessionManagers.FireManager;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -6,17 +6,20 @@ import java.util.ListIterator;
 import org.newdawn.slick.Graphics;
 
 import Curio.TileList;
-import Curio.TileMap;
 import Curio.Renderer.Renderer;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
 import Default.Player;
 
 public class FireManager implements Runnable, Renderer {
 	private ArrayList<Fire> fireList;
-	private TileMap tileMap;
+	private WorldManager worldManager;
+	private PlantManager plantManager;
 
-	public FireManager(TileMap _Level) {
+	public FireManager(WorldManager worldManager, PlantManager plantManager) {
 		this.fireList = new ArrayList<Fire>();
-		this.tileMap = tileMap;
+		this.worldManager = worldManager;
+		this.plantManager = plantManager;
 	}
 
 	public void update(Player dp) {
@@ -37,17 +40,17 @@ public class FireManager implements Runnable, Renderer {
 		for (int x = -1; x <= 1; x++) {
 			int cellx = fire.cellPosition.getCellX() + x;
 			int celly = fire.cellPosition.getCellY();
-			int tileid = tileMap.getTile(cellx, celly, 0);
+			int tileid = worldManager.tileMap.getTile(cellx, celly, 0);
 			if (TileList.getTile(tileid).isFlammable() == true) {
-				f.add(new Fire(tileMap, cellx, celly));
+				f.add(new Fire(worldManager.tileMap, cellx, celly));
 			}
 		}
 		for (int y = -1; y <= 1; y++) {
 			int cellx = fire.cellPosition.getCellX();
 			int celly = fire.cellPosition.getCellY() + y;
-			int tileid = tileMap.getTile(cellx, celly, 0);
+			int tileid = worldManager.tileMap.getTile(cellx, celly, 0);
 			if (TileList.getTile(tileid).isFlammable() == true) {
-				f.add(new Fire(tileMap, cellx, celly));
+				f.add(new Fire(worldManager.tileMap, cellx, celly));
 			}
 		}
 	}
@@ -71,8 +74,8 @@ public class FireManager implements Runnable, Renderer {
 			canPlace = true;
 		}
 		if (canPlace == true) {
-			if (TileList.getTile(tileMap.getTile(x, y, 0)).isFlammable() == true) {
-				fireList.add(new Fire(tileMap, x, y));
+			if (TileList.getTile(worldManager.tileMap.getTile(x, y, 0)).isFlammable() == true) {
+				fireList.add(new Fire(worldManager.tileMap, x, y));
 			}
 		}
 	}

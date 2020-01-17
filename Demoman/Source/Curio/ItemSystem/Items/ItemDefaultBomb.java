@@ -2,16 +2,16 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Curio.Utilities.Math.Transform;
 import Default.Constants;
 import Default.Player;
 
-public class DefaultBomb implements Item {
+public class ItemDefaultBomb implements Item {
 	public int value = 35;
 	private Image image = Constants.blueBombNormal;
 	Transform tr;
@@ -44,15 +44,15 @@ public class DefaultBomb implements Item {
 	}
 
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		bm.create(dp.cellCoordinate, 1, 100, value);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		bombManager.create(player.cellCoordinate, 1, 100, value);
 
 	}
 
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
 		// TODO Auto-generated method stub
-		return bm.canPlace(dp.cellCoordinate);
+		return bombManager.canPlace(player.cellCoordinate);
 	}
 
 	private int health = 100;

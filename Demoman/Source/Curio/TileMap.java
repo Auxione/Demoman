@@ -1,10 +1,14 @@
 package Curio;
 
-import java.util.Random;
-
 import Curio.CellularMap.CellularMap;
+import static Curio.Functions.*;
 
 public class TileMap extends CellularMap {
+	// 0 north
+	// 1 east
+	// 2 south
+	// 3 west
+
 	// create tile array that holds informations
 	// coords x, coord y, and tile value
 	private Console console;
@@ -67,14 +71,10 @@ public class TileMap extends CellularMap {
 				if (x == super.getXAxisMaxCell() - 1 || x == 0 || y == super.getYAxisMaxCell() - 1 || y == 0) {
 					super.setTile(x, y, 0, 5);
 				} else {
-					super.setTile(x, y, 0, getRandom(idArray));
+					super.setTile(x, y, 0, random(idArray));
 				}
 			}
 		}
 	}
 
-	private int getRandom(int[] array) {
-		int rnd = new Random().nextInt(array.length);
-		return array[rnd];
-	}
 }

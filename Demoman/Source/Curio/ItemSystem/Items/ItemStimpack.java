@@ -2,22 +2,23 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Constants;
 import Default.Player;
 
-public class Stimpack implements Item {
+public class ItemStimpack implements Item {
 	public int value = 10;
 	private Image image = Constants.stimpack;
 
 	private String name = "Stimpack";
 	private String description = "Heals for " + value + " HP.";
 	private int category = 2;
-
+	private int health = 100;
+	
 	@Override
 	public int getItemCategory() {
 		// TODO Auto-generated method stub
@@ -42,21 +43,19 @@ public class Stimpack implements Item {
 	}
 
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		dp.addHealth(value);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		player.addHealth(value);
 
 	}
 
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		if (dp.getCurrentHealth() < dp.getMaxHealth()) {
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		if (player.getCurrentHealth() < player.getMaxHealth()) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
-	private int health = 100;
 
 	@Override
 	public int getHealth() {

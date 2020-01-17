@@ -5,11 +5,19 @@ import org.newdawn.slick.Graphics;
 
 import Curio.Renderer.Renderer;
 
-public class RoundLightSourceRenderer implements Renderer {
+public class LightSourceRenderer implements Renderer {
 	private RoundLightSource roundLightSource;
+	private float redValue;
+	private float greenValue;
+	private float blueValue;
+	private float alphaValue;
 
-	public RoundLightSourceRenderer(RoundLightSource roundLightSource) {
+	public LightSourceRenderer(RoundLightSource roundLightSource) {
 		this.roundLightSource = roundLightSource;
+		this.redValue = roundLightSource.redValue;
+		this.greenValue = roundLightSource.greenValue;
+		this.blueValue = roundLightSource.blueValue;
+		this.alphaValue = roundLightSource.alphaValue;
 	}
 
 	@Override
@@ -18,7 +26,7 @@ public class RoundLightSourceRenderer implements Renderer {
 		if (roundLightSource.active == true) {
 			g.clearAlphaMap();
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // Blends the alpha map.
-
+			roundLightSource.alphaMapImage.setImageColor(redValue, greenValue, blueValue, alphaValue);
 			roundLightSource.alphaMapImage.drawCentered(roundLightSource.transform.position.x,
 					roundLightSource.transform.position.y);
 

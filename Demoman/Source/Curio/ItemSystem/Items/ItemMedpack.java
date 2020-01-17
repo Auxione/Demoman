@@ -2,15 +2,15 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Constants;
 import Default.Player;
 
-public class Medpack implements Item {
+public class ItemMedpack implements Item {
 	private int value = 35;
 	private Image image = Constants.medpack;
 	private String name = "Medpack";
@@ -28,13 +28,13 @@ public class Medpack implements Item {
 	}
 
 	@Override
-	public void apply(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		dp.addHealth(value);
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
+		player.addHealth(value);
 	}
 
 	@Override
-	public boolean condition(Player dp, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		if (dp.getCurrentHealth() < dp.getMaxHealth()) {
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player){
+		if (player.getCurrentHealth() < player.getMaxHealth()) {
 			return true;
 		} else {
 			return false;
@@ -60,5 +60,4 @@ public class Medpack implements Item {
 		// TODO Auto-generated method stub
 		return health;
 	}
-
 }

@@ -1,11 +1,11 @@
-package Curio.BombManager;
+package Curio.SessionManagers.BombManager;
 
 import org.newdawn.slick.Graphics;
 
-import Curio.FluidMap;
-import Curio.TileMap;
 import Curio.ItemSystem.ItemMap;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.FireManager.FireManager;
 import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
@@ -21,33 +21,36 @@ public class Default extends Bomb {
 	}
 
 	@Override
-	public void Effect(Player player, TileMap tileMap, ItemMap itemMap, PlantMap plantMap, FluidMap fluidMap) {
+	public void Effect(WorldManager worldManager, FireManager fireManager, PlantManager plantManager,
+			ItemMap itemMap, Player player) {
+		
 		player.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
-		tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
+		worldManager.tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
 		itemMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
-		plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
+		plantManager.plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY(), damage);
 
 		for (int x = 1; x <= bombSize; x++) {
 			player.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
-			tileMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
+			worldManager.tileMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
 			itemMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
-			plantMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
+			plantManager.plantMap.applyDamage(cellPosition.getCellX() + x, cellPosition.getCellY(), damage);
 
 			player.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
-			tileMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
+			worldManager.tileMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
 			itemMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
-			plantMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
+			plantManager.plantMap.applyDamage(cellPosition.getCellX() - x, cellPosition.getCellY(), damage);
 		}
+		
 		for (int y = 1; y <= bombSize; y++) {
 			player.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
-			tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
+			worldManager.tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
 			itemMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
-			plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
+			plantManager.plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() + y, damage);
 
 			player.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
-			tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
+			worldManager.tileMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
 			itemMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
-			plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
+			plantManager.plantMap.applyDamage(cellPosition.getCellX(), cellPosition.getCellY() - y, damage);
 		}
 	}
 

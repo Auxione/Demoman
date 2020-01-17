@@ -3,6 +3,7 @@ package Curio.Renderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import Curio.Functions;
 import Curio.Viewport;
 import Curio.ItemSystem.ItemList;
 import Curio.ItemSystem.ItemMap;
@@ -26,7 +27,7 @@ public class ItemMapRenderer implements Renderer {
 	}
 
 	public void render(Graphics g) {
-		renderStartCC = itemMap.worldPostoCellPosition(viewPort.transform);
+		renderStartCC = Functions.worldPostoCellPosition(viewPort.transform);
 		g.pushTransform();
 		for (int x = renderStartCC.getCellX(); x < renderStartCC.getCellX() + renderSizeX + xOffset; x++) {
 			for (int y = renderStartCC.getCellY(); y < renderStartCC.getCellY() + renderSizeY + yOffset; y++) {

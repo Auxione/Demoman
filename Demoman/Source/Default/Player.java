@@ -12,7 +12,7 @@ public class Player extends GameObject{
 	private int maxFood = 100;
 
 	public int psize = 10;
-	public boolean alive;
+	public boolean alive = true;
 	public int bombType = 1;
 	public int bombTimer = 1500;
 	public int Team = 1;// spectator, dead = 0 //blue = 1 // green = 2
@@ -25,13 +25,17 @@ public class Player extends GameObject{
 			if (currentHealth < 0) {
 				this.currentHealth = 0;
 				alive = false;
-			} else if (currentHealth >= maxHealth) {
+			} 
+			
+			else if (currentHealth >= maxHealth) {
 				this.currentHealth = maxHealth;
 			}
 
 			if (currentFood < 0) {
 				this.currentFood = 0;
-			} else if (currentFood >= maxFood) {
+			} 
+			
+			else if (currentFood >= maxFood) {
 				this.currentFood = maxFood;
 			}
 		}

@@ -1,4 +1,4 @@
-package Curio.FireManager;
+package Curio.SessionManagers.FireManager;
 
 import java.util.Random;
 

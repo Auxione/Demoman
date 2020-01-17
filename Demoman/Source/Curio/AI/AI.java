@@ -1,9 +1,8 @@
 package Curio.AI;
 
-import java.util.Random;
+import static Curio.Functions.*;
 
 import Curio.Console;
-import Curio.Functions;
 import Curio.TileMap;
 import Curio.AI.Tasks.Wait;
 import Curio.AI.Tasks.WanderAround;
@@ -35,13 +34,13 @@ public class AI {
 
 	public AI setConsole(Console console) {
 		this.console = console;
-		// wanderAround.setConsole(console);
-		// wait.setConsole(console);
+		wanderAround.setConsole(console);
+		wait.setConsole(console);
 		return this;
 	}
 
 	public void update() {
-		int currentTime = Functions.millis();
+		int currentTime = millis();
 		if (isBusy == false) {
 			decideWhatToDo(currentTime);
 		}
@@ -58,26 +57,18 @@ public class AI {
 	}
 
 	private void decideWhatToDo(int currentTime) {
-		int chance = getRandomInt(0, 2);
+		int chance = random(0, 2);
 		if (chance == 0) {
 			if (wanderAround.active() == false) {
-				wanderAround.Order(currentTime, getRandomInt(200, 600));
+				wanderAround.Order(currentTime, random(200, 600));
 				isBusy = true;
 			}
 		} else if (chance == 1) {
 			if (wait.active() == false) {
-				wait.Order(currentTime, getRandomInt(1000, 3000));
+				wait.Order(currentTime, random(1000, 3000));
 				isBusy = true;
 			}
 		}
-	}
-
-	private int getRandomInt(int min, int max) {
-		int rnd = 0;
-		if (min < max) {
-			rnd = new Random().nextInt(max - min) + min;
-		}
-		return rnd;
 	}
 
 	public ControlPackage getPackage() {

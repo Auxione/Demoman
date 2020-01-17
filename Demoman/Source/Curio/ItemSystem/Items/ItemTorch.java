@@ -2,16 +2,15 @@ package Curio.ItemSystem.Items;
 
 import org.newdawn.slick.Image;
 
-import Curio.TileMap;
-import Curio.BombManager.BombManager;
-import Curio.GameObject.GameObjectManager;
 import Curio.ItemSystem.Item;
-import Curio.PlantSystem.PlantMap;
-import Curio.Utilities.Math.Transform;
+import Curio.SessionManagers.PlantManager;
+import Curio.SessionManagers.WorldManager;
+import Curio.SessionManagers.BombManager.BombManager;
+import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
 import Default.Constants;
 import Default.Player;
 
-public class Torch implements Item {
+public class ItemTorch implements Item {
 	private int health = 100;
 	private Image image = Constants.torch;
 	private String name = "Torch";
@@ -25,13 +24,13 @@ public class Torch implements Item {
 	}
 
 	@Override
-	public void apply(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
-		gOManager.CreateNewLightSource(new Transform(p.transform));
+	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player)  {
+		gameObjectManager.createTorchObject(player.transform, 6);
 
 	}
 
 	@Override
-	public boolean condition(Player p, TileMap level, BombManager bm, PlantMap plantMap, GameObjectManager gOManager) {
+	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
 		// TODO Auto-generated method stub
 		return true;
 	}

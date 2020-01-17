@@ -4,7 +4,7 @@ import org.newdawn.slick.Image;
 
 public class Tile {
 	private String name; // name of the tile
-	private boolean moveable; // player and other items collide with this tile
+	private boolean isSolid; // player and other items collide with this tile
 	private boolean unbreakable; // take damage
 	private int tileMaxHP; // maximum damage can block take before gets destroyed
 	private boolean flammable; // maximum damage can block take before gets destroyed
@@ -22,12 +22,12 @@ public class Tile {
 	public String getName() {
 		return name;
 	}
-	public Tile setMoveable(boolean moveable) {
-		this.moveable = moveable;
+	public Tile setSolid(boolean isSolid) {
+		this.isSolid = isSolid;
 		return this;
 	}
-	public boolean isMoveable() {
-		return moveable;
+	public boolean isSolid() {
+		return isSolid;
 	}
 	
 	public Tile setUnbreakable(boolean unbreakable) {

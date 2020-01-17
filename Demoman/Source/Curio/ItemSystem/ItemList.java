@@ -2,31 +2,36 @@ package Curio.ItemSystem;
 
 import java.util.HashMap;
 
-import Curio.ItemSystem.Items.Berries;
-import Curio.ItemSystem.Items.DefaultBomb;
-import Curio.ItemSystem.Items.Medpack;
-import Curio.ItemSystem.Items.NapalmBomb;
-import Curio.ItemSystem.Items.Pizza;
-import Curio.ItemSystem.Items.PizzaSlice;
-import Curio.ItemSystem.Items.Sausage;
-import Curio.ItemSystem.Items.SausageSeed;
-import Curio.ItemSystem.Items.Stimpack;
-import Curio.ItemSystem.Items.Torch;
-
+import Curio.ItemSystem.Items.ItemBerries;
+import Curio.ItemSystem.Items.ItemDefaultBomb;
+import Curio.ItemSystem.Items.ItemMedpack;
+import Curio.ItemSystem.Items.ItemNapalmBomb;
+import Curio.ItemSystem.Items.ItemPizza;
+import Curio.ItemSystem.Items.ItemPizzaSlice;
+import Curio.ItemSystem.Items.ItemSausage;
+import Curio.ItemSystem.Items.ItemSausageSeed;
+import Curio.ItemSystem.Items.ItemStimpack;
+import Curio.ItemSystem.Items.ItemTorch;
 
 public class ItemList {
-	public static HashMap<Integer, Item> list= new HashMap<Integer, Item>();
-	
+	public static HashMap<Integer, Item> list = new HashMap<Integer, Item>();
+	public static HashMap<Item, Integer> IDlist = new HashMap<Item, Integer>();
+
 	public ItemList() {
-		list.put(1, new Medpack());
-		list.put(2, new Stimpack());
-		list.put(3, new Pizza());
-		list.put(4, new PizzaSlice());
-		list.put(5, new DefaultBomb());
-		list.put(6, new NapalmBomb());
-		list.put(7, new Sausage());
-		list.put(8, new Berries());
-		list.put(9, new SausageSeed());
-		list.put(10, new Torch());
+		put(1, new ItemMedpack());
+		put(2, new ItemStimpack());
+		put(3, new ItemPizza());
+		put(4, new ItemPizzaSlice());
+		put(5, new ItemDefaultBomb());
+		put(6, new ItemNapalmBomb());
+		put(7, new ItemSausage());
+		put(8, new ItemBerries());
+		put(9, new ItemSausageSeed());
+		put(10, new ItemTorch());
+	}
+
+	void put(int id, Item item) {
+		list.put(id, item);
+		IDlist.put(item, id);
 	}
 }

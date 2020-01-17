@@ -45,8 +45,10 @@ public class Constants {
 //plants
 	public static Image berryBushState1, berryBushState2, berryBushState3;
 	public static Image sausagePlant1, sausagePlant2, sausagePlant3, sausagePlant4, sausagePlant5;
-
-	public static Image CircularAlphaMap;
+	
+	public static Image WallShadowMask;
+	public static Image LinearAlphaMask;
+	public static Image CircularAlphaMask;
 
 	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
@@ -106,7 +108,9 @@ public class Constants {
 		sausagePlant4 = new Image("Data/Sprites/Plants/sausagePlant4.png");
 		sausagePlant5 = new Image("Data/Sprites/Plants/sausagePlant5.png");
 
-		CircularAlphaMap = new Image("Data/Sprites/AlphaMaps/CircularAlphaMap.png");
+		CircularAlphaMask = new Image("Data/Sprites/AlphaMasks/CircularLightingMask.png");
+		LinearAlphaMask = new Image("Data/Sprites/AlphaMasks/LinearLightingMask.png");
+		WallShadowMask = new Image("Data/Sprites/AlphaMasks/WallShadowMask.png");
 
 		Main.console.Add(0, "Textures Loaded");
 	}

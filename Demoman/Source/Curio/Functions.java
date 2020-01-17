@@ -1,6 +1,10 @@
 package Curio;
 
+import java.util.Random;
+
 import Curio.Utilities.CellCoordinate;
+import Curio.Utilities.Math.Transform;
+import Default.Constants;
 import Default.Main;
 
 public class Functions {
@@ -23,7 +27,8 @@ public class Functions {
 	// https://www.wikizeroo.org/index.php?q=aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGluZeKAk2xpbmVfaW50ZXJzZWN0aW9u
 
 	// this function returns if the two lines intersect each other
-	public static boolean lineToLineIntersectionBool(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean lineToLineIntersectionBool(float x1, float y1, float x2, float y2, float x3, float y3,
+			float x4, float y4) {
 		float uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 
 		float uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -33,9 +38,10 @@ public class Functions {
 		}
 		return false;
 	}
-	
+
 //this function returns coordinates of the intersection
-	public static float[] lineToLineIntersectionCord(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static float[] lineToLineIntersectionCord(float x1, float y1, float x2, float y2, float x3, float y3,
+			float x4, float y4) {
 		float uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 		float uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 
@@ -51,8 +57,27 @@ public class Functions {
 	}
 
 	public static final float map(float value, float start1, float stop1, float start2, float stop2) {
-		float out = start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+
+		return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+	}
+
+	public static CellCoordinate worldPostoCellPosition(Transform transform) {
+		CellCoordinate out = new CellCoordinate();
+		out.setCellX((int) (Math.floor(transform.position.x / Constants.CellSize)));
+		out.setCellY((int) (Math.floor(transform.position.y / Constants.CellSize)));
 		return out;
 	}
 
+	public static int random(int min, int max) {
+		int rnd = 0;
+		if (min < max) {
+			rnd = new Random().nextInt(max - min) + min;
+		}
+		return rnd;
+	}
+
+	public static int random(int[] array) {
+		int rnd = new Random().nextInt(array.length);
+		return array[rnd];
+	}
 }

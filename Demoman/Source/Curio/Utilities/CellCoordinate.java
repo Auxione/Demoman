@@ -6,7 +6,13 @@ import Default.Constants;
 
 public class CellCoordinate implements Serializable {
 	private int x, y, z;
-
+	
+	public CellCoordinate(CellCoordinate cellCoordinate) {
+		this.x = cellCoordinate.getCellX();
+		this.y = cellCoordinate.getCellY();
+		this.z = cellCoordinate.getCellZ();
+	}
+	
 	public CellCoordinate(int x, int y, int z) {
 		this.x = x;
 		this.y = y;

@@ -93,19 +93,8 @@ public class CellularMap implements Serializable {
 		return 0;
 	}
 
-	public int getTile(CellCoordinate cell, int zPosition) {
-		if ((cell.getCellX() >= 0) && (cell.getCellX() < cellularMap.length)) {
-			if ((cell.getCellY() >= 0) && (cell.getCellY() < cellularMap[0].length)) {
-				if ((zPosition >= 0) && (zPosition < cellularMap[0][0].length)) {
-					if (console != null) {
-						console.Add(0, "Cell in x: " + cell.getCellX() + " y: " + cell.getCellY() + " z: " + zPosition
-								+ " requested.");
-					}
-					return cellularMap[cell.getCellX()][cell.getCellY()][zPosition];
-				}
-			}
-		}
-		return 0;
+	public int getTile(CellCoordinate cellCoordinate, int zPosition) {
+		return getTile(cellCoordinate.getCellX(), cellCoordinate.getCellY(), zPosition);
 	}
 
 	public void clearCells() {
@@ -118,17 +107,23 @@ public class CellularMap implements Serializable {
 		}
 	}
 
+	public void clearCell(CellCoordinate cellCoordinate) {
+		clearCell(cellCoordinate.getCellX(), cellCoordinate.getCellY());
+	}
+
 	public void clearCell(int x, int y) {
 		for (int z = 0; z < getZAxisMaxCell(); z++) {
 			setTile(x, y, z, 0);
 		}
 	}
 
-	public CellCoordinate worldPostoCellPosition(Transform transform) {
-		CellCoordinate out = new CellCoordinate();
-		out.setCellX((int) (Math.floor(transform.position.x / Constants.CellSize)));
-		out.setCellY((int) (Math.floor(transform.position.y / Constants.CellSize)));
-		return out;
+	public boolean isEmpty(int x, int y) {
+		for (int z = 0; z < getZAxisMaxCell(); z++) {
+			if (getTile(x, y, z) != 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public int getXAxisMaxCell() {
