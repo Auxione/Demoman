@@ -1,13 +1,13 @@
 package Curio.Physics;
 
 public class WorldTime {
-	private int day = 0;
-	private int hour = 0;
-	private int minutes = 0;
+	private Time time = new Time();
+	public float fixedMillis;
 
 	private boolean dayTick = false;
 	private boolean hourTick = false;
 	private boolean minutesTick = false;
+	private boolean secondsTick = false;
 
 	private boolean isNight;
 	private boolean isDaytime;
@@ -15,7 +15,7 @@ public class WorldTime {
 	private boolean isSunset;
 
 	private int timeAdvanceRate = 1000;
-	private int timeCurrentGoal = 0;
+	private float currentTime = 0;
 
 	private int nightStartTime = 18;
 	private int nightEndTime = 6;
@@ -24,52 +24,57 @@ public class WorldTime {
 		this.timeAdvanceRate = timeAdvanceRate;
 	}
 
-	public void updateStart(int millis) {
-		if (millis > timeCurrentGoal) {
+	public void updateStart(float millis) {
+		if (millis > currentTime) {
 			advanceTime();
 			setday();
-			timeCurrentGoal = millis + timeAdvanceRate;
+			currentTime = millis + timeAdvanceRate;
 		}
+	}
+
+	public void setTimeAdvanceRate(int rate) {
+		this.fixedMillis = rate;
 	}
 
 	public void updateEnd() {
 		this.dayTick = false;
 		this.hourTick = false;
 		this.minutesTick = false;
+		this.secondsTick = false;
 	}
 
 	private void setday() {
-		this.isNight = (hour > nightStartTime || hour < nightEndTime);
-		this.isDaytime = !(hour > nightStartTime || hour < nightEndTime);
-		this.isSunset = (hour == nightStartTime);
-		this.isSunrise = (hour == nightEndTime);
+		this.isNight = (this.time.hour > nightStartTime || this.time.hour < nightEndTime);
+		this.isDaytime = !(this.time.hour > nightStartTime || this.time.hour < nightEndTime);
+		this.isSunset = (this.time.hour == nightStartTime);
+		this.isSunrise = (this.time.hour == nightEndTime);
 	}
 
 	private void advanceTime() {
-		this.minutes += 1;
-		this.minutesTick = true;
+		this.time.second += 1;
+		this.secondsTick = true;
 
-		if (minutes == 60) {
-			this.minutes = 0;
-			this.hour += 1;
+		if (this.time.second == 60) {
+			this.time.second = 0;
+			this.time.minute += 1;
+			this.minutesTick = true;
+		}
+
+		if (this.time.minute == 60) {
+			this.time.minute = 0;
+			this.time.hour += 1;
 			this.hourTick = true;
 		}
 
-		if (hour == 24) {
-			this.hour = 0;
-			this.day += 1;
+		if (this.time.hour == 24) {
+			this.time.hour = 0;
+			this.time.day += 1;
 			this.dayTick = true;
 		}
 	}
 
-	public void setWorldTime(int day, int hour, int minutes) {
-		if (hour >= 0 && hour <= 24) {
-			if (minutes >= 0 && minutes <= 60) {
-				this.day = day;
-				this.hour = hour;
-				this.minutes = minutes;
-			}
-		}
+	public void setWorldTime(int day, int hour, int minute, int second) {
+		this.time.add(new Time(day, hour, minute, second));
 	}
 
 	public boolean isNight() {
@@ -78,6 +83,14 @@ public class WorldTime {
 
 	public boolean isDaytime() {
 		return isDaytime;
+	}
+
+	public boolean isSunrise() {
+		return isSunrise;
+	}
+
+	public boolean isSunset() {
+		return isSunset;
 	}
 
 	public boolean getDayTick() {
@@ -92,23 +105,11 @@ public class WorldTime {
 		return minutesTick;
 	}
 
-	public int getDay() {
-		return day;
+	public boolean getSecondsTick() {
+		return secondsTick;
 	}
 
-	public int getHour() {
-		return hour;
-	}
-
-	public int getMinutes() {
-		return minutes;
-	}
-
-	public boolean isSunrise() {
-		return isSunrise;
-	}
-
-	public boolean isSunset() {
-		return isSunset;
+	public Time getTime() {
+		return this.time;
 	}
 }

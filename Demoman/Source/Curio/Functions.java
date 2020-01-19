@@ -4,13 +4,14 @@ import java.util.Random;
 
 import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 import Default.Constants;
 import Default.Main;
 
 public class Functions {
 	// game runtime in milliseconds
-	public static int millis() {
-		int out = (int) (System.currentTimeMillis() - Main.millis_start_time);
+	public static float millis() {
+		float out = System.currentTimeMillis() - Main.millis_start_time;
 		return out;
 	}
 
@@ -61,10 +62,10 @@ public class Functions {
 		return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
 	}
 
-	public static CellCoordinate worldPostoCellPosition(Transform transform) {
+	public static CellCoordinate worldPostoCellPosition(Vector position) {
 		CellCoordinate out = new CellCoordinate();
-		out.setCellX((int) (Math.floor(transform.position.x / Constants.CellSize)));
-		out.setCellY((int) (Math.floor(transform.position.y / Constants.CellSize)));
+		out.setCellX((int) (Math.floor(position.x / Constants.CellSize)));
+		out.setCellY((int) (Math.floor(position.y / Constants.CellSize)));
 		return out;
 	}
 

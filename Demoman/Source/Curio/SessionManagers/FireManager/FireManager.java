@@ -5,10 +5,10 @@ import java.util.ListIterator;
 
 import org.newdawn.slick.Graphics;
 
-import Curio.TileList;
-import Curio.Renderer.Renderer;
-import Curio.SessionManagers.PlantManager;
-import Curio.SessionManagers.WorldManager;
+import Curio.Renderer.Interface.Renderer;
+import Curio.SessionManagers.PlantManager.PlantManager;
+import Curio.SessionManagers.WorldManager.TileList;
+import Curio.SessionManagers.WorldManager.WorldManager;
 import Default.Player;
 
 public class FireManager implements Runnable, Renderer {
@@ -40,7 +40,7 @@ public class FireManager implements Runnable, Renderer {
 		for (int x = -1; x <= 1; x++) {
 			int cellx = fire.cellPosition.getCellX() + x;
 			int celly = fire.cellPosition.getCellY();
-			int tileid = worldManager.tileMap.getTile(cellx, celly, 0);
+			int tileid = worldManager.tileMap.getCell(cellx, celly, 0);
 			if (TileList.getTile(tileid).isFlammable() == true) {
 				f.add(new Fire(worldManager.tileMap, cellx, celly));
 			}
@@ -48,7 +48,7 @@ public class FireManager implements Runnable, Renderer {
 		for (int y = -1; y <= 1; y++) {
 			int cellx = fire.cellPosition.getCellX();
 			int celly = fire.cellPosition.getCellY() + y;
-			int tileid = worldManager.tileMap.getTile(cellx, celly, 0);
+			int tileid = worldManager.tileMap.getCell(cellx, celly, 0);
 			if (TileList.getTile(tileid).isFlammable() == true) {
 				f.add(new Fire(worldManager.tileMap, cellx, celly));
 			}
@@ -74,7 +74,7 @@ public class FireManager implements Runnable, Renderer {
 			canPlace = true;
 		}
 		if (canPlace == true) {
-			if (TileList.getTile(worldManager.tileMap.getTile(x, y, 0)).isFlammable() == true) {
+			if (TileList.getTile(worldManager.tileMap.getCell(x, y, 0)).isFlammable() == true) {
 				fireList.add(new Fire(worldManager.tileMap, x, y));
 			}
 		}

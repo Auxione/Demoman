@@ -148,7 +148,8 @@ public class Main extends BasicGame {
 		millis_start_time = System.currentTimeMillis();
 
 		app = new AppGameContainer(new Main("Demoman"));
-
+		app.setIcon("Data/Sprites/Bombs/GreenBombNormal.png");
+		
 		app.setDisplayMode(1280, 720, false);
 		DisplayWidth = app.getWidth();
 		DisplayHeight = app.getHeight();

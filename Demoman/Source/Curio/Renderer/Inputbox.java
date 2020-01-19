@@ -5,7 +5,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
-public class Inputbox extends HUD implements HUDInterface, Renderer {
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
+
+public class Inputbox extends HUD implements Renderer {
 	private boolean active = false;
 	public boolean Completed = false;
 

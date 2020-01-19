@@ -6,12 +6,14 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
 import Curio.Functions;
-import Curio.ItemSystem.Inventory;
-import Curio.ItemSystem.ItemList;
-import Curio.ItemSystem.ItemMap;
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
+import Curio.SessionManagers.ItemManager.Inventory;
+import Curio.SessionManagers.ItemManager.ItemList;
+import Curio.SessionManagers.ItemManager.ItemMap;
 import Curio.Utilities.Math.Transform;
 
-public class InventoryDisplay extends HUD implements HUDInterface, Renderer {
+public class InventoryDisplay extends HUD implements Renderer {
 	private Inventory inventory;
 	static int itemIconSize = 32;
 	private int itemCounterBoxSize = 20;
@@ -40,8 +42,8 @@ public class InventoryDisplay extends HUD implements HUDInterface, Renderer {
 			for (int y = 0; y < inventory.getYAxisMaxCell(); y++) {
 				g.drawRect(x * itemIconSize, y * itemIconSize, itemIconSize, itemIconSize);
 				// if the array contains draw item image
-				if (inventory.getTile(x, y, 0) > 0 && inventory.getTile(x, y, 1) > 0) {
-					g.drawImage(ItemList.list.get(inventory.getTile(x, y, 0)).getImage(), x * itemIconSize,
+				if (inventory.getCell(x, y, 0) > 0 && inventory.getCell(x, y, 1) > 0) {
+					g.drawImage(ItemList.list.get(inventory.getCell(x, y, 0)).getImage(), x * itemIconSize,
 							y * itemIconSize);
 					g.setColor(Color.black);
 					// draw item count
@@ -50,12 +52,12 @@ public class InventoryDisplay extends HUD implements HUDInterface, Renderer {
 					g.setColor(Color.black);
 					g.drawRect(x * itemIconSize, -itemCounterBoxSize, itemCounterBoxSize, itemCounterBoxSize);
 
-					int stringLineWidth = trueTypeFont.getWidth(Integer.toString(inventory.getTile(x, y, 1)));
-					int stringLineHeight = trueTypeFont.getHeight(Integer.toString(inventory.getTile(x, y, 1)));
+					int stringLineWidth = trueTypeFont.getWidth(Integer.toString(inventory.getCell(x, y, 1)));
+					int stringLineHeight = trueTypeFont.getHeight(Integer.toString(inventory.getCell(x, y, 1)));
 					float Stringx = x * itemIconSize + itemCounterBoxSize / 2 - stringLineWidth / 2;
 					float Stringy = y * itemIconSize -itemCounterBoxSize - itemCounterBoxSize / 2 + stringLineHeight / 2;
 
-					trueTypeFont.drawString(Stringx, Stringy, Integer.toString(inventory.getTile(x, y, 1)),
+					trueTypeFont.drawString(Stringx, Stringy, Integer.toString(inventory.getCell(x, y, 1)),
 							Color.black);
 				}
 			}

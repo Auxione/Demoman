@@ -4,9 +4,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
 import Curio.Utilities.Math.Transform;
 
-public class BarDisplay extends HUD implements HUDInterface, Renderer {
+public class BarDisplay extends HUD implements Renderer {
 	private Color barColor;
 	private Color backgroundColor = Color.lightGray;
 	public float ratio = 1;
@@ -23,9 +25,16 @@ public class BarDisplay extends HUD implements HUDInterface, Renderer {
 		barColor = _color;
 	}
 
+	public void Percentage(float currentValue, float maxValue) {
+		ratio = currentValue / maxValue;
+		if (ratio < 0) {
+			ratio = 0;
+		}
+	}
+
 	@Override
 	public void render(Graphics g) {
-		g.flush();
+		g.pushTransform();
 		g.setLineWidth(0);
 		g.setColor(Color.black);
 		g.fillRect(transform.position.x, transform.position.y, width, height);
@@ -36,21 +45,7 @@ public class BarDisplay extends HUD implements HUDInterface, Renderer {
 		g.setColor(barColor);
 		g.fillRect(transform.position.x + xsize, transform.position.y + ysize, (width - xsize * 2) * ratio,
 				height - ysize * 2);
-	}
-
-	public void Percentage(float currentValue, float maxValue) {
-		ratio = currentValue / maxValue;
-		if (ratio < 0) {
-			ratio = 0;
-		}
-	}
-
-	@Override
-	public void loopStart() {
-	}
-
-	@Override
-	public void loopEnd() {
+		g.popTransform();
 	}
 
 	@Override
@@ -67,6 +62,18 @@ public class BarDisplay extends HUD implements HUDInterface, Renderer {
 
 	@Override
 	public void keyReleased(int key, char chr) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loopStart() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loopEnd() {
 		// TODO Auto-generated method stub
 
 	}

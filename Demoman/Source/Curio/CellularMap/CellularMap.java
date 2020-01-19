@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import Curio.Console;
 import Curio.Utilities.CellCoordinate;
-import Curio.Utilities.Math.Transform;
-import Default.Constants;
 
 public class CellularMap implements Serializable {
 	protected Console console = null;
@@ -34,7 +32,7 @@ public class CellularMap implements Serializable {
 		return this.cellularMap;
 	}
 
-	public void setTile(int xPosition, int yPosition, int zPosition, int value) {
+	public void setCell(int xPosition, int yPosition, int zPosition, int value) {
 		// change the tile and render again
 		if ((xPosition >= 0) && (xPosition < cellularMap.length)) {
 			if ((yPosition >= 0) && (yPosition < cellularMap[0].length)) {
@@ -49,7 +47,7 @@ public class CellularMap implements Serializable {
 		}
 	}
 
-	public void setTile(CellCoordinate cellCoordinate, int zPosition, int value) {
+	public void setCell(CellCoordinate cellCoordinate, int zPosition, int value) {
 		// change the tile and render again
 		if ((cellCoordinate.getCellX() >= 0) && (cellCoordinate.getCellX() < cellularMap.length)) {
 			if ((cellCoordinate.getCellY() >= 0) && (cellCoordinate.getCellY() < cellularMap[0].length)) {
@@ -64,7 +62,7 @@ public class CellularMap implements Serializable {
 		}
 	}
 
-	public void setTile(int xPosition, int yPosition, int zPosition, int[][] value) {
+	public void setCell(int xPosition, int yPosition, int zPosition, int[][] value) {
 		for (int valueX = 0; valueX < value.length; valueX++) {
 			for (int valueY = 0; valueY < value[0].length; valueY++) {
 				if ((xPosition + valueX >= 0) && (xPosition + valueX < cellularMap.length)) {
@@ -78,10 +76,10 @@ public class CellularMap implements Serializable {
 		}
 	}
 
-	public int getTile(int xPosition, int yPosition, int zPosition) {
+	public int getCell(int xPosition, int yPosition, int zPosition) {
 		if ((xPosition >= 0) && (xPosition < cellularMap.length)) {
-			if ((yPosition >= 0) && (yPosition < cellularMap[0].length)) {
-				if ((zPosition >= 0) && (zPosition < cellularMap[0][0].length)) {
+			if ((yPosition >= 0) && (yPosition < cellularMap[xPosition].length)) {
+				if ((zPosition >= 0) && (zPosition < cellularMap[xPosition][yPosition].length)) {
 					if (console != null) {
 						console.Add(0,
 								"Cell in x: " + xPosition + " y: " + yPosition + " z: " + zPosition + " requested.");
@@ -93,15 +91,15 @@ public class CellularMap implements Serializable {
 		return 0;
 	}
 
-	public int getTile(CellCoordinate cellCoordinate, int zPosition) {
-		return getTile(cellCoordinate.getCellX(), cellCoordinate.getCellY(), zPosition);
+	public int getCell(CellCoordinate cellCoordinate, int zPosition) {
+		return getCell(cellCoordinate.getCellX(), cellCoordinate.getCellY(), zPosition);
 	}
 
 	public void clearCells() {
 		for (int x = 0; x < getXAxisMaxCell(); x++) {
 			for (int y = 0; y < getYAxisMaxCell(); y++) {
 				for (int z = 0; z < getZAxisMaxCell(); z++) {
-					setTile(x, y, z, 0);
+					setCell(x, y, z, 0);
 				}
 			}
 		}
@@ -113,13 +111,13 @@ public class CellularMap implements Serializable {
 
 	public void clearCell(int x, int y) {
 		for (int z = 0; z < getZAxisMaxCell(); z++) {
-			setTile(x, y, z, 0);
+			setCell(x, y, z, 0);
 		}
 	}
 
 	public boolean isEmpty(int x, int y) {
 		for (int z = 0; z < getZAxisMaxCell(); z++) {
-			if (getTile(x, y, z) != 0) {
+			if (getCell(x, y, z) != 0) {
 				return false;
 			}
 		}

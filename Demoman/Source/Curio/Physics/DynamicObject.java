@@ -3,14 +3,12 @@ package Curio.Physics;
 import java.util.ArrayList;
 
 import Curio.Functions;
-import Curio.GameObject.GameObject;
+import Curio.GameObject;
 import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 
-public class DynamicObject {
+public class DynamicObject extends GameObject {
 	public static ArrayList<DynamicObject> dynamicObjectList = new ArrayList<DynamicObject>();
-
-	public GameObject gameObject;
 
 	public Vector Velocity;
 	public Vector Acceleration;
@@ -18,9 +16,7 @@ public class DynamicObject {
 
 	float size;
 
-	public DynamicObject(GameObject gameObject) {
-		this.gameObject = gameObject;
-
+	public DynamicObject() {
 		this.Velocity = new Vector(0, 0);
 		this.Acceleration = new Vector(0, 0);
 
@@ -33,12 +29,12 @@ public class DynamicObject {
 	}
 
 	public void updatePhysics(float deltaTime) {
-		deltaTime /= 1000.0f;
+		deltaTime = deltaTime / 1000.0f;
 		Velocity.x += Acceleration.x * deltaTime;
 		Velocity.y += Acceleration.y * deltaTime;
 
-		gameObject.transform.position.x += Velocity.x * deltaTime;
-		gameObject.transform.position.y += Velocity.y * deltaTime;
+		super.transform.position.x += Velocity.x * deltaTime;
+		super.transform.position.y += Velocity.y * deltaTime;
 
 		updateCellPosition();
 		updateWithfriction();
@@ -54,7 +50,7 @@ public class DynamicObject {
 	}
 
 	void updateCellPosition() {
-		gameObject.cellCoordinate = Functions.worldPostoCellPosition(gameObject.transform);
+		super.cellCoordinate = Functions.worldPostoCellPosition(super.transform.position);
 	}
 
 	public void addAcceleration(float x, float y) {
@@ -63,12 +59,12 @@ public class DynamicObject {
 	}
 
 	public void setPosition(float x, float y) {
-		gameObject.transform.position.x = x;
-		gameObject.transform.position.y = y;
+		super.transform.position.x = x;
+		super.transform.position.y = y;
 	}
 
 	public void setPosition(Transform tr) {
-		gameObject.transform.position.x = tr.position.x;
-		gameObject.transform.position.y = tr.position.y;
+		super.transform.position.x = tr.position.x;
+		super.transform.position.y = tr.position.y;
 	}
 }

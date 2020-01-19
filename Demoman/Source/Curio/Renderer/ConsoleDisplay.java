@@ -5,8 +5,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
 import Curio.Console;
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
 
-public class ConsoleDisplay extends HUD implements HUDInterface, Renderer {
+public class ConsoleDisplay extends HUD implements Renderer {
 	int textSize = 16;
 	boolean active = false;
 	private float barSize = 4.0f;

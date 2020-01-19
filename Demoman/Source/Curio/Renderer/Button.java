@@ -5,9 +5,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
 import Curio.Utilities.Math.Transform;
 
-public class Button extends HUD implements HUDInterface, Renderer {
+public class Button extends HUD implements Renderer {
 	private String buttonText;
 
 	private Color buttonColor;
@@ -42,12 +44,8 @@ public class Button extends HUD implements HUDInterface, Renderer {
 		g.popTransform();
 	}
 
-	@Override
-	public void loopStart() {
+	@Override		
 
-	}
-
-	@Override
 	public void loopEnd() {
 		pressed = false;
 	}
@@ -68,12 +66,18 @@ public class Button extends HUD implements HUDInterface, Renderer {
 	@Override
 	public void keyPressed(int key, char chr) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void keyReleased(int key, char chr) {
 		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void loopStart() {
+		// TODO Auto-generated method stub
+		
 	}
 }

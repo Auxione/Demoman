@@ -1,74 +1,43 @@
 package Curio.SessionManagers.BombManager;
 
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import Curio.FluidMap;
-import Curio.Functions;
-import Curio.TileMap;
-import Curio.ItemSystem.ItemMap;
-import Curio.PlantSystem.PlantMap;
-import Curio.SessionManagers.PlantManager;
-import Curio.SessionManagers.WorldManager;
+import Curio.GameObject;
+import Curio.Physics.Time;
 import Curio.SessionManagers.FireManager.FireManager;
-import Curio.Utilities.Animation;
-import Curio.Utilities.CellCoordinate;
-import Default.Constants;
+import Curio.SessionManagers.ItemManager.ItemMap;
+import Curio.SessionManagers.PlantManager.PlantManager;
+import Curio.SessionManagers.WorldManager.WorldManager;
+import Curio.Utilities.Math.Transform;
 import Default.Player;
 
-public abstract class Bomb {
-	public CellCoordinate cellPosition;
-	public Animation ExplosionA;
+public abstract class Bomb extends GameObject {
+	public boolean isExploded = false;
+	public boolean isTicking = false;
 
-	private Image bombImage = null;
+	private Time goal = new Time();
+	private Time currentTime;
 
-	private int timer;
-	private int ExplodeTime;
+	public Bomb(WorldManager worldManager, Transform transform, Image bombImage, int time) {
+		super.setCellSnapping(true);
+		super.setObjectImage(bombImage);
+		super.setTransform(transform);
+		this.currentTime = worldManager.worldTime.getTime();
+		this.goal = new Time(worldManager.worldTime.getTime());
 
-	public boolean Exploded = false;
-	private int state;
-
-	public Bomb(int time, Image bombImage, CellCoordinate cellPosition) {
-		this.bombImage = bombImage;
-		this.timer = time;
-		this.cellPosition = cellPosition;
-
-		ExplosionA = new Animation(Constants.ExplosionSprite, 32, 32, 6, 200);
-		// calculate the time when bomb explodes
-		ExplodeTime = timer + Functions.millis();
-		state = 1;
+		this.goal.addSecond(time);
 	}
 
 	public void update() {
-		switch (state) {
-		case 1:
-			int counter = ExplodeTime - Functions.millis();
-			if (counter < 0) {
-				ExplosionA.Play();
-				state = 2;
-			}
-			break;
-		case 2:
-			if (ExplosionA.Finished == true) {
-				Exploded = true;
-			}
-			break;
-		}
-
-	}
-
-	public void render(Graphics g) {
-		switch (state) {
-		case 1:
-			g.drawImage(bombImage, cellPosition.getWorldX(), cellPosition.getWorldY());
-			break;
-		case 2:
-			ExplosionA.render(g, cellPosition);
-			break;
+		if (goal.getSeconds() > currentTime.getSeconds()) {
+			isTicking = true;
+		} 
+		
+		else if (goal.getSeconds() < currentTime.getSeconds()) {
+			isTicking = false;
+			isExploded = true;
 		}
 	}
-
-	public abstract void effectRender(Graphics g);
 
 	protected abstract void Effect(WorldManager worldManager, FireManager fireManager, PlantManager plantManager,
 			ItemMap itemMap, Player player);

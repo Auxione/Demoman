@@ -5,11 +5,11 @@ import static Curio.Functions.map;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import Curio.GameObject.GameObject;
-import Curio.SessionManagers.GameObjectManager.WorldObject;
+import Curio.GameObject;
+import Curio.SessionManagers.WorldObjectManager.WorldObject;
 import Default.Constants;
 
-public class RoundLightSource extends GameObject implements WorldObject {
+public class RoundLightSource extends WorldObject {
 	public Image alphaMapImage = Constants.CircularAlphaMask;
 
 	public Boolean active = true;
@@ -44,12 +44,6 @@ public class RoundLightSource extends GameObject implements WorldObject {
 	}
 
 	@Override
-	public void updateAllDay() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void updateNight() {
 		// TODO Auto-generated method stub
 		
@@ -62,14 +56,8 @@ public class RoundLightSource extends GameObject implements WorldObject {
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public String getName() {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void renderToAlphaMap(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		return null;
 	}
 }

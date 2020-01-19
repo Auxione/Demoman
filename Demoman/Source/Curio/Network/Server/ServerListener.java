@@ -8,7 +8,7 @@ import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
 
 import Curio.Console;
-import Curio.GameObject.Controllers.ControlPackage;
+import Curio.Controllers.ControlPackage;
 import Curio.Network.ChatMessagePackage;
 import Curio.Network.Credentials;
 

@@ -4,16 +4,18 @@ import static java.lang.Math.*;
 
 import java.io.Serializable;
 
-public class Vector implements Serializable{
-	public float x, y, z;
+import Curio.Functions;
+
+public class Vector implements Serializable {
+	public float x = 0, y = 0, z = 0;
 
 	public Vector() {
+
 	}
 
 	public Vector(float x, float y) {
 		this.x = x;
 		this.y = y;
-		this.z = 0;
 	}
 
 	public Vector(float x, float y, float z) {
@@ -22,23 +24,26 @@ public class Vector implements Serializable{
 		this.z = z;
 	}
 
-	public Vector(double x, double y, double z) {
-		this.x = (float) x;
-		this.y = (float) y;
-		this.z = (float) z;
+	public Vector(Vector vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
 	}
 
-	public Vector(Transform tr) {
-		x = tr.position.x;
-		y = tr.position.y;
-		z = tr.position.z;
+	public float getAngle() {
+		return (float) atan2(x,y);
 	}
 
-	public float get_Angle() {
-		float divide = y / x;
-		return (float) atan(divide);
+	public float getAngleInDegrees() {
+		return (float) Math.toDegrees(atan2(x,y));
 	}
-
+	
+	public float getAngleInDegreesMAPPED() {
+		float f = (float) Math.toDegrees(atan2(x,y));
+		
+		return Functions.map(f, -180, 180, 360, 0);
+	}
+	
 	public float magnitude() {
 		float output = (float) sqrt((pow(x, 2) + pow(y, 2) + pow(z, 2)));
 		return (float) atan(output);
@@ -112,9 +117,9 @@ public class Vector implements Serializable{
 	}
 
 	public Vector sub(Vector v) {
-		x -= v.x;
-		y -= v.y;
-		z -= v.z;
+		this.x -= v.x;
+		this.y -= v.y;
+		this.z -= v.z;
 		return this;
 	}
 

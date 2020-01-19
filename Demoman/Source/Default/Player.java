@@ -1,10 +1,9 @@
 package Default;
 
-
-import Curio.GameObject.GameObject;
+import Curio.Physics.DynamicObject;
 import Curio.Utilities.Math.Transform;
 
-public class Player extends GameObject{
+public class Player extends DynamicObject{
 	private int maxHealth = 100;
 	private int currentHealth = maxHealth;
 
@@ -18,6 +17,7 @@ public class Player extends GameObject{
 	public int Team = 1;// spectator, dead = 0 //blue = 1 // green = 2
 
 	public Player() {
+		super.setSize(psize);
 	}
 
 	public void update() {
@@ -43,7 +43,6 @@ public class Player extends GameObject{
 
 	public void spawn(int x, int y) {
 		super.setTransform(new Transform((x - 0.5f) * Constants.CellSize, (y - 0.5f) * Constants.CellSize, 0));
-		
 	}
 
 	public void addFood(int val) {

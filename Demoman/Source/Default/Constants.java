@@ -49,6 +49,7 @@ public class Constants {
 	public static Image WallShadowMask;
 	public static Image LinearAlphaMask;
 	public static Image CircularAlphaMask;
+	public static Image clock;
 
 	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
@@ -111,6 +112,8 @@ public class Constants {
 		CircularAlphaMask = new Image("Data/Sprites/AlphaMasks/CircularLightingMask.png");
 		LinearAlphaMask = new Image("Data/Sprites/AlphaMasks/LinearLightingMask.png");
 		WallShadowMask = new Image("Data/Sprites/AlphaMasks/WallShadowMask.png");
+		
+		clock = new Image("Data/Sprites/24hrClock.png");
 
 		Main.console.Add(0, "Textures Loaded");
 	}

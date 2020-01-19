@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 
 import Curio.FluidMap;
 import Curio.Functions;
+import Curio.Renderer.Interface.Renderer;
 import Default.Constants;
 
 public class FluidMapRenderer implements Renderer {
@@ -21,7 +22,7 @@ public class FluidMapRenderer implements Renderer {
 				g.pushTransform();
 				g.translate(x * Constants.CellSize, y * Constants.CellSize);
 
-				float alphaVal = Functions.map(fluidMap.getTile(x, y, 0), fluidMap.minCellVolume,
+				float alphaVal = Functions.map(fluidMap.getCell(x, y, 0), fluidMap.minCellVolume,
 						fluidMap.maxCellVolume, 0, 180);
 
 				g.setColor(new Color(0, 0, 255, alphaVal));

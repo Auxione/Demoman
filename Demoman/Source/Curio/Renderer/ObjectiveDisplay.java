@@ -5,8 +5,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
 import Curio.ObjectiveSystem.Objective;
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
 
-public class ObjectiveDisplay extends HUD implements HUDInterface, Renderer {
+public class ObjectiveDisplay extends HUD implements Renderer {
 
 	private Objective objective;
 	private TrueTypeFont trueTypeFont = super.getTTF();

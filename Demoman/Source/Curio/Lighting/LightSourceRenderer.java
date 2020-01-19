@@ -3,7 +3,7 @@ package Curio.Lighting;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Graphics;
 
-import Curio.Renderer.Renderer;
+import Curio.Renderer.Interface.Renderer;
 
 public class LightSourceRenderer implements Renderer {
 	private RoundLightSource roundLightSource;

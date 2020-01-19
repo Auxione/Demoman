@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Curio.Console;
-import Curio.TileMap;
-import Curio.GameObject.ObjectController;
-import Curio.GameObject.Controllers.ControlPackage;
-import Curio.ItemSystem.Inventory;
-import Curio.ItemSystem.ItemMap;
+import Curio.Controllers.ControlPackage;
+import Curio.Controllers.ObjectController;
 import Curio.Network.Credentials;
 import Curio.Network.GameRulesPackage;
 import Curio.Network.MapPackage;
@@ -16,6 +13,9 @@ import Curio.Network.PlayerDataPackage;
 import Curio.Network.PlayerList;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
+import Curio.SessionManagers.ItemManager.Inventory;
+import Curio.SessionManagers.ItemManager.ItemMap;
+import Curio.SessionManagers.WorldManager.TileMap;
 import Default.Player;
 
 public class Main {

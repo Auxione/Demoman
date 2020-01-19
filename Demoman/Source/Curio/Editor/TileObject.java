@@ -1,11 +1,10 @@
 package Curio.Editor;
 
-import Curio.TileMap;
-import Curio.ItemSystem.ItemMap;
-import Curio.LogicSystem.LogicMap;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.ItemManager.ItemMap;
+import Curio.SessionManagers.LogicManager.LogicMap;
+import Curio.SessionManagers.PlantManager.PlantMap;
+import Curio.SessionManagers.WorldManager.TileMap;
 import Curio.Utilities.CellCoordinate;
-import Curio.Utilities.FileUtilities;
 
 public class TileObject {
 	private PlantMap plantMap;

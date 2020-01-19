@@ -6,31 +6,34 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 
 import Curio.Console;
-import Curio.Viewport;
-import Curio.AI.AI;
-import Curio.GameObject.ObjectController;
-import Curio.GameObject.ObjectRenderer;
-import Curio.GameObject.Controllers.ControlPackage;
-import Curio.ItemSystem.Inventory;
-import Curio.ItemSystem.Item;
-import Curio.ItemSystem.ItemMap;
-import Curio.Physics.DynamicObject;
+import Curio.Controllers.ControlPackage;
+import Curio.Controllers.ObjectController;
+import Curio.Controllers.AI.AI;
 import Curio.Physics.TilemapCollision;
+import Curio.Renderer.ObjectRenderer;
+import Curio.Renderer.Interface.Renderer;
 import Curio.SessionManagers.BombManager.BombManager;
 import Curio.SessionManagers.FireManager.FireManager;
-import Curio.SessionManagers.GameObjectManager.WorldObjectManager;
+import Curio.SessionManagers.ItemManager.Inventory;
+import Curio.SessionManagers.ItemManager.Item;
+import Curio.SessionManagers.ItemManager.ItemManager;
+import Curio.SessionManagers.LogicManager.LogicManager;
+import Curio.SessionManagers.LogicManager.Interfaces.LogicTrigger;
+import Curio.SessionManagers.LogicManager.LogicObjects.LogicObject;
+import Curio.SessionManagers.PlantManager.PlantManager;
+import Curio.SessionManagers.WorldManager.WorldManager;
+import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
+import Curio.Utilities.CellCoordinate;
 import Default.Player;
 
-public class PlayerManager {
+public class PlayerManager implements Renderer {
 	public static ArrayList<Player> playerList = new ArrayList<Player>();
 	public static HashMap<Player, ObjectRenderer> playerDisplayList = new HashMap<Player, ObjectRenderer>();
 	public static HashMap<Player, Inventory> playerInventoryList = new HashMap<Player, Inventory>();
-	public static HashMap<Player, DynamicObject> dynamicObjectList = new HashMap<Player, DynamicObject>();
 	public static HashMap<Player, ObjectController> playerControllerList = new HashMap<Player, ObjectController>();
 	public static HashMap<Player, TilemapCollision> tilemapCollisionList = new HashMap<Player, TilemapCollision>();
 	public static HashMap<Player, AI> aiList = new HashMap<Player, AI>();
 
-	private ItemMap itemMap;
 	private Console console;
 
 	private BombManager bombManager;
@@ -38,15 +41,19 @@ public class PlayerManager {
 	private PlantManager plantManager;
 	private WorldManager worldManager;
 	private WorldObjectManager gameObjectManager;
+	private ItemManager itemManager;
+	private LogicManager logicManager;
 
 	public PlayerManager(WorldManager worldManager, BombManager bombManager, FireManager fireManager,
-			PlantManager plantManager, WorldObjectManager gameObjectManager, ItemMap itemMap) {
+			PlantManager plantManager, WorldObjectManager gameObjectManager, ItemManager itemManager,
+			LogicManager logicManager) {
+		this.logicManager = logicManager;
 		this.bombManager = bombManager;
 		this.fireManager = fireManager;
 		this.plantManager = plantManager;
 		this.worldManager = worldManager;
 		this.gameObjectManager = gameObjectManager;
-		this.itemMap = itemMap;
+		this.itemManager = itemManager;
 	}
 
 	public PlayerManager setConsole(Console console) {
@@ -56,33 +63,34 @@ public class PlayerManager {
 
 	public Player Create(ControlPackage controlPackage) {
 		Player player = new Player();
-		ObjectRenderer playerDisplay = new ObjectRenderer(player).setSize(player.psize);
+		ObjectRenderer playerDisplay = new ObjectRenderer(player).setObjectImageSize(player.psize);
 		Inventory playerInventory = new Inventory(6, 1, 5);
-		DynamicObject dynamicObject = new DynamicObject(player).setSize(player.psize);
+
 		ObjectController playerController;
 
 		if (controlPackage != null) {
-			playerController = new ObjectController(dynamicObject).setControlPackage(controlPackage);
+			playerController = new ObjectController(player).setControlPackage(controlPackage);
 		}
 
 		else {
-			AI ai = new AI(worldManager.tileMap, itemMap, player);
+			AI ai = new AI(worldManager.tileMap, itemManager.itemMap, player);
 			if (this.console != null) {
 				ai.setConsole(console);
 			}
 
 			aiList.put(player, ai);
-			playerController = new ObjectController(dynamicObject).setControlPackage(ai.getPackage());
+			playerController = new ObjectController(player).setControlPackage(ai.getPackage());
 		}
 
-		TilemapCollision collision = new TilemapCollision(this.worldManager.tileMap, dynamicObject);
+		TilemapCollision collision = new TilemapCollision(this.worldManager.tileMap, player);
 
 		playerList.add(player);
 		playerDisplayList.put(player, playerDisplay);
 		playerInventoryList.put(player, playerInventory);
-		dynamicObjectList.put(player, dynamicObject);
 		playerControllerList.put(player, playerController);
 		tilemapCollisionList.put(player, collision);
+
+		DynamicObjectManager.add(player);
 
 		return player;
 	}
@@ -94,7 +102,7 @@ public class PlayerManager {
 				plantManager.harvest(player);
 			}
 
-			if (playerControllerList.get(player).controlPackage.ActionUse == true) {
+			if (playerControllerList.get(player).controlPackage.ActionUseItem == true) {
 				useItem(player);
 			}
 
@@ -105,22 +113,27 @@ public class PlayerManager {
 			if (playerControllerList.get(player).controlPackage.ActionDrop == true) {
 				dropPlayerItem(player);
 			}
+			logicManager.onTopTrigger(player.cellCoordinate);
+			if (playerControllerList.get(player).controlPackage.ActionUse == true) {
+				logicManager.activateTrigger(player.cellCoordinate);
+			}
+
 		}
 	}
 
 	private void dropPlayerItem(Player player) {
 		Item item = playerInventoryList.get(player).getItemFromIndex();
 		if (item != null) {
-			itemMap.put(player.cellCoordinate, item);
+			itemManager.put(player.cellCoordinate, item);
 			playerInventoryList.get(player).removeItemFromIndex(1);
 		}
 	}
 
 	private void takePlayerItemFromItemMap(Player player) {
-		Item item = itemMap.getItemFromCell(player.cellCoordinate);
+		Item item = itemManager.getItemFromCell(player.cellCoordinate);
 		if (item != null) {
 			if (playerInventoryList.get(player).putItemToCell(item) == true) {
-				itemMap.removeItem(player.cellCoordinate, 1);
+				itemManager.removeItem(player.cellCoordinate, 1);
 			}
 		}
 	}
@@ -136,16 +149,17 @@ public class PlayerManager {
 		}
 	}
 
-	public void render(Viewport viewPort, Graphics g) {
+	public void render(Graphics g) {
 		for (Player player : playerList) {
-			viewPort.renderOnWorld(playerDisplayList.get(player), g);
+			playerDisplayList.get(player).render(g);
+			;
 		}
 	}
 
 	public void updateStart() {
 		for (Player player : playerList) {
 			if (aiList.get(player) != null) {
-				aiList.get(player).update();
+				aiList.get(player).update(worldManager.worldTime.getTime());
 			}
 		}
 

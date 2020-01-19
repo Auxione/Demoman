@@ -1,8 +1,8 @@
 package Curio.ObjectiveSystem;
 
-import Curio.TileMap;
-import Curio.ItemSystem.ItemMap;
-import Curio.PlantSystem.PlantMap;
+import Curio.SessionManagers.ItemManager.ItemMap;
+import Curio.SessionManagers.PlantManager.PlantMap;
+import Curio.SessionManagers.WorldManager.TileMap;
 import Default.Player;
 
 public interface Objective {

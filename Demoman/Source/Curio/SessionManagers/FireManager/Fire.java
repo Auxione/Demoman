@@ -2,11 +2,11 @@ package Curio.SessionManagers.FireManager;
 
 import java.util.Random;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 
 import Curio.Functions;
-import Curio.TileMap;
-import Curio.Utilities.Animation;
+import Curio.SessionManagers.WorldManager.TileMap;
 import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 import Default.Player;
@@ -29,8 +29,8 @@ public class Fire {
 		this.tilemap = tilemap;
 		this.cellPosition = new CellCoordinate(x, y);
 
-		this.FireAnimation = new Animation(Constants.FireSprite, 32, 32, 7, timer);
-		this.FireAnimation.Play();
+		//this.FireAnimation = new Animation(Constants.FireSprite, 32, 32, 7, timer);
+		//this.FireAnimation.Play();
 		this.burnt = false;
 	}
 
@@ -52,7 +52,7 @@ public class Fire {
 	}
 
 	public void render(Graphics g) {
-		FireAnimation.render(g, cellPosition);
+		//FireAnimation.render(g, cellPosition);
 	}
 
 	public boolean spreadChance() {

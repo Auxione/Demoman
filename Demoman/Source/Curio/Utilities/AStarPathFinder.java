@@ -1,37 +1,76 @@
 package Curio.Utilities;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+
 import Curio.CellularMap.CellularMap;
+import Curio.Renderer.Interface.Renderer;
 
-public class AStarPathFinder {
-	// A* pathfinding algorithm
-	private CellCoordinate start;
-	private CellCoordinate end;
-	private Queue<CellCoordinate> frontier = new LinkedList<>();
-	private boolean[][] visited;
-	private CellularMap cellularMap;
+public class AStarPathFinder implements Renderer {
+	// boolean[][] visited;
+	CellCoordinate[][] camefrom;
 
-	public AStarPathFinder(CellularMap cellularMap, CellCoordinate start, CellCoordinate end) {
-		this.cellularMap = cellularMap;
-		this.visited = new boolean[cellularMap.getXAxisMaxCell()][cellularMap.getYAxisMaxCell()];
-		this.frontier.add(start);
-		this.visited[start.getCellX()][start.getCellY()] = true;
+	private CellCoordinate startCell, targetCell;
 
-		while (frontier.isEmpty() == false) {
-			CellCoordinate currentCC = frontier.poll();
-			Iterator<CellCoordinate> i = frontier.iterator();
+	public AStarPathFinder(CellularMap cellularMap, CellCoordinate startCC, CellCoordinate targetCC) {
+		this.camefrom = new CellCoordinate[cellularMap.getXAxisMaxCell()][cellularMap.getYAxisMaxCell()];
+		Queue<CellCoordinate> queue = new LinkedList<>();
+		this.startCell = startCC;
+		this.targetCell = targetCC;
+		CellCoordinate lastCC = startCC;
+
+		queue.add(startCC);
+		while (queue.isEmpty() == false) {
+			CellCoordinate currentCC = queue.poll();
+			int x = currentCC.getCellX();
+			int y = currentCC.getCellY();
 			
-			while (i.hasNext()) {
-				CellCoordinate nextCC = i.next();
-				if (visited[nextCC.getCellX()][nextCC.getCellY()] == false) {
-					visited[nextCC.getCellX()][nextCC.getCellY()] = true;
-					frontier.add(nextCC);
+			camefrom[x][y] = lastCC;
+			lastCC = currentCC;
+			
+			if (x < 0 || x >= cellularMap.getXAxisMaxCell()) {
+				continue;
+			}
+			if (y < 0 || y >= cellularMap.getYAxisMaxCell()) {
+				continue;
+			}
+			if (currentCC.getCellX() == targetCC.getCellX()) {
+				if (currentCC.getCellY() == targetCC.getCellY()) {
+					break;
 				}
 			}
+			queue.add(new CellCoordinate(x, y - 1));
+			queue.add(new CellCoordinate(x, y + 1));
+			queue.add(new CellCoordinate(x - 1, y));
+			queue.add(new CellCoordinate(x + 1, y));
 		}
+	}
+
+	private int heuristic(CellCoordinate point1, CellCoordinate point2) {
+		return Math.abs(point1.getCellX() - point2.getCellX()) + Math.abs(point1.getCellY() - point2.getCellY());
+	}
+
+	@Override
+	public void render(Graphics g) {
+		g.pushTransform();
+		// draw start and target cell
+		g.setColor(Color.red);
+		g.fillRect(startCell.getWorldX(), startCell.getWorldY(), 32, 32);
+
+		g.setColor(Color.green);
+		g.fillRect(targetCell.getWorldX(), targetCell.getWorldY(), 32, 32);
+//draw directions
+		g.setLineWidth(2);
+		g.setColor(Color.black);
+		for (int x = 0; x < camefrom.length; x++) {
+			for (int y = 0; y < camefrom[0].length; y++) {
+
+			}
+		}
+		g.popTransform();
 	}
 }

@@ -7,7 +7,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
-public class TextDisplay extends HUD implements HUDInterface, Renderer {
+import Curio.Renderer.Interface.HUD;
+import Curio.Renderer.Interface.Renderer;
+
+public class TextDisplay extends HUD implements Renderer {
 	private Color backgroundColor = Color.lightGray;
 	private ArrayList<String> displayStringArray;
 	private TrueTypeFont trueTypeFont = super.getTTF();
