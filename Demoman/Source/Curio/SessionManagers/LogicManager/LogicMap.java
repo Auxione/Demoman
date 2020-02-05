@@ -22,7 +22,7 @@ public class LogicMap extends CellularMap {
 		return this;
 	}
 
-	public void clearTickChannels() {
+	public void clearTickCells() {
 		for (int x = 0; x < super.getXAxisMaxCell(); x++) {
 			for (int y = 0; y < super.getYAxisMaxCell(); y++) {
 				super.setCell(x, y, 0, 0);

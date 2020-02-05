@@ -1,89 +1,64 @@
 package Default;
 
+import Curio.Functions;
 import Curio.Physics.DynamicObject;
 import Curio.Utilities.Math.Transform;
 
-public class Player extends DynamicObject{
-	private int maxHealth = 100;
-	private int currentHealth = maxHealth;
+public class Player extends DynamicObject {
+	public int maxHealth = 100;
+	public int currentHealth = maxHealth;
+	public float healthRatio = 0.0f;
 
-	private int currentFood = 0;
-	private int maxFood = 100;
+	public int currentFood = 0;
+	public int maxFood = 100;
+	public float foodRatio = 0.0f;
 
-	public int psize = 10;
-	public boolean alive = true;
-	public int bombType = 1;
-	public int bombTimer = 1500;
-	public int Team = 1;// spectator, dead = 0 //blue = 1 // green = 2
+	public int size = 10;
 
 	public Player() {
-		super.setSize(psize);
+		super.setSize(size);
+	}
+
+	public Player setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+		return this;
+	}
+
+	public Player setMaxFood(int maxFood) {
+		this.maxFood = maxFood;
+		return this;
+	}
+	
+	public Player setHealthValue(int currentHealth) {
+		this.currentHealth = currentHealth;
+		return this;
+	}
+
+	public Player setFoodValue(int currentFood) {
+		this.currentFood = currentFood;
+		return this;
 	}
 
 	public void update() {
-		if (alive == true) {
-			if (currentHealth < 0) {
-				this.currentHealth = 0;
-				alive = false;
-			} 
-			
-			else if (currentHealth >= maxHealth) {
-				this.currentHealth = maxHealth;
-			}
-
-			if (currentFood < 0) {
-				this.currentFood = 0;
-			} 
-			
-			else if (currentFood >= maxFood) {
-				this.currentFood = maxFood;
-			}
-		}
+		this.currentHealth = (int) Functions.clamp(currentHealth, 0, maxHealth);
+		this.currentFood = (int) Functions.clamp(currentFood, 0, maxFood);
+		this.healthRatio = (float) currentHealth / maxHealth;
+		this.foodRatio = (float) currentFood / maxFood;
 	}
 
 	public void spawn(int x, int y) {
 		super.setTransform(new Transform((x - 0.5f) * Constants.CellSize, (y - 0.5f) * Constants.CellSize, 0));
 	}
 
-	public void addFood(int val) {
-		if (currentFood >= 0 && currentFood <= maxFood) {
-			this.currentFood += val;
-		}
+	public void addFood(int value) {
+		this.currentFood += value;
 	}
 
-	public void addHealth(int val) {
-		if (currentHealth >= 0 && currentHealth <= maxHealth) {
-			this.currentHealth += val;
-		}
+	public void addHealth(int value) {
+		this.currentHealth += value;
 	}
 
-	public void applyDamage(int x, int y, int val) {
-		if (super.cellCoordinate.getCellX() == x) {
-			if (super.cellCoordinate.getCellY() == y) {
-				if (currentHealth >= 0 && currentHealth <= maxHealth) {
-					this.currentHealth -= val;
-				}
-			}
-		}
-	}
-
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-	}
-
-	public int getCurrentHealth() {
-		return currentHealth;
-	}
-
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
-	public int getCurrentFood() {
-		return currentFood;
-	}
-
-	public int getMaxFood() {
-		return maxFood;
+	public void applyDamage(int value) {
+		this.currentHealth -= value;
 	}
 }

@@ -9,6 +9,8 @@ import org.newdawn.slick.TrueTypeFont;
 
 import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class TextDisplay extends HUD implements Renderer {
 	private Color backgroundColor = Color.lightGray;
@@ -17,21 +19,29 @@ public class TextDisplay extends HUD implements Renderer {
 	private int xOffset = 2;
 	private int yOffset = 2;
 
-	public TextDisplay(int Xposition, int Yposition) {
-		super(Xposition, Yposition);
-		displayStringArray = new ArrayList<String>();
-
-	}
-
-	public TextDisplay(int Xposition, int Yposition, String text) {
-		super(Xposition, Yposition);
-		displayStringArray = new ArrayList<String>();
-		updateString(text);
-	}
-
 	public TextDisplay() {
 		super();
 		displayStringArray = new ArrayList<String>();
+	}
+
+	public TextDisplay setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public TextDisplay setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public TextDisplay setSize(float width, float height) {
+		super.setSize(width, height);
+		return this;
+	}
+
+	public TextDisplay setText(String text) {
+		updateString(text);
+		return this;
 	}
 
 	@Override

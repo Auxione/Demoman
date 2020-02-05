@@ -19,13 +19,28 @@ public class CellularMap implements Serializable {
 		this.cellularMap = new int[xAxisSize][yAxisSize][zAxisSize];
 	}
 
+	public CellularMap(CellularMap cellularMap) {
+		this.xAxisSize = cellularMap.getXAxisMaxCell();
+		this.yAxisSize = cellularMap.getYAxisMaxCell();
+		this.zAxisSize = cellularMap.getZAxisMaxCell();
+		this.cellularMap = new int[xAxisSize][yAxisSize][zAxisSize];
+
+		setCellularMap(cellularMap.getCellularMap());
+	}
+
 	public CellularMap setConsole(Console console) {
 		this.console = console;
 		return this;
 	}
 
 	public void setCellularMap(int[][][] cellularMap) {
-		this.cellularMap = cellularMap;
+		for (int x = 0; x < xAxisSize; x++) {
+			for (int y = 0; y < yAxisSize; y++) {
+				for (int z = 0; z < zAxisSize; z++) {
+					this.cellularMap[x][y][z] = cellularMap[x][y][z];
+				}
+			}
+		}
 	}
 
 	public int[][][] getCellularMap() {

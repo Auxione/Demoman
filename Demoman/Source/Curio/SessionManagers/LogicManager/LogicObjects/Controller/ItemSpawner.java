@@ -8,31 +8,32 @@ import Curio.SessionManagers.ItemManager.ItemManager;
 import Curio.SessionManagers.LogicManager.LogicMap;
 import Curio.SessionManagers.LogicManager.Interfaces.LogicController;
 import Curio.SessionManagers.LogicManager.LogicObjects.LogicObject;
+import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
 import Default.Constants;
 
 //test edilmedi
 public class ItemSpawner extends LogicObject implements LogicController {
-	final String debugcode = "<ItemSpawner>: ";
-	final boolean debugActive = true;
+	private String objectName = "ItemSpawner";
 
 	public Image img = Constants.itemspawner;
 	private boolean activated = false;
 	private Item item;
 
 	private ItemManager itemManager;
-	private boolean spawnItem = false;
 	private boolean triggerOnce = true;
+	private CellCoordinate inputCC;
 
-	public ItemSpawner(ItemManager itemManager, Transform transform, int itemID) {
+	public ItemSpawner(ItemManager itemManager, Transform transform, CellCoordinate inputCC, int itemID) {
 		super(Constants.itemspawner, transform);
 		this.itemManager = itemManager;
 		this.item = ItemList.list.get(itemID);
+		this.inputCC = inputCC;
 	}
 
 	@Override
 	public void update(LogicMap logicMap) {
-		boolean readState = logicMap.getState(super.cellCoordinate);
+		boolean readState = logicMap.getState(inputCC);
 
 		if (readState == true && triggerOnce == false) {
 			this.activated = true;
@@ -47,5 +48,23 @@ public class ItemSpawner extends LogicObject implements LogicController {
 			itemManager.put(super.cellCoordinate, item);
 			this.activated = false;
 		}
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return objectName;
+	}
+
+	@Override
+	public boolean getState() {
+		// TODO Auto-generated method stub
+		return activated;
+	}
+
+	@Override
+	public String getCustomInfo() {
+		// TODO Auto-generated method stub
+		return "ItemName: " + item.getName();
 	}
 }

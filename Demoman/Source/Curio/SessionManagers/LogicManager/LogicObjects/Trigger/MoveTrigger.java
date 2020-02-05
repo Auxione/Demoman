@@ -10,23 +10,19 @@ import Curio.Utilities.Math.Transform;
 import Default.Constants;
 
 public class MoveTrigger extends LogicObject implements LogicTrigger {
-	final String debugcode = "<MoveTrigger>: ";
-	final boolean debugActive = false;
 
 	public Image img = Constants.movetrigger;
 	public boolean activated = false;
 	public boolean triggerOnce = true;
-	public CellCoordinate outputCC;
 
-	public MoveTrigger(Transform transform, CellCoordinate outputCC) {
+	public MoveTrigger(Transform transform) {
 		super(null, transform);
-		this.outputCC = outputCC;
 	}
 
 	@Override
 	public void update(LogicMap logicMap) {
 		if (activated == true) {
-			logicMap.sendTick(outputCC, activated);
+			logicMap.sendTick(super.cellCoordinate, activated);
 			activated = false;
 		}
 	}
@@ -48,5 +44,23 @@ public class MoveTrigger extends LogicObject implements LogicTrigger {
 	public void keyEvent(boolean ActionUse) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "MoveTrigger";
+	}
+
+	@Override
+	public String getCustomInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean getState() {
+		// TODO Auto-generated method stub
+		return activated;
 	}
 }

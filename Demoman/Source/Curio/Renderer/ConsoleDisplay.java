@@ -7,6 +7,8 @@ import org.newdawn.slick.TrueTypeFont;
 import Curio.Console;
 import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class ConsoleDisplay extends HUD implements Renderer {
 	int textSize = 16;
@@ -16,9 +18,24 @@ public class ConsoleDisplay extends HUD implements Renderer {
 
 	private Console console;
 
-	public ConsoleDisplay(float x, float y, float w, float h, Console console) {
-		super(x, y, w, h);
+	public ConsoleDisplay(Console console) {
+		super();
 		this.console = console;
+	}
+
+	public ConsoleDisplay setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public ConsoleDisplay setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public ConsoleDisplay setSize(float width, float height) {
+		super.setSize(width, height);
+		return this;
 	}
 
 	public void render(Graphics g) {
@@ -68,6 +85,7 @@ public class ConsoleDisplay extends HUD implements Renderer {
 
 		float sizeX = trueTypeFont.getWidth(console.commandHistory.get(console.commandHistory.size() - 1));
 		float sizeY = trueTypeFont.getHeight();
+		
 		g.fillRect(0, 0, sizeX, sizeY);
 
 		trueTypeFont.drawString(0, 0, lastCommand, Color.black);

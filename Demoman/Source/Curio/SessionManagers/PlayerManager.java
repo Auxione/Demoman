@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import Curio.Console;
 import Curio.Controllers.ControlPackage;
 import Curio.Controllers.ObjectController;
-import Curio.Controllers.AI.AI;
+import Curio.Controllers.Input.AI.AI;
 import Curio.Physics.TilemapCollision;
 import Curio.Renderer.ObjectRenderer;
 import Curio.Renderer.Interface.Renderer;
@@ -18,12 +18,9 @@ import Curio.SessionManagers.ItemManager.Inventory;
 import Curio.SessionManagers.ItemManager.Item;
 import Curio.SessionManagers.ItemManager.ItemManager;
 import Curio.SessionManagers.LogicManager.LogicManager;
-import Curio.SessionManagers.LogicManager.Interfaces.LogicTrigger;
-import Curio.SessionManagers.LogicManager.LogicObjects.LogicObject;
 import Curio.SessionManagers.PlantManager.PlantManager;
 import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
-import Curio.Utilities.CellCoordinate;
 import Default.Player;
 
 public class PlayerManager implements Renderer {
@@ -63,7 +60,7 @@ public class PlayerManager implements Renderer {
 
 	public Player Create(ControlPackage controlPackage) {
 		Player player = new Player();
-		ObjectRenderer playerDisplay = new ObjectRenderer(player).setObjectImageSize(player.psize);
+		ObjectRenderer playerDisplay = new ObjectRenderer(player).setObjectImageSize(player.size);
 		Inventory playerInventory = new Inventory(6, 1, 5);
 
 		ObjectController playerController;
@@ -152,7 +149,6 @@ public class PlayerManager implements Renderer {
 	public void render(Graphics g) {
 		for (Player player : playerList) {
 			playerDisplayList.get(player).render(g);
-			;
 		}
 	}
 

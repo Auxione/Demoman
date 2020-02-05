@@ -8,25 +8,24 @@ import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
 
 public class Delay extends LogicObject implements LogicProcessor {
-	final String debugcode = "<TimedTrigger>:";
-	final boolean debugActive = false;
-
+	private String objectName = "Delay";
+	
 	private Time goal;
 	public boolean activated = false;
-	private int delayInSeconds;
-	private CellCoordinate outputCC;
+	private int delayInMilliseconds;
+	private CellCoordinate inputCC;
 	private boolean triggerOnce = false;
 
-	public Delay(Transform transform, CellCoordinate outputCC, int delayInSeconds) {
+	public Delay(Transform transform, CellCoordinate inputCC, int delayInMilliseconds) {
 		super(null, transform);
-		this.delayInSeconds = delayInSeconds;
-		this.outputCC = outputCC;
+		this.delayInMilliseconds = delayInMilliseconds;
+		this.inputCC = inputCC;
 		this.goal = new Time();
 	}
 
 	@Override
 	public void update(LogicMap logicMap, Time currentTime) {
-		boolean readState = logicMap.getState(super.cellCoordinate);
+		boolean readState = logicMap.getState(inputCC);
 		if (readState == true && triggerOnce == false) {
 			this.activated = true;
 			this.triggerOnce = true;
@@ -37,12 +36,30 @@ public class Delay extends LogicObject implements LogicProcessor {
 		}
 
 		if (activated == true) {
-			this.goal.set(currentTime).addSecond(delayInSeconds);
+			this.goal.set(currentTime).addMillisSecond(delayInMilliseconds);
 			this.activated = false;
 		}
 
 		if (goal.getSeconds() < currentTime.getSeconds() && activated == false) {
-			logicMap.sendTick(outputCC, true);
+			logicMap.sendTick(super.cellCoordinate, true);
 		}
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return objectName;
+	}
+
+	@Override
+	public String getCustomInfo() {
+		// TODO Auto-generated method stub
+		return "DelayTime: " + delayInMilliseconds;
+	}
+
+	@Override
+	public boolean getState() {
+		// TODO Auto-generated method stub
+		return activated;
 	}
 }

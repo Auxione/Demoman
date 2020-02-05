@@ -3,15 +3,15 @@ package Curio.Renderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import Curio.FluidMap;
 import Curio.Functions;
 import Curio.Renderer.Interface.Renderer;
+import Curio.SessionManagers.PressureManager.PressureMap;
 import Default.Constants;
 
 public class FluidMapRenderer implements Renderer {
-	private FluidMap fluidMap;
+	private PressureMap fluidMap;
 
-	public FluidMapRenderer(FluidMap fluidMap) {
+	public FluidMapRenderer(PressureMap fluidMap) {
 		this.fluidMap = fluidMap;
 	}
 

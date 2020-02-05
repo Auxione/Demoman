@@ -25,7 +25,7 @@ public class ItemTorch implements Item {
 
 	@Override
 	public void apply(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player)  {
-		gameObjectManager.createTorchObject(player.transform, 6);
+		gameObjectManager.placeObject.Torch(player.transform, 6);
 
 	}
 

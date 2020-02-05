@@ -10,21 +10,37 @@ import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
 import Curio.SessionManagers.ItemManager.Inventory;
 import Curio.SessionManagers.ItemManager.ItemList;
-import Curio.SessionManagers.ItemManager.ItemMap;
 import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class InventoryDisplay extends HUD implements Renderer {
 	private Inventory inventory;
-	static int itemIconSize = 32;
+	private int itemIconSize = 32;
 	private int itemCounterBoxSize = 20;
 
 	private TrueTypeFont trueTypeFont = super.getTTF();
 
-	public InventoryDisplay(Transform transform, Inventory inventory, ItemMap itemMap) {
-		super(transform, inventory.getXAxisMaxCell() * itemIconSize, inventory.getYAxisMaxCell() * itemIconSize);
+	public InventoryDisplay(Inventory inventory) {
+		super();
+		super.setSize(inventory.getXAxisMaxCell() * itemIconSize, inventory.getYAxisMaxCell() * itemIconSize);
 		this.inventory = inventory;
 	}
 
+	public InventoryDisplay setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public InventoryDisplay setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public InventoryDisplay setIconSize(int itemIconSize) {
+		this.itemIconSize = itemIconSize;
+		return this;
+	}
+	
 	@Override
 	public void render(Graphics g) {
 		g.pushTransform();

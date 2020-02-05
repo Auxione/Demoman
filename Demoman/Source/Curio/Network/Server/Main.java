@@ -14,7 +14,10 @@ import Curio.Network.PlayerList;
 import Curio.Physics.DynamicObject;
 import Curio.Physics.TilemapCollision;
 import Curio.SessionManagers.ItemManager.Inventory;
+import Curio.SessionManagers.ItemManager.ItemList;
 import Curio.SessionManagers.ItemManager.ItemMap;
+import Curio.SessionManagers.PlantManager.PlantList;
+import Curio.SessionManagers.WorldManager.TileList;
 import Curio.SessionManagers.WorldManager.TileMap;
 import Default.Player;
 
@@ -28,6 +31,16 @@ public class Main {
 	private static int tileMapX = 30, tileMapY = 30;
 	private static int itemMapCellCount = 3;
 
+	@SuppressWarnings("unused")
+	private ItemList itemList = new ItemList();
+	@SuppressWarnings("unused")
+	private PlantList plantList = new PlantList();
+	@SuppressWarnings("unused")
+	private TileList tileList = new TileList();
+	
+	public static TileMap tileMap;
+	public static ItemMap itemMap;
+
 	public static ArrayList<Credentials> CredentialsList = new ArrayList<Credentials>();
 	public static HashMap<Credentials, Player> playerMap = new HashMap<Credentials, Player>();
 	public static HashMap<Credentials, TilemapCollision> collisionMap = new HashMap<Credentials, TilemapCollision>();
@@ -38,15 +51,11 @@ public class Main {
 
 	public static PlayerList playerList = new PlayerList(CredentialsList);
 
-	public static TileMap tileMap;
-	public static ItemMap itemMap;
-
 	public static GameRulesPackage gameRules;
 	public static MapPackage mapPackage;
 
 	public static void main(String[] args) {
 		console = new Console();
-		Tileset.InitTileset();
 		console.Add(0, "Started");
 
 		gameRules = new GameRulesPackage()// create game rules.

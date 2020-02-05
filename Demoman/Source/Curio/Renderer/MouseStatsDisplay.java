@@ -44,11 +44,11 @@ public class MouseStatsDisplay extends TextDisplay implements Renderer {
 	public void getCellData() {
 		String data = "";
 		for (Player p : PlayerManager.playerList) {
-			if (worldPosition.dist(p.transform.position) < p.psize) {
+			if (worldPosition.dist(p.transform.position) < p.size) {
 				data += " \n";
 				data += "Player: \n";
-				data += "HP: " + p.getCurrentHealth() + "\n";
-				data += "Food: " + p.getCurrentFood() + "\n";
+				data += "HP: " + p.currentHealth + "\n";
+				data += "Food: " + p.currentFood + "\n";
 			}
 		}
 		for (WorldObject wo : WorldObjectManager.worldObjects) {
@@ -86,7 +86,6 @@ public class MouseStatsDisplay extends TextDisplay implements Renderer {
 		}
 		super.updateString(data);
 		super.setPosition(screenPosition);
-
 	}
 
 	@Override

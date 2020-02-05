@@ -15,14 +15,16 @@ import Curio.Utilities.Math.Transform;
 
 public class WorldObjectManager implements Renderer, AlphaMaskRenderer {
 	public static ArrayList<WorldObject> worldObjects = new ArrayList<WorldObject>();
-	private ArrayList<ObjectRenderer> worldObjectRenderer = new ArrayList<ObjectRenderer>();
-
+	public static ArrayList<ObjectRenderer> worldObjectRenderer = new ArrayList<ObjectRenderer>();
+	public PlaceWorldObjects placeObject;
+	
 	private WorldManager worldManager;
 	private PlantManager plantManager;
-
+	
 	public WorldObjectManager(WorldManager worldManager, PlantManager plantManager) {
 		this.worldManager = worldManager;
 		this.plantManager = plantManager;
+		this.placeObject = new PlaceWorldObjects(worldManager);
 	}
 
 	public void render(Graphics g) {
@@ -60,12 +62,4 @@ public class WorldObjectManager implements Renderer, AlphaMaskRenderer {
 		}
 	}
 
-	public ObjectTorch createTorchObject(Transform transform, int burnTime) {
-		ObjectTorch obj = new ObjectTorch(worldManager.worldTime, transform, burnTime);
-		ObjectRenderer objr = new ObjectRenderer(obj);
-
-		worldObjects.add(obj);
-		worldObjectRenderer.add(objr);
-		return obj;
-	}
 }

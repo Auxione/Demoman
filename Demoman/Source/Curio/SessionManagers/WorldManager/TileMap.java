@@ -1,9 +1,8 @@
 package Curio.SessionManagers.WorldManager;
 
 import Curio.CellularMap.CellularMap;
-import static Curio.Functions.*;
-
 import Curio.Console;
+import Curio.Functions;
 
 public class TileMap extends CellularMap {
 	// 0 north
@@ -69,16 +68,15 @@ public class TileMap extends CellularMap {
 	}
 
 	private void createRandomTileMap() {
-		int[] idArray = { 1, 2, 2, 2, 2, 2, 4, 5 };
+		Integer[] idArray = { 1, 2, 2, 2, 2, 2, 4, 5 };
 		for (int x = 0; x < super.getXAxisMaxCell(); x++) {
 			for (int y = 0; y < super.getYAxisMaxCell(); y++) {
 				if (x == super.getXAxisMaxCell() - 1 || x == 0 || y == super.getYAxisMaxCell() - 1 || y == 0) {
 					super.setCell(x, y, 0, 5);
 				} else {
-					super.setCell(x, y, 0, random(idArray));
+					super.setCell(x, y, 0,(Integer) Functions.random(idArray));
 				}
 			}
 		}
 	}
-
 }

@@ -49,7 +49,7 @@ public class ItemSausage implements Item {
 
 	@Override
 	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player) {
-		if (player.getCurrentFood() < player.getMaxFood()) {
+		if (player.currentFood < player.maxFood) {
 			return true;
 		} else {
 			return false;

@@ -1,4 +1,5 @@
 package Curio.Renderer;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -7,10 +8,10 @@ import org.newdawn.slick.TrueTypeFont;
 import Curio.ObjectiveSystem.Objective;
 import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class ObjectiveDisplay extends HUD implements Renderer {
-
-	private Objective objective;
 	private TrueTypeFont trueTypeFont = super.getTTF();
 	private String[] goalText;
 	private int goalTextWidth;
@@ -19,15 +20,28 @@ public class ObjectiveDisplay extends HUD implements Renderer {
 	private int xOffset = 0;
 	private int yOffset = 0;
 
-	public ObjectiveDisplay(float xPosition, float yPosition, Objective objective) {
-		super(xPosition, yPosition);
-		this.objective = objective;
+	public ObjectiveDisplay() {
+		super();
+	}
+
+	public ObjectiveDisplay setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public ObjectiveDisplay setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public ObjectiveDisplay setObjective(Objective objective) {
 		this.goalText = splitText(objective.goalText());
 
 		this.goalTextWidth = 200;// trueTypeFont.getWidth(arg0);
 		this.goalTextHeight = trueTypeFont.getHeight();
 
-		super.resize(goalTextWidth, goalTextHeight * goalText.length);
+		super.setSize(goalTextWidth, goalTextHeight * goalText.length);
+		return this;
 	}
 
 	@Override

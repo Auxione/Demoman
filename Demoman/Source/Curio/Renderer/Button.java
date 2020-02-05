@@ -8,11 +8,11 @@ import org.newdawn.slick.TrueTypeFont;
 import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
 import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class Button extends HUD implements Renderer {
-	private String buttonText;
-
-	private Color buttonColor;
+	private String buttonText = "";
+	private Color buttonColor= Color.red;
 	private Color defaultColor = Color.gray;
 	private Color waitingInputColor = Color.lightGray;
 	private Color pressedColor = Color.darkGray;
@@ -21,15 +21,50 @@ public class Button extends HUD implements Renderer {
 
 	public boolean pressed = false;
 
-	public Button(int Xposition, int Yposition, int _width, int _height, String _text) {
-		super(Xposition, Yposition, _width, _height);
-		buttonText = _text;
+	public Button() {
+		super();
+	}
+	
+	public Button setButtonColor(Color buttonColor) {
+		this.buttonColor = buttonColor;
+		return this;
+	}
+	
+	public Button setButtonText(String buttonText) {
+		this.buttonText = buttonText;
+		return this;
+	}
+	
+	public Button setDefaultColor(Color defaultColor) {
+		this.defaultColor = defaultColor;
+		return this;
 	}
 
-	public Button(Transform transform, int _width, int _height, String _text) {
-		super(transform, _width, _height);
-		buttonText = _text;
+	public Button setPressedColor(Color pressedColor) {
+		this.pressedColor = pressedColor;
+		return this;
 	}
+
+	public Button setWaitingInputColor(Color waitingInputColor) {
+		this.waitingInputColor = waitingInputColor;
+		return this;
+	}
+
+	public Button setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public Button setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public Button setSize(float width, float height) {
+		super.setSize(width, height);
+		return this;
+	}
+
 
 	public void render(Graphics g) {
 		g.pushTransform();
@@ -44,7 +79,7 @@ public class Button extends HUD implements Renderer {
 		g.popTransform();
 	}
 
-	@Override		
+	@Override
 
 	public void loopEnd() {
 		pressed = false;
@@ -66,18 +101,18 @@ public class Button extends HUD implements Renderer {
 	@Override
 	public void keyPressed(int key, char chr) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyReleased(int key, char chr) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void loopStart() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

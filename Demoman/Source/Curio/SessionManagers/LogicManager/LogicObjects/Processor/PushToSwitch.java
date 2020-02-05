@@ -8,22 +8,19 @@ import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Transform;
 
 public class PushToSwitch extends LogicObject implements LogicProcessor {
-	final String debugcode = "<PushToSwitch>:";
-	final boolean debugActive = false;
-
 	public boolean state = false;
 	public boolean activated = false;
 	private boolean triggerOnce = false;
-	public CellCoordinate outputCC;
+	public CellCoordinate inputCC;
 
-	public PushToSwitch(Transform transform, CellCoordinate outputCC) {
+	public PushToSwitch(Transform transform, CellCoordinate inputCC) {
 		super(null, transform);
-		this.outputCC = outputCC;
+		this.inputCC = inputCC;
 	}
 
 	@Override
 	public void update(LogicMap logicMap, Time currentTime) {
-		boolean readState = logicMap.getState(super.cellCoordinate);
+		boolean readState = logicMap.getState(inputCC);
 		if (readState == true && triggerOnce == false) {
 			this.activated = true;
 			this.triggerOnce = true;
@@ -35,8 +32,26 @@ public class PushToSwitch extends LogicObject implements LogicProcessor {
 
 		if (activated == true) {
 			state = !state;
-			logicMap.setState(outputCC, state);
+			logicMap.setState(super.cellCoordinate, state);
 			activated = false;
 		}
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "PushToSwitch";
+	}
+
+	@Override
+	public String getCustomInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean getState() {
+		// TODO Auto-generated method stub
+		return activated;
 	}
 }

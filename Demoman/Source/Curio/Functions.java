@@ -3,7 +3,6 @@ package Curio;
 import java.util.Random;
 
 import Curio.Utilities.CellCoordinate;
-import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 import Default.Constants;
 import Default.Main;
@@ -57,9 +56,22 @@ public class Functions {
 		return null;
 	}
 
-	public static final float map(float value, float start1, float stop1, float start2, float stop2) {
-
+	public static float map(float value, float start1, float stop1, float start2, float stop2) {
 		return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+	}
+
+	public static float clamp(float value, float min,float max) {
+		if (value > max) {
+			return max;
+		}
+
+		else if (value > max) {
+			return min;
+		}
+
+		else {
+			return value;
+		}
 	}
 
 	public static CellCoordinate worldPostoCellPosition(Vector position) {
@@ -77,7 +89,7 @@ public class Functions {
 		return rnd;
 	}
 
-	public static int random(int[] array) {
+	public static Object random(Object[] array) {
 		int rnd = new Random().nextInt(array.length);
 		return array[rnd];
 	}

@@ -6,6 +6,7 @@ import org.newdawn.slick.Input;
 import Curio.Console;
 import Curio.Renderer.Button;
 import Curio.Renderer.Inputbox;
+import Curio.Utilities.Math.Vector;
 import Default.Main;
 
 public class SinglePlayerSetup {
@@ -18,13 +19,11 @@ public class SinglePlayerSetup {
 	private int mapSizeYVal = 200;
 
 	public SinglePlayerSetup(Console console) {
-		this.mapSizeXInputBox = new Inputbox(20, 20, 200, 50, "Map Size x: ", 1);
-		this.mapSizeYInputBox = new Inputbox(20, 80, 200, 50, "Map Size y: ", 1);
-		this.mapSizeXInputBox.setCompleteWhenFocusLoss(true);
-		this.mapSizeYInputBox.setCompleteWhenFocusLoss(true);
+		this.mapSizeXInputBox = new Inputbox(Inputbox.ONLYDIGIT).setPosition(new Vector(20,20)).setSize(200, 50).setText("Map Size x: ").setCompleteWhenFocusLoss(true);
+		this.mapSizeYInputBox = new Inputbox(Inputbox.ONLYDIGIT).setPosition(new Vector(20,80)).setSize(200, 50).setText("Map Size y: ").setCompleteWhenFocusLoss(true);
 
-		this.startGameButton = new Button(20, 140, 200, 50, "Start");
-		this.backButton = new Button(20, 200, 200, 50, "Back");
+		this.startGameButton = new Button().setPosition(new Vector(20,140)).setSize(200, 50).setButtonText("Start");
+		this.backButton = new Button().setPosition(new Vector(20,200)).setSize(200, 50).setButtonText("Back");
 
 		this.console = console;
 		this.console.Add(0, "Creating Singleplayer Game");
@@ -79,3 +78,4 @@ public class SinglePlayerSetup {
 		mapSizeYInputBox.keyReleased(key, chr);
 	}
 }
+

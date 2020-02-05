@@ -1,14 +1,14 @@
 package Default.GameStates;
 
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import Curio.Console;
-import Curio.FluidMap;
 import Curio.Functions;
+import Curio.MouseSelect;
 import Curio.Viewport;
-import Curio.Controllers.UserInput;
-import Curio.Physics.WorldTime;
+import Curio.Controllers.Input.UserInput;
 import Curio.Renderer.BarDisplay;
 import Curio.Renderer.InventoryDisplay;
 import Curio.Renderer.ItemMapRenderer;
@@ -32,11 +32,9 @@ import Curio.SessionManagers.PlantManager.PlantMap;
 import Curio.SessionManagers.WorldManager.TileList;
 import Curio.SessionManagers.WorldManager.TileMap;
 import Curio.SessionManagers.WorldManager.WorldManager;
+import Curio.SessionManagers.WorldManager.WorldTime;
 import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
-import Curio.Utilities.AStarPathFinder;
-import Curio.Utilities.BreadthFS;
-import Curio.Utilities.CellCoordinate;
-import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 import Default.Constants;
 import Default.Main;
 import Default.Player;
@@ -75,7 +73,6 @@ public class SinglePlayerSession {
 	private LogicManager logicManager;
 	private ItemManager itemManager;
 
-	private FluidMap oxygenMap;
 	private LogicMap logicMap;
 
 	private InventoryDisplay inventoryDisplay;
@@ -84,10 +81,9 @@ public class SinglePlayerSession {
 	private MouseStatsDisplay mouseStatsDisplay;
 	private Player selfPlayer;
 
-	private AStarPathFinder aspf;
+	private MouseSelect mouseSelect;
 
 	public SinglePlayerSession(int mapSizeX, int mapSizeY, Console console) {
-		console.Add(0, "Singleplayer launched.");
 		userInput = new UserInput(Main.input);
 		worldTime = new WorldTime(1000);
 		viewPort = new Viewport(Main.DisplayWidth, Main.DisplayHeight);
@@ -95,17 +91,16 @@ public class SinglePlayerSession {
 		tileMap = new TileMap(mapSizeX, mapSizeY).createBlankLevel();
 		itemMap = new ItemMap(tileMap);
 		plantMap = new PlantMap(tileMap);
-		oxygenMap = new FluidMap(tileMap);
 		logicMap = new LogicMap(tileMap);
 
 		dynamicObjectManager = new DynamicObjectManager();
-		worldManager = new WorldManager(viewPort, plantMap, tileMap, itemMap, worldTime);
+		worldManager = new WorldManager(plantMap, tileMap, itemMap, worldTime);
 		worldObjectManager = new WorldObjectManager(worldManager, plantManager);
 		itemManager = new ItemManager(itemMap, 15);
 		plantManager = new PlantManager(worldManager, itemManager, plantMap);
 		fireManager = new FireManager(worldManager, plantManager);
 		bombManager = new BombManager(worldManager, fireManager, plantManager, itemMap);
-		logicManager = new LogicManager(worldManager, itemManager, fireManager, logicMap).setConsole(console);
+		logicManager = new LogicManager(worldManager, itemManager, fireManager, logicMap);
 		playerManager = new PlayerManager(worldManager, bombManager, fireManager, plantManager, worldObjectManager,
 				itemManager, logicManager);
 
@@ -113,37 +108,37 @@ public class SinglePlayerSession {
 
 		selfPlayer = playerManager.Create(userInput.getPackage());
 		selfPlayer.spawn(6, 6);
-		playerManager.Create(null).spawn(6, 6);
-		playerManager.Create(null).spawn(6, 6);
+		playerManager.Create(null).spawn(7, 6);
+		playerManager.Create(null).spawn(8, 6);
 
-		inventoryDisplay = new InventoryDisplay(new Transform(0, 600, 0),
-				PlayerManager.playerInventoryList.get(selfPlayer), itemMap);
+		inventoryDisplay = new InventoryDisplay(PlayerManager.playerInventoryList.get(selfPlayer))
+				.setPosition(new Vector(0, 600));
 
 		plantMapDisplay = new PlantMapRenderer(plantMap);
 		itemMapDisplay = new ItemMapRenderer(itemMap);
 		tileMapDisplay = new TileMapRenderer(tileMap);
 
-		hpBar = new BarDisplay(500, 500 + 32, 128, 10, Color.red);
-		foodBar = new BarDisplay(500, 500 + 32 + 10, 128, 10, Color.green);
-		PlayerName = new TextDisplay(20, 20, "Cem");
+		hpBar = new BarDisplay().setBarColor(Color.red).setPosition(new Vector(500, 500 + 32)).setSize(128, 10);
+		foodBar = new BarDisplay().setBarColor(Color.green).setPosition(new Vector(500, 500 + 32 + 10)).setSize(128,
+				10);
+		PlayerName = new TextDisplay().setPosition(new Vector(20, 20)).setText("Cem");
 		mouseStatsDisplay = new MouseStatsDisplay(viewPort, worldManager, plantManager, itemMap);
+		worldTimeDisplay = new WorldTimeDisplay(worldTime).setPosition(new Vector(200, 400)).setSize(256, 256);
 
-		worldTimeDisplay = new WorldTimeDisplay(200, 400, 256, 256, worldTime);
+		mouseSelect = new MouseSelect(viewPort);
 
 		worldTime.setWorldTime(0, 20, 59, 55);
 
 		// aspf = new AStarPathFinder(tileMap, new CellCoordinate(3, 3), new
 		// CellCoordinate(9, 9));
-		logicManager.placeObject.DynamicWall(5, 8, 5);
-		logicManager.placeObject.PushToSwitch(4, 8, 5, 8);
-		logicManager.placeObject.Pushbutton(3, 8, 4, 8);
+
+		console.Add(0, "Singleplayer launched.");
 	}
 
 	public void update(int delta) {
 		systemMillis = Functions.millis();
 
-		worldTime.updateStart(systemMillis);
-		worldManager.updateCycle();
+		worldTime.updateStart(delta);
 		worldObjectManager.update();
 
 		userInput.updateStart();
@@ -154,31 +149,38 @@ public class SinglePlayerSession {
 
 		mouseStatsDisplay.getCellData();
 
-		oxygenMap.update();
-
 		viewPort.move(selfPlayer.transform.position);
 
-		hpBar.Percentage(selfPlayer.getCurrentHealth(), selfPlayer.getMaxHealth());
-		foodBar.Percentage(selfPlayer.getCurrentFood(), selfPlayer.getMaxFood());
+		hpBar.setPercentage(selfPlayer.healthRatio);
+		foodBar.setPercentage(selfPlayer.foodRatio);
+
 		inventoryDisplay.inputEvent(Main.input);
 		mouseStatsDisplay.inputEvent(Main.input);
 
+		mouseSelect.update();
+
 		playerManager.updateEnd();
 		worldTime.updateEnd();
+
+		mouseSelect.selectObject(Main.input);
 	}
 
 	public void render(Graphics g) {
 		viewPort.renderOnWorld(tileMapDisplay, g);
-		viewPort.renderOnWorld(logicMap, g);
+		viewPort.renderAlphaMaskOnWorld(tileMapDisplay, g);
 		viewPort.renderOnWorld(plantMapDisplay, g);
-		viewPort.renderOnWorld(oxygenMap, g);
 		viewPort.renderOnWorld(bombManager, g);
+		viewPort.renderAnimationOnWorld(bombManager, g);
 		viewPort.renderOnWorld(logicManager, g);
+		viewPort.renderAnimationOnWorld(logicManager, g);
 		viewPort.renderOnWorld(itemMapDisplay, g);
-		
-		viewPort.renderOnHUD(worldManager, g);
 		viewPort.renderOnWorld(worldObjectManager, g);
 		viewPort.renderOnWorld(playerManager, g);
+		viewPort.renderOnWorld(mouseSelect, g);
+
+		viewPort.renderAlphaMaskOnWorld(worldObjectManager, g);
+		viewPort.renderAlphaMaskOnWorld(logicManager, g);
+		viewPort.renderAlphaMaskOnWorld(bombManager, g);
 
 		viewPort.renderOnHUD(worldTimeDisplay, g);
 		viewPort.renderOnHUD(mouseStatsDisplay, g);
@@ -215,6 +217,26 @@ public class SinglePlayerSession {
 			plantMap.put(4 + i, 5, i);
 		}
 
+		Color[] cArray = { Color.blue, Color.red, Color.magenta, Color.yellow, Color.green };
+
+		for (int i = 0; i < 10; i++) {
+			logicManager.placeObject.ItemSpawner(4 + i, 13, 4 + i, 10, Functions.random(1, 7));
+			logicManager.placeObject.DynamicWall(4 + i, 12, 4 + i, 10, 5);
+			logicManager.placeObject.LightBulb(4 + i, 11, 4 + i, 10, (Color) Functions.random(cArray));
+			int trig = Functions.random(0, 3);
+
+			if (trig == 0) {
+				logicManager.placeObject.MoveTrigger(4 + i, 10);
+			}
+
+			else if (trig == 1) {
+				logicManager.placeObject.Pushbutton(4 + i, 10);
+			}
+
+			else if (trig == 2) {
+				logicManager.placeObject.Switchbutton(4 + i, 10);
+			}
+		}
 		tileMap.setCell(15, 15, 0, Constants.obj_Building);
 	}
 }

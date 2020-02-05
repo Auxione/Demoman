@@ -5,6 +5,7 @@ import org.newdawn.slick.Input;
 
 import Curio.Console;
 import Curio.Renderer.Button;
+import Curio.Utilities.Math.Vector;
 import Default.Main;
 
 public class MainMenu {
@@ -12,8 +13,8 @@ public class MainMenu {
 	private Console console;
 
 	public MainMenu(Console console) {
-		this.spButton = new Button(20, 20, 200, 50, "Singleplayer");
-		this.mpButton = new Button(20, 80, 200, 50, "Multiplayer");
+		this.spButton = new Button().setPosition(new Vector(20, 20)).setSize(200, 50).setButtonText("Singleplayer");
+		this.mpButton = new Button().setPosition(new Vector(20, 80)).setSize(200, 50).setButtonText("Multiplayer");
 		this.console = console;
 	}
 
@@ -40,3 +41,4 @@ public class MainMenu {
 		mpButton.render(g);
 	}
 }
+

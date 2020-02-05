@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import Curio.Console;
 import Curio.Renderer.ConsoleDisplay;
+import Curio.Utilities.Math.Vector;
 import Default.GameStates.MainMenu;
 import Default.GameStates.MultiplayerSession;
 import Default.GameStates.MultiplayerSetup;
@@ -41,7 +42,7 @@ public class Main extends BasicGame {
 
 	public void init(GameContainer container) throws SlickException {
 		console = new Console();
-		consoleDisplay = new ConsoleDisplay(20, 20, 600, 400, console);
+		consoleDisplay = new ConsoleDisplay(console).setPosition(new Vector(20, 20)).setSize(600, 400);
 
 		Constants.loadData();
 
@@ -149,11 +150,11 @@ public class Main extends BasicGame {
 
 		app = new AppGameContainer(new Main("Demoman"));
 		app.setIcon("Data/Sprites/Bombs/GreenBombNormal.png");
-		
+
 		app.setDisplayMode(1280, 720, false);
 		DisplayWidth = app.getWidth();
 		DisplayHeight = app.getHeight();
-
+		
 		app.setAlwaysRender(false);
 		app.setShowFPS(true);
 		app.setVSync(true);

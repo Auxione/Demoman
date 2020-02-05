@@ -50,6 +50,7 @@ public class Constants {
 	public static Image LinearAlphaMask;
 	public static Image CircularAlphaMask;
 	public static Image clock;
+	public static Image lightBulb;
 
 	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
@@ -75,7 +76,8 @@ public class Constants {
 		pushbutton = new Image("Data/Sprites/Objects/pushbutton.png");
 		movetrigger = new Image("Data/Sprites/Objects/movetrigger.png");
 		firestarter = new Image("Data/Sprites/Objects/FireStarter.png");
-
+		lightBulb = new Image("Data/Sprites/Objects/LightBulb.png");
+		
 		empty = new Image("Data/Sprites/Tiles/empty.png");
 		grass = new Image("Data/Sprites/Tiles/grass.png");
 		burntgrass = new Image("Data/Sprites/Tiles/burntgrass.png");

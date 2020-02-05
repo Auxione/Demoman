@@ -34,7 +34,7 @@ public class ItemMedpack implements Item {
 
 	@Override
 	public boolean condition(WorldManager worldManager,WorldObjectManager gameObjectManager, BombManager bombManager, PlantManager plantManager, Player player){
-		if (player.getCurrentHealth() < player.getMaxHealth()) {
+		if (player.currentHealth < player.maxHealth) {
 			return true;
 		} else {
 			return false;

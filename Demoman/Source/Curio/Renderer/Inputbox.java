@@ -7,8 +7,13 @@ import org.newdawn.slick.TrueTypeFont;
 
 import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class Inputbox extends HUD implements Renderer {
+	public static int ONLYDIGIT = 1;
+	public static int ONLYDIGITANDLETTER = 0;
+
 	private boolean active = false;
 	public boolean Completed = false;
 
@@ -20,11 +25,29 @@ public class Inputbox extends HUD implements Renderer {
 	private boolean ClearWhenCompleted;
 	private boolean CompleteWhenFocusLoss;
 
-	public Inputbox(float x, float y, float width, float height, String text, int mode) {
-		super(x, y, width, height);
-
-		this.text = text;
+	public Inputbox(int mode) {
+		super();
 		this.mode = mode;
+	}
+
+	public Inputbox setText(String text) {
+		this.text = text;
+		return this;
+	}
+
+	public Inputbox setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public Inputbox setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public Inputbox setSize(float width, float height) {
+		super.setSize(width, height);
+		return this;
 	}
 
 	@Override
@@ -85,12 +108,14 @@ public class Inputbox extends HUD implements Renderer {
 		this.Completed = false;
 	}
 
-	public void setClearWhenCompleted(boolean b) {
+	public Inputbox setClearWhenCompleted(boolean b) {
 		ClearWhenCompleted = b;
+		return this;
 	}
 
-	public void setCompleteWhenFocusLoss(boolean b) {
+	public Inputbox setCompleteWhenFocusLoss(boolean b) {
 		CompleteWhenFocusLoss = b;
+		return this;
 	}
 
 	@Override

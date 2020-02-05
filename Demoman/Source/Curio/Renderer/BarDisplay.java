@@ -7,44 +7,72 @@ import org.newdawn.slick.Input;
 import Curio.Renderer.Interface.HUD;
 import Curio.Renderer.Interface.Renderer;
 import Curio.Utilities.Math.Transform;
+import Curio.Utilities.Math.Vector;
 
 public class BarDisplay extends HUD implements Renderer {
-	private Color barColor;
+	private Color barColor = Color.darkGray;
 	private Color backgroundColor = Color.lightGray;
-	public float ratio = 1;
 	private int xsize = 2;
 	private int ysize = 2;
 
-	public BarDisplay(int Xposition, int Yposition, int _width, int _height, Color _color) {
-		super(Xposition, Yposition, _width, _height);
-		barColor = _color;
+	private float ratio = 1.0f;
+
+	public BarDisplay() {
+		super();
 	}
 
-	public BarDisplay(Transform transform, int _width, int _height, Color _color) {
-		super(transform, _width, _height);
-		barColor = _color;
+	public BarDisplay setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+		return this;
 	}
 
-	public void Percentage(float currentValue, float maxValue) {
-		ratio = currentValue / maxValue;
-		if (ratio < 0) {
-			ratio = 0;
+	public BarDisplay setBarColor(Color barColor) {
+		this.barColor = barColor;
+		return this;
+	}
+
+	public BarDisplay setTransform(Transform transform) {
+		super.setTransform(transform);
+		return this;
+	}
+
+	public BarDisplay setPosition(Vector vector) {
+		super.transform.position = vector;
+		return this;
+	}
+
+	public BarDisplay setSize(float width, float height) {
+		super.setSize(width, height);
+		return this;
+	}
+
+	public void setPercentage(float ratio) {
+		if (ratio < 0.0f) {
+			this.ratio = 0.0f;
+		}
+
+		else if (ratio > 1.0f) {
+			this.ratio = 1.0f;
+		}
+
+		else {
+			this.ratio = ratio;
 		}
 	}
 
-	@Override
 	public void render(Graphics g) {
 		g.pushTransform();
+		g.translate(transform.position.x, transform.position.y);
 		g.setLineWidth(0);
+		
 		g.setColor(Color.black);
-		g.fillRect(transform.position.x, transform.position.y, width, height);
+		g.fillRect(0, 0, width, height);
 
 		g.setColor(backgroundColor);
-		g.fillRect(transform.position.x + xsize, transform.position.y + ysize, (width - xsize * 2), height - ysize * 2);
+		g.fillRect(0 + xsize, 0 + ysize, (width - xsize * 2), height - ysize * 2);
 
 		g.setColor(barColor);
-		g.fillRect(transform.position.x + xsize, transform.position.y + ysize, (width - xsize * 2) * ratio,
-				height - ysize * 2);
+		g.fillRect(0 + xsize, 0 + ysize, (width - xsize * 2) * ratio, height - ysize * 2);
 		g.popTransform();
 	}
 

@@ -2,7 +2,7 @@ package Curio.SessionManagers.WorldObjectManager.WorldObjects;
 
 import static Curio.Functions.*;
 
-import Curio.Physics.WorldTime;
+import Curio.SessionManagers.WorldManager.WorldTime;
 import Curio.SessionManagers.WorldObjectManager.WorldObject;
 import Curio.Utilities.Math.Transform;
 import Default.Constants;

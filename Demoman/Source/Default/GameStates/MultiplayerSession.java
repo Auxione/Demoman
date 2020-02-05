@@ -9,7 +9,7 @@ import org.newdawn.slick.Input;
 import Curio.Console;
 import Curio.Viewport;
 import Curio.Controllers.ObjectController;
-import Curio.Controllers.UserInput;
+import Curio.Controllers.Input.UserInput;
 import Curio.Network.ChatMessagePackage;
 import Curio.Network.Credentials;
 import Curio.Network.GameRulesPackage;

@@ -28,6 +28,7 @@ public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRende
 	public LogicMap logicMap;
 
 	private Time currentTime;
+	private LogicChannels logicChannels;
 
 	public LogicManager(WorldManager worldManager, ItemManager itemManager, FireManager fireManager,
 			LogicMap logicMap) {
@@ -58,7 +59,7 @@ public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRende
 				((LogicController) b).update(logicMap);
 			}
 		}
-		logicMap.clearTickChannels();
+		logicMap.clearTickCells();
 	}
 
 	@Override
@@ -70,14 +71,16 @@ public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRende
 
 	@Override
 	public void renderAlphaMask(Graphics g) {
-		// TODO Auto-generated method stub
-
+		for (LogicObjectRenderer objR : logicObjectRendererList) {
+			objR.renderAlphaMask(g);
+		}
 	}
 
 	@Override
 	public void renderAnimation(Graphics g) {
-		// TODO Auto-generated method stub
-
+		for (LogicObjectRenderer objR : logicObjectRendererList) {
+			objR.renderAnimation(g);
+		}
 	}
 
 	public void onTopTrigger(CellCoordinate cellCoordinate) {

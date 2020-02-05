@@ -17,12 +17,12 @@ public class Switchbutton extends LogicObject implements LogicTrigger {
 	public Image switchon = Constants.switchon;
 
 	public boolean state = false;
-	public boolean Activated = false;
-	public CellCoordinate outputCC;
+	public boolean activated = false;
+	private boolean triggerOnce = false;
+	private boolean readState = false;
 
-	public Switchbutton(Transform transform, CellCoordinate outputCC) {
+	public Switchbutton(Transform transform) {
 		super(null, transform);
-		this.outputCC = outputCC;
 	}
 
 	public void keyEvent() {
@@ -30,10 +30,21 @@ public class Switchbutton extends LogicObject implements LogicTrigger {
 	}
 
 	public void update(LogicMap logicMap) {
-		if (Activated == true) {
-			logicMap.setState(outputCC, state);
-			Activated = false;
+		if (readState == true && triggerOnce == false) {
+			this.activated = true;
+			this.triggerOnce = true;
 		}
+
+		else if (readState == false) {
+			this.triggerOnce = false;
+		}
+
+		if (activated == true) {
+			state = !state;
+			logicMap.setState(super.cellCoordinate, state);
+			this.activated = false;
+		}
+		this.readState = false;
 	}
 
 	@Override
@@ -44,9 +55,24 @@ public class Switchbutton extends LogicObject implements LogicTrigger {
 
 	@Override
 	public void keyEvent(boolean ActionUse) {
-		if (ActionUse == true) {
-			state = !state;
-			Activated = true;
-		}
+		this.readState = ActionUse;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "Switchbutton";
+	}
+
+	@Override
+	public String getCustomInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean getState() {
+		// TODO Auto-generated method stub
+		return activated;
 	}
 }

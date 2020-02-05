@@ -22,34 +22,36 @@ public class DefaultBomb extends Bomb {
 	@Override
 	public void Effect(WorldManager worldManager, FireManager fireManager, PlantManager plantManager, ItemMap itemMap,
 			Player player) {
-
-		player.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY(), damage);
 		worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY(), damage);
 		itemMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY(), damage);
 		plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY(), damage);
 
 		for (int x = 1; x <= bombSize; x++) {
-			player.applyDamage(super.cellCoordinate.getCellX() + x, super.cellCoordinate.getCellY(), damage);
-			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX() + x, super.cellCoordinate.getCellY(), damage);
+			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX() + x, super.cellCoordinate.getCellY(),
+					damage);
 			itemMap.applyDamage(super.cellCoordinate.getCellX() + x, super.cellCoordinate.getCellY(), damage);
-			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX() + x, super.cellCoordinate.getCellY(), damage);
+			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX() + x, super.cellCoordinate.getCellY(),
+					damage);
 
-			player.applyDamage(super.cellCoordinate.getCellX() - x, super.cellCoordinate.getCellY(), damage);
-			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX() - x, super.cellCoordinate.getCellY(), damage);
+			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX() - x, super.cellCoordinate.getCellY(),
+					damage);
 			itemMap.applyDamage(super.cellCoordinate.getCellX() - x, super.cellCoordinate.getCellY(), damage);
-			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX() - x, super.cellCoordinate.getCellY(), damage);
+			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX() - x, super.cellCoordinate.getCellY(),
+					damage);
 		}
 
 		for (int y = 1; y <= bombSize; y++) {
-			player.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() + y, damage);
-			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() + y, damage);
+			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() + y,
+					damage);
 			itemMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() + y, damage);
-			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() + y, damage);
+			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() + y,
+					damage);
 
-			player.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() - y, damage);
-			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() - y, damage);
+			worldManager.tileMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() - y,
+					damage);
 			itemMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() - y, damage);
-			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() - y, damage);
+			plantManager.plantMap.applyDamage(super.cellCoordinate.getCellX(), super.cellCoordinate.getCellY() - y,
+					damage);
 		}
 	}
 }
