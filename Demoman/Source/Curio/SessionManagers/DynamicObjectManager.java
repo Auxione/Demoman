@@ -8,7 +8,7 @@ import Curio.Physics.Collisions.TilemapCollision;
 import Curio.Physics.Interfaces.FixedUpdate;
 import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.SessionManagers.WorldManager.WorldManager;
-import Curio.Utilities.Shapes.Circle;
+import Curio.Utilities.Math.Geometry.Circle;
 
 public class DynamicObjectManager implements FixedUpdate {
 	public static ArrayList<DynamicObject> dynamicObjectList = new ArrayList<DynamicObject>();

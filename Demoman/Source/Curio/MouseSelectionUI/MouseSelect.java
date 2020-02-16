@@ -15,7 +15,7 @@ import Curio.SessionManagers.PlayerManager;
 import Curio.SessionManagers.LogicManager.LogicManager;
 import Curio.SessionManagers.LogicManager.LogicObjects.LogicObject;
 import Curio.Utilities.Math.Vector;
-import Curio.Utilities.Shapes.Circle;
+import Curio.Utilities.Math.Geometry.Circle;
 import Default.Constants;
 import Default.Player;
 

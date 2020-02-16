@@ -6,9 +6,9 @@ import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.SessionManagers.WorldManager.TileList;
 import Curio.SessionManagers.WorldManager.TileMap;
 import Curio.Utilities.Math.Vector;
-import Curio.Utilities.Shapes.Circle;
-import Curio.Utilities.Shapes.Rectangle;
-import Curio.Utilities.Shapes.Shape;
+import Curio.Utilities.Math.Geometry.Circle;
+import Curio.Utilities.Math.Geometry.Rectangle;
+import Curio.Utilities.Math.Geometry.Shape;
 import Default.Constants;
 
 public class TilemapCollision implements Collision {

@@ -18,7 +18,7 @@ public class Drag implements ForceGenerators {
 
 	@Override
 	public Vector getForce(DynamicObject dynamicObject) {
-		Vector force = new Vector();
+		Vector force = new Vector(dynamicObject.velocity);
 		// Calculate the total drag coefficient.
 		dragCoeff = force.magnitude();
 		dragCoeff = k1 * dragCoeff + k2 * dragCoeff * dragCoeff;

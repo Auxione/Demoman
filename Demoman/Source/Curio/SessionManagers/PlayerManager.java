@@ -22,8 +22,8 @@ import Curio.SessionManagers.LogicManager.LogicManager;
 import Curio.SessionManagers.PlantManager.PlantManager;
 import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
-import Curio.Utilities.Shapes.Circle;
-import Curio.Utilities.Shapes.Shape;
+import Curio.Utilities.Math.Geometry.Circle;
+import Curio.Utilities.Math.Geometry.Shape;
 import Default.Player;
 
 public class PlayerManager implements Renderer, FrameUpdate {

@@ -1,4 +1,4 @@
-package Curio.Utilities.Shapes;
+package Curio.Utilities.Math.Geometry;
 
 public class Circle implements Shape {
 	public float radius = 0.0f;

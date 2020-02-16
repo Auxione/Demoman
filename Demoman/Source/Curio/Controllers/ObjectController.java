@@ -1,6 +1,7 @@
 package Curio.Controllers;
 
 import Curio.Physics.DynamicObject;
+import Curio.Utilities.Math.Vector;
 
 public class ObjectController {
 	public ControlPackage controlPackage;
@@ -18,7 +19,8 @@ public class ObjectController {
 
 	public void update() {
 		if (dynamicObject != null) {
-			dynamicObject.setAcceleration(controlPackage.movementDirection.multiply(10000.0f));
+			Vector v = new Vector(controlPackage.movementDirection).multiply(300.0f);
+			dynamicObject.addForce(v);
 			dynamicObject.transform.rotation.setAngle(controlPackage.rotation);
 		}
 	}

@@ -6,9 +6,9 @@ import org.newdawn.slick.Graphics;
 import Curio.GameObject;
 import Curio.Renderer.Interface.AlphaMaskRenderer;
 import Curio.Renderer.Interface.Renderer;
-import Curio.Utilities.Shapes.Circle;
-import Curio.Utilities.Shapes.Rectangle;
-import Curio.Utilities.Shapes.Shape;
+import Curio.Utilities.Math.Geometry.Circle;
+import Curio.Utilities.Math.Geometry.Rectangle;
+import Curio.Utilities.Math.Geometry.Shape;
 
 public class ObjectRenderer implements Renderer, AlphaMaskRenderer {
 	private float gameObjectImageSize = 5;

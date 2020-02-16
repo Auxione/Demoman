@@ -3,8 +3,8 @@ package Default;
 import Curio.Functions;
 import Curio.Physics.DynamicObject;
 import Curio.Utilities.Math.Transform;
-import Curio.Utilities.Shapes.Circle;
-import Curio.Utilities.Shapes.Shape;
+import Curio.Utilities.Math.Geometry.Circle;
+import Curio.Utilities.Math.Geometry.Shape;
 
 public class Player extends DynamicObject {
 	public int maxHealth = 100;

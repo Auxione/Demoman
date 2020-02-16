@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import Curio.Physics.DynamicObject;
-import Curio.Utilities.Shapes.Shape;
+import Curio.Utilities.Math.Geometry.Shape;
 
 public class DynamicObjectCollision implements Collision {
 	private boolean active = true;

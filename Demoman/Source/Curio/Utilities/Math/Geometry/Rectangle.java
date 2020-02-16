@@ -1,4 +1,4 @@
-package Curio.Utilities.Shapes;
+package Curio.Utilities.Math.Geometry;
 
 public class Rectangle implements Shape {
 	public float width = 0.0f;;
