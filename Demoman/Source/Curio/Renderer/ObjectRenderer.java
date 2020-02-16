@@ -6,19 +6,27 @@ import org.newdawn.slick.Graphics;
 import Curio.GameObject;
 import Curio.Renderer.Interface.AlphaMaskRenderer;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.Shapes.Circle;
+import Curio.Utilities.Shapes.Rectangle;
+import Curio.Utilities.Shapes.Shape;
 
 public class ObjectRenderer implements Renderer, AlphaMaskRenderer {
 	private float gameObjectImageSize = 5;
 
 	private GameObject gameObject;
+	private Shape shape;
 
 	public ObjectRenderer(GameObject gameObject) {
 		this.gameObject = gameObject;
-
 	}
 
 	public ObjectRenderer setObjectImageSize(float size) {
 		this.gameObjectImageSize = size;
+		return this;
+	}
+
+	public ObjectRenderer setObjectShape(Shape shape) {
+		this.shape = shape;
 		return this;
 	}
 
@@ -28,11 +36,20 @@ public class ObjectRenderer implements Renderer, AlphaMaskRenderer {
 		g.rotate(0, 0, gameObject.transform.rotation.degrees());
 		if (gameObject.getObjectImage() != null) {
 			gameObject.getObjectImage().drawCentered(0, 0);
-		} else {
+		} else if (shape != null) {
 			g.setColor(Color.black);
-			g.fillOval(-gameObjectImageSize, -gameObjectImageSize, gameObjectImageSize * 2, gameObjectImageSize * 2);
-			g.fillRect(-2, 0, 4, gameObjectImageSize * 2);
+			if (shape instanceof Circle) {
+				Circle c = (Circle) shape;
+				g.fillOval(-c.radius, -c.radius, c.radius * 2, c.radius * 2);
+				g.fillRect(-2, 0, 4, c.radius * 2);
+			}
+
+			else if (shape instanceof Rectangle) {
+				Rectangle r = (Rectangle) shape;
+				g.fillRect(-r.width / 2, -r.height / 2, r.width, r.height);
+			}
 		}
+		
 		g.popTransform();
 	}
 

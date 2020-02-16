@@ -45,12 +45,15 @@ public class Constants {
 //plants
 	public static Image berryBushState1, berryBushState2, berryBushState3;
 	public static Image sausagePlant1, sausagePlant2, sausagePlant3, sausagePlant4, sausagePlant5;
-	
+
 	public static Image WallShadowMask;
 	public static Image LinearAlphaMask;
 	public static Image CircularAlphaMask;
 	public static Image clock;
 	public static Image lightBulb;
+
+	public static Image horizontalTracks;
+	public static Image verticalTracks;
 
 	public static void loadData() throws SlickException {
 		// explosion sprite disaridan alindi:
@@ -77,7 +80,7 @@ public class Constants {
 		movetrigger = new Image("Data/Sprites/Objects/movetrigger.png");
 		firestarter = new Image("Data/Sprites/Objects/FireStarter.png");
 		lightBulb = new Image("Data/Sprites/Objects/LightBulb.png");
-		
+
 		empty = new Image("Data/Sprites/Tiles/empty.png");
 		grass = new Image("Data/Sprites/Tiles/grass.png");
 		burntgrass = new Image("Data/Sprites/Tiles/burntgrass.png");
@@ -114,8 +117,11 @@ public class Constants {
 		CircularAlphaMask = new Image("Data/Sprites/AlphaMasks/CircularLightingMask.png");
 		LinearAlphaMask = new Image("Data/Sprites/AlphaMasks/LinearLightingMask.png");
 		WallShadowMask = new Image("Data/Sprites/AlphaMasks/WallShadowMask.png");
-		
+
 		clock = new Image("Data/Sprites/24hrClock.png");
+
+		horizontalTracks = new Image("Data/Sprites/Tiles/horizontaltracks.png");
+		verticalTracks = new Image("Data/Sprites/Tiles/verticaltracks.png");
 
 		Main.console.Add(0, "Textures Loaded");
 	}

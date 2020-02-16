@@ -1,4 +1,4 @@
-package Curio.Utilities;
+package Curio.Utilities.Navigation;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 
 import Curio.CellularMap.CellularMap;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.CellCoordinate;
 import Default.Constants;
 
 public class BreadthFirstSearch implements Renderer {

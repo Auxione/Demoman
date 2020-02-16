@@ -4,8 +4,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import Curio.Console;
-import Curio.Renderer.Button;
-import Curio.Renderer.Inputbox;
+import Curio.Renderer.DisplayObjects.Button;
+import Curio.Renderer.DisplayObjects.Inputbox;
 import Curio.Utilities.Math.Vector;
 import Default.Main;
 

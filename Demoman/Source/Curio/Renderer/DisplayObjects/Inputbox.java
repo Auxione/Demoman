@@ -1,4 +1,4 @@
-package Curio.Renderer;
+package Curio.Renderer.DisplayObjects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

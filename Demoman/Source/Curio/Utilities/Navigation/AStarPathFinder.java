@@ -1,4 +1,4 @@
-package Curio.Utilities;
+package Curio.Utilities.Navigation;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 
 import Curio.CellularMap.CellularMap;
 import Curio.Renderer.Interface.Renderer;
+import Curio.Utilities.CellCoordinate;
 
 public class AStarPathFinder implements Renderer {
 	// boolean[][] visited;

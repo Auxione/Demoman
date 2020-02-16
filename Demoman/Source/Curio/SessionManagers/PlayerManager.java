@@ -9,7 +9,8 @@ import Curio.Console;
 import Curio.Controllers.ControlPackage;
 import Curio.Controllers.ObjectController;
 import Curio.Controllers.Input.AI.AI;
-import Curio.Physics.TilemapCollision;
+import Curio.Physics.Collisions.TilemapCollision;
+import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.Renderer.ObjectRenderer;
 import Curio.Renderer.Interface.Renderer;
 import Curio.SessionManagers.BombManager.BombManager;
@@ -21,14 +22,15 @@ import Curio.SessionManagers.LogicManager.LogicManager;
 import Curio.SessionManagers.PlantManager.PlantManager;
 import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
+import Curio.Utilities.Shapes.Circle;
+import Curio.Utilities.Shapes.Shape;
 import Default.Player;
 
-public class PlayerManager implements Renderer {
+public class PlayerManager implements Renderer, FrameUpdate {
 	public static ArrayList<Player> playerList = new ArrayList<Player>();
 	public static HashMap<Player, ObjectRenderer> playerDisplayList = new HashMap<Player, ObjectRenderer>();
 	public static HashMap<Player, Inventory> playerInventoryList = new HashMap<Player, Inventory>();
 	public static HashMap<Player, ObjectController> playerControllerList = new HashMap<Player, ObjectController>();
-	public static HashMap<Player, TilemapCollision> tilemapCollisionList = new HashMap<Player, TilemapCollision>();
 	public static HashMap<Player, AI> aiList = new HashMap<Player, AI>();
 
 	private Console console;
@@ -40,10 +42,12 @@ public class PlayerManager implements Renderer {
 	private WorldObjectManager gameObjectManager;
 	private ItemManager itemManager;
 	private LogicManager logicManager;
+	private DynamicObjectManager dynamicObjectManager;
+	private CollisionManager collisionManager;
 
 	public PlayerManager(WorldManager worldManager, BombManager bombManager, FireManager fireManager,
 			PlantManager plantManager, WorldObjectManager gameObjectManager, ItemManager itemManager,
-			LogicManager logicManager) {
+			LogicManager logicManager, DynamicObjectManager dynamicObjectManager, CollisionManager collisionManager) {
 		this.logicManager = logicManager;
 		this.bombManager = bombManager;
 		this.fireManager = fireManager;
@@ -51,6 +55,8 @@ public class PlayerManager implements Renderer {
 		this.worldManager = worldManager;
 		this.gameObjectManager = gameObjectManager;
 		this.itemManager = itemManager;
+		this.dynamicObjectManager = dynamicObjectManager;
+		this.collisionManager = collisionManager;
 	}
 
 	public PlayerManager setConsole(Console console) {
@@ -59,8 +65,9 @@ public class PlayerManager implements Renderer {
 	}
 
 	public Player Create(ControlPackage controlPackage) {
-		Player player = new Player();
-		ObjectRenderer playerDisplay = new ObjectRenderer(player).setObjectImageSize(player.size);
+		Circle c = new Circle().setRadius(10);
+		Player player = new Player(c);
+		ObjectRenderer playerDisplay = new ObjectRenderer(player).setObjectShape(c);
 		Inventory playerInventory = new Inventory(6, 1, 5);
 
 		ObjectController playerController;
@@ -78,16 +85,12 @@ public class PlayerManager implements Renderer {
 			aiList.put(player, ai);
 			playerController = new ObjectController(player).setControlPackage(ai.getPackage());
 		}
-
-		TilemapCollision collision = new TilemapCollision(this.worldManager.tileMap, player);
-
 		playerList.add(player);
 		playerDisplayList.put(player, playerDisplay);
 		playerInventoryList.put(player, playerInventory);
 		playerControllerList.put(player, playerController);
-		tilemapCollisionList.put(player, collision);
-
-		DynamicObjectManager.add(player);
+		dynamicObjectManager.add(player);
+		collisionManager.addTilemapCollision(player);
 
 		return player;
 	}
@@ -100,7 +103,7 @@ public class PlayerManager implements Renderer {
 			}
 
 			if (playerControllerList.get(player).controlPackage.ActionUseItem == true) {
-				useItem(player);
+				useItem(player, player);
 			}
 
 			if (playerControllerList.get(player).controlPackage.ActionSwitchItem == true) {
@@ -135,12 +138,12 @@ public class PlayerManager implements Renderer {
 		}
 	}
 
-	private void useItem(Player player) {
+	public void useItem(Player player, Player playerToUse) {
 		if (playerInventoryList.get(player).getItemFromIndex() != null) {
 			if (playerInventoryList.get(player).getItemFromIndex().condition(worldManager, gameObjectManager,
-					bombManager, plantManager, player) == true) {
+					bombManager, plantManager, playerToUse) == true) {
 				playerInventoryList.get(player).getItemFromIndex().apply(worldManager, gameObjectManager, bombManager,
-						plantManager, player);
+						plantManager, playerToUse);
 				playerInventoryList.get(player).removeItemFromIndex(1);
 			}
 		}
@@ -152,7 +155,8 @@ public class PlayerManager implements Renderer {
 		}
 	}
 
-	public void updateStart() {
+	@Override
+	public void frameUpdate() {
 		for (Player player : playerList) {
 			if (aiList.get(player) != null) {
 				aiList.get(player).update(worldManager.worldTime.getTime());
@@ -160,7 +164,7 @@ public class PlayerManager implements Renderer {
 		}
 
 		for (Player player : playerList) {
-			playerControllerList.get(player).updateStart();
+			playerControllerList.get(player).update();
 		}
 
 		for (Player player : playerList) {
@@ -168,16 +172,6 @@ public class PlayerManager implements Renderer {
 			bombManager.update(player);
 			player.update();
 		}
-
-		for (Player player : playerList) {
-			tilemapCollisionList.get(player).checkCollisions();
-		}
-	}
-
-	public void updateEnd() {
 		controllerActions();
-		for (Player player : playerList) {
-			playerControllerList.get(player).updateEnd();
-		}
 	}
 }

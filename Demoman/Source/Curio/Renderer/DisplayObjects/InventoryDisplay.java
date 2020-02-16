@@ -1,4 +1,4 @@
-package Curio.Renderer;
+package Curio.Renderer.DisplayObjects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -13,7 +13,7 @@ import Curio.SessionManagers.ItemManager.ItemList;
 import Curio.Utilities.Math.Transform;
 import Curio.Utilities.Math.Vector;
 
-public class InventoryDisplay extends HUD implements Renderer {
+public class InventoryDisplay extends HUD implements Renderer{
 	private Inventory inventory;
 	private int itemIconSize = 32;
 	private int itemCounterBoxSize = 20;
@@ -85,20 +85,6 @@ public class InventoryDisplay extends HUD implements Renderer {
 		g.popTransform();
 
 	}
-
-	@Override
-	public void inputEvent(Input input) {
-		if (inRange(input.getMouseX(), input.getMouseY()) == true) {
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				int cellx = (int) Functions.map(input.getMouseX(), transform.position.x, transform.position.x + width,
-						0, inventory.getXAxisMaxCell());
-				int celly = (int) Functions.map(input.getMouseY(), transform.position.y, transform.position.y + height,
-						0, inventory.getYAxisMaxCell());
-				inventory.itemIndex.setCell(cellx, celly);
-			}
-		}
-	}
-
 	@Override
 	public void loopStart() {
 		// TODO Auto-generated method stub
@@ -123,4 +109,16 @@ public class InventoryDisplay extends HUD implements Renderer {
 
 	}
 
+	@Override
+	public void inputEvent(Input input) {
+		if (inRange(input.getMouseX(), input.getMouseY()) == true) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				int cellx = (int) Functions.map(input.getMouseX(), transform.position.x, transform.position.x + width,
+						0, inventory.getXAxisMaxCell());
+				int celly = (int) Functions.map(input.getMouseY(), transform.position.y, transform.position.y + height,
+						0, inventory.getYAxisMaxCell());
+				inventory.itemIndex.setCell(cellx, celly);
+			}
+		}
+	}
 }

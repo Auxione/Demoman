@@ -1,26 +1,26 @@
 package Curio.Utilities.Math;
 
 public class Rotation {
-	private float angle = 0.0f;
+	private float angleInDegrees = 0.0f;
 
 	public Rotation() {
 	}
 
-	public Rotation(float angle) {
-		this.angle = angle;
+	public Rotation(float angleInDegrees) {
+		this.angleInDegrees = angleInDegrees;
 	}
 
 	public float degrees() {
-		return angle;
+		return angleInDegrees;
 	}
 
 	public void setAngle(float degrees) {
 		if (degrees >= 0 && degrees < 360.0f) {
-			angle = degrees;
+			angleInDegrees = degrees;
 		}
 	}
 
 	public void setAngle(Rotation rotation) {
-		this.angle = rotation.degrees();
+		this.angleInDegrees = rotation.degrees();
 	}
 }

@@ -1,8 +1,10 @@
 package Curio.SessionManagers.WorldManager;
 
 import Curio.Physics.Time;
+import Curio.Physics.Interfaces.FLUpdate;
+import Curio.Physics.Interfaces.FixedUpdate;
 
-public class WorldTime {
+public class WorldTime implements FixedUpdate,FLUpdate{
 	private Time time = new Time();
 	public float newRate;
 
@@ -17,7 +19,6 @@ public class WorldTime {
 	private boolean isSunset;
 
 	private int timeAdvanceRate = 1000;
-	private float currentTime = 0;
 
 	private int nightStartTime = 18;
 	private int nightEndTime = 6;
@@ -26,23 +27,14 @@ public class WorldTime {
 		this.timeAdvanceRate = timeAdvanceRate;
 	}
 
-	public void updateStart(float systemMillis) {
-		advanceTime(systemMillis);
-		if (systemMillis > currentTime) {
-			setday();
-			currentTime = systemMillis + timeAdvanceRate;
-		}
+	@Override
+	public void fixedUpdate(int delta) {
+		advanceTime(delta);
+		setday();
 	}
 
 	public void setTimeAdvanceRate(int rate) {
 		this.newRate = rate;
-	}
-
-	public void updateEnd() {
-		this.dayTick = false;
-		this.hourTick = false;
-		this.minutesTick = false;
-		this.secondsTick = false;
 	}
 
 	private void setday() {
@@ -52,10 +44,10 @@ public class WorldTime {
 		this.isSunrise = (this.time.hour == nightEndTime);
 	}
 
-	private void advanceTime(float deltaTime) {
-		this.time.fixedMillis += (int) deltaTime;
+	private void advanceTime(int delta) {
+		this.time.fixedMillis += delta;
 
-		if (this.time.fixedMillis >= 1000) {
+		if (this.time.fixedMillis >= timeAdvanceRate) {
 			this.time.fixedMillis = 0;
 			this.time.second += 1;
 			this.secondsTick = true;
@@ -81,7 +73,7 @@ public class WorldTime {
 	}
 
 	public void setWorldTime(int day, int hour, int minute, int second) {
-		this.time.add(new Time(day, hour, minute, second,0));
+		this.time.add(new Time(day, hour, minute, second, 0));
 	}
 
 	public boolean isNight() {
@@ -119,4 +111,19 @@ public class WorldTime {
 	public Time getTime() {
 		return this.time;
 	}
+
+	@Override
+	public void FirstUpdate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void LastUpdate() {
+		this.dayTick = false;
+		this.hourTick = false;
+		this.minutesTick = false;
+		this.secondsTick = false;
+	}
+
 }

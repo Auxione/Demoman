@@ -12,7 +12,7 @@ import Curio.Network.MapPackage;
 import Curio.Network.PlayerDataPackage;
 import Curio.Network.PlayerList;
 import Curio.Physics.DynamicObject;
-import Curio.Physics.TilemapCollision;
+import Curio.Physics.Collisions.TilemapCollision;
 import Curio.SessionManagers.ItemManager.Inventory;
 import Curio.SessionManagers.ItemManager.ItemList;
 import Curio.SessionManagers.ItemManager.ItemMap;

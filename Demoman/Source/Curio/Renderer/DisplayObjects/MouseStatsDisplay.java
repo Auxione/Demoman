@@ -1,4 +1,4 @@
-package Curio.Renderer;
+package Curio.Renderer.DisplayObjects;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -44,7 +44,7 @@ public class MouseStatsDisplay extends TextDisplay implements Renderer {
 	public void getCellData() {
 		String data = "";
 		for (Player p : PlayerManager.playerList) {
-			if (worldPosition.dist(p.transform.position) < p.size) {
+			if (worldPosition.distanceSQRT(p.transform.position) < p.size) {
 				data += " \n";
 				data += "Player: \n";
 				data += "HP: " + p.currentHealth + "\n";
@@ -52,7 +52,7 @@ public class MouseStatsDisplay extends TextDisplay implements Renderer {
 			}
 		}
 		for (WorldObject wo : WorldObjectManager.worldObjects) {
-			if (worldPosition.dist(wo.transform.position) < 5) {
+			if (worldPosition.distanceSQRT(wo.transform.position) < 5) {
 				data += " \n";
 				data += "WorldObject: \n";
 				data += "Name: " + wo.getName() + "\n";

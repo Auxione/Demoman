@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 
 import Curio.Console;
 import Curio.Physics.Time;
+import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.Renderer.LogicObjectRenderer;
 import Curio.Renderer.Interface.AlphaMaskRenderer;
 import Curio.Renderer.Interface.AnimationRenderer;
@@ -19,11 +20,10 @@ import Curio.SessionManagers.LogicManager.LogicObjects.LogicObject;
 import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.Utilities.CellCoordinate;
 
-public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRenderer {
+public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRenderer, FrameUpdate {
 	public static ArrayList<LogicObject> logicObjectList = new ArrayList<LogicObject>();
 	public static ArrayList<LogicObjectRenderer> logicObjectRendererList = new ArrayList<LogicObjectRenderer>();
-
-	private Console console;
+	
 	public PlaceLogicObject placeObject;
 	public LogicMap logicMap;
 
@@ -38,28 +38,8 @@ public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRende
 	}
 
 	public LogicManager setConsole(Console console) {
-		this.console = console;
 		this.placeObject.setConsole(console);
 		return this;
-	}
-
-	public void update() {
-		for (LogicObject b : logicObjectList) {
-			if (b instanceof LogicTrigger) {
-				((LogicTrigger) b).update(logicMap);
-			}
-		}
-		for (LogicObject b : logicObjectList) {
-			if (b instanceof LogicProcessor) {
-				((LogicProcessor) b).update(logicMap, currentTime);
-			}
-		}
-		for (LogicObject b : logicObjectList) {
-			if (b instanceof LogicController) {
-				((LogicController) b).update(logicMap);
-			}
-		}
-		logicMap.clearTickCells();
 	}
 
 	@Override
@@ -103,5 +83,25 @@ public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRende
 				}
 			}
 		}
+	}
+
+	@Override
+	public void frameUpdate() {
+		for (LogicObject b : logicObjectList) {
+			if (b instanceof LogicTrigger) {
+				((LogicTrigger) b).update(logicMap);
+			}
+		}
+		for (LogicObject b : logicObjectList) {
+			if (b instanceof LogicProcessor) {
+				((LogicProcessor) b).update(logicMap, currentTime);
+			}
+		}
+		for (LogicObject b : logicObjectList) {
+			if (b instanceof LogicController) {
+				((LogicController) b).update(logicMap);
+			}
+		}
+		logicMap.clearTickCells();
 	}
 }

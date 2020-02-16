@@ -65,7 +65,7 @@ public class Functions {
 			return max;
 		}
 
-		else if (value > max) {
+		else if (value < min) {
 			return min;
 		}
 

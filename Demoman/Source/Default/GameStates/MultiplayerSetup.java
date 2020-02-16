@@ -5,8 +5,8 @@ import org.newdawn.slick.Input;
 
 import Curio.Console;
 import Curio.Network.Credentials;
-import Curio.Renderer.Button;
-import Curio.Renderer.Inputbox;
+import Curio.Renderer.DisplayObjects.Button;
+import Curio.Renderer.DisplayObjects.Inputbox;
 import Default.Main;
 
 public class MultiplayerSetup {

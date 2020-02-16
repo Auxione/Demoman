@@ -8,7 +8,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import Curio.Console;
-import Curio.Renderer.ConsoleDisplay;
+import Curio.Renderer.DisplayObjects.ConsoleDisplay;
 import Curio.Utilities.Math.Vector;
 import Default.GameStates.MainMenu;
 import Default.GameStates.MultiplayerSession;
@@ -155,9 +155,10 @@ public class Main extends BasicGame {
 		DisplayWidth = app.getWidth();
 		DisplayHeight = app.getHeight();
 		
+		//app.setTargetFrameRate(100);
 		app.setAlwaysRender(false);
 		app.setShowFPS(true);
-		app.setVSync(true);
+		app.setVSync(false);
 		app.start();
 	}
 }

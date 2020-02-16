@@ -1,12 +1,17 @@
-package Curio.Physics;
+package Curio.Physics.Collisions;
 
 import Curio.Functions;
+import Curio.Physics.DynamicObject;
+import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.SessionManagers.WorldManager.TileList;
 import Curio.SessionManagers.WorldManager.TileMap;
 import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Shapes.Circle;
+import Curio.Utilities.Shapes.Rectangle;
+import Curio.Utilities.Shapes.Shape;
 import Default.Constants;
 
-public class TilemapCollision {
+public class TilemapCollision implements Collision {
 	private DynamicObject dynamicObject;
 
 	public boolean canMoveEast, canMoveWest, canMoveNorth, canMoveSouth;
@@ -20,22 +25,46 @@ public class TilemapCollision {
 	// [x][y][2] = x2 [x][y][3] = y2
 	// [x][y][4] = x3 [x][y][5] = y3
 	// [x][y][6] = x4 [x][y][7] = y4
-
+	private Shape shape;
 	private TileMap tilemap;
+	private Boolean active = true;
 
-	public TilemapCollision(TileMap tilemap, DynamicObject dynamicObject) {
+	public TilemapCollision(TileMap tilemap) {
 		this.tilemap = tilemap;
-		this.dynamicObject = dynamicObject;
 	}
 
-	public void checkCollisions() {
-		float radius = dynamicObject.size;
-		checkEast(radius);
-		checkWest(radius);
-		checkNorth(radius);
-		checkSouth(radius);
+	public TilemapCollision setShape(Shape shape) {
+		this.shape = shape;
+		return this;
+	}
+
+	public TilemapCollision setState(Boolean active) {
+		this.active = active;
+		return this;
 	}
 	
+	public TilemapCollision setDynamicObject(DynamicObject dynamicObject) {
+		this.dynamicObject = dynamicObject;
+		return this;
+	}
+
+	@Override
+	public void frameUpdate() {
+		if (active == true) {
+			if (shape instanceof Circle) {
+				Circle c = (Circle) shape;
+				checkEast(c.radius);
+				checkWest(c.radius);
+				checkNorth(c.radius);
+				checkSouth(c.radius);
+			}
+
+			else if (shape instanceof Rectangle) {
+				Rectangle r = (Rectangle) shape;
+			}
+		}
+	}
+
 	private void checkEast(float radius) {
 		int cellx = dynamicObject.cellCoordinate.getCellX();
 		int celly = dynamicObject.cellCoordinate.getCellY();
@@ -44,16 +73,16 @@ public class TilemapCollision {
 		float Posy = dynamicObject.transform.position.y;
 
 		int tileid = tilemap.getCell(cellx + 1, celly, 0);
-		
+
 		if (TileList.getTile(tileid).isSolid() == true) {
-			Vector point1 = new Vector((cellx + 1) * Constants.CellSize, celly * Constants.CellSize, 0);
-			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly + 1) * Constants.CellSize, 0);
+			Vector point1 = new Vector((cellx + 1) * Constants.CellSize, celly * Constants.CellSize);
+			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly + 1) * Constants.CellSize);
 			float[] intersectPoint = Functions.lineToLineIntersectionCord(point1.x, point1.y, point2.x, point2.y, Posx,
 					Posy, Posx + radius, Posy);
 
 			if (Functions.lineToLineIntersectionBool(point1.x, point1.y, point2.x, point2.y, Posx, Posy, Posx + radius,
 					Posy) == true) {
-				dynamicObject.Velocity.x = 0;
+				dynamicObject.velocity.x = 0;
 				dynamicObject.transform.position.x = intersectPoint[0] - radius;
 			}
 		}
@@ -67,17 +96,17 @@ public class TilemapCollision {
 		float Posy = dynamicObject.transform.position.y;
 
 		int tileid = tilemap.getCell(cellx - 1, celly, 0);
-		
+
 		if (TileList.getTile(tileid).isSolid() == true) {
-			Vector point1 = new Vector((cellx) * Constants.CellSize, celly * Constants.CellSize, 0);
-			Vector point2 = new Vector((cellx) * Constants.CellSize, (celly + 1) * Constants.CellSize, 0);
+			Vector point1 = new Vector((cellx) * Constants.CellSize, celly * Constants.CellSize);
+			Vector point2 = new Vector((cellx) * Constants.CellSize, (celly + 1) * Constants.CellSize);
 			float[] intersectPoint = Functions.lineToLineIntersectionCord(point1.x, point1.y, point2.x, point2.y, Posx,
 					Posy, Posx - radius, Posy);
-			
+
 			if (Functions.lineToLineIntersectionBool(point1.x, point1.y, point2.x, point2.y, Posx, Posy, Posx - radius,
 					Posy) == true) {
 
-				dynamicObject.Velocity.x = 0;
+				dynamicObject.velocity.x = 0;
 				dynamicObject.transform.position.x = intersectPoint[0] + radius;
 			}
 		}
@@ -91,7 +120,7 @@ public class TilemapCollision {
 		float Posy = dynamicObject.transform.position.y;
 
 		int tileid = tilemap.getCell(cellx, celly - 1, 0);
-		
+
 		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point1 = new Vector((cellx) * Constants.CellSize, celly * Constants.CellSize);
 			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly) * Constants.CellSize);
@@ -100,7 +129,7 @@ public class TilemapCollision {
 
 			if (Functions.lineToLineIntersectionBool(point1.x, point1.y, point2.x, point2.y, Posx, Posy, Posx,
 					Posy - radius) == true) {
-				dynamicObject.Velocity.y = 0;
+				dynamicObject.velocity.y = 0;
 				dynamicObject.transform.position.y = intersectPoint[1] + radius;
 			}
 		}
@@ -114,7 +143,7 @@ public class TilemapCollision {
 		float Posy = dynamicObject.transform.position.y;
 
 		int tileid = tilemap.getCell(cellx, celly + 1, 0);
-		
+
 		if (TileList.getTile(tileid).isSolid() == true) {
 			Vector point1 = new Vector((cellx) * Constants.CellSize, (celly + 1) * Constants.CellSize);
 			Vector point2 = new Vector((cellx + 1) * Constants.CellSize, (celly + 1) * Constants.CellSize);
@@ -123,7 +152,7 @@ public class TilemapCollision {
 
 			if (Functions.lineToLineIntersectionBool(point1.x, point1.y, point2.x, point2.y, Posx, Posy, Posx,
 					Posy + radius) == true) {
-				dynamicObject.Velocity.y = 0;
+				dynamicObject.velocity.y = 0;
 				dynamicObject.transform.position.y = intersectPoint[1] - radius;
 			}
 		}

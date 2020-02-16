@@ -5,22 +5,21 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Graphics;
 
+import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.Renderer.ObjectRenderer;
 import Curio.Renderer.Interface.AlphaMaskRenderer;
 import Curio.Renderer.Interface.Renderer;
 import Curio.SessionManagers.PlantManager.PlantManager;
 import Curio.SessionManagers.WorldManager.WorldManager;
-import Curio.SessionManagers.WorldObjectManager.WorldObjects.ObjectTorch;
-import Curio.Utilities.Math.Transform;
 
-public class WorldObjectManager implements Renderer, AlphaMaskRenderer {
+public class WorldObjectManager implements Renderer, AlphaMaskRenderer, FrameUpdate {
 	public static ArrayList<WorldObject> worldObjects = new ArrayList<WorldObject>();
 	public static ArrayList<ObjectRenderer> worldObjectRenderer = new ArrayList<ObjectRenderer>();
 	public PlaceWorldObjects placeObject;
-	
+
 	private WorldManager worldManager;
 	private PlantManager plantManager;
-	
+
 	public WorldObjectManager(WorldManager worldManager, PlantManager plantManager) {
 		this.worldManager = worldManager;
 		this.plantManager = plantManager;
@@ -48,7 +47,8 @@ public class WorldObjectManager implements Renderer, AlphaMaskRenderer {
 		g.clearWorldClip();
 	}
 
-	public void update() {
+	@Override
+	public void frameUpdate() {
 		if (worldManager.worldTime.isDaytime() == true) {
 			for (WorldObject wO : worldObjects) {
 				wO.updateDayTime();

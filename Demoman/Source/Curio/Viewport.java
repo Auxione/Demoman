@@ -7,14 +7,14 @@ import Curio.Renderer.Interface.AnimationRenderer;
 import Curio.Renderer.Interface.Renderer;
 import Curio.Utilities.Math.Vector;
 
-public class Viewport {
+public class Viewport{
 	public static Vector position, ScreenMiddle;
 	public static int screenSizeY;
 	public static int screenSizeX;
 
 	public Viewport(int screenSizeX, int screenSizeY) {
 		Viewport.position = new Vector();
-		Viewport.ScreenMiddle = new Vector(screenSizeX / 2, screenSizeY / 2, 0);
+		Viewport.ScreenMiddle = new Vector(screenSizeX / 2, screenSizeY / 2);
 		Viewport.screenSizeX = screenSizeX;
 		Viewport.screenSizeY = screenSizeY;
 	}

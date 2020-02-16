@@ -1,7 +1,5 @@
 package Curio.Utilities.Math;
 
-import static java.lang.Math.sqrt;
-
 import java.io.Serializable;
 
 public class Transform implements Serializable {
@@ -15,17 +13,12 @@ public class Transform implements Serializable {
 	}
 	
 	public Transform(float x, float y) {
-		this.position = new Vector(x, y, 0);
-		this.rotation = new Rotation();
-	}
-	
-	public Transform(float x, float y, float z) {
-		this.position = new Vector(x, y, z);
+		this.position = new Vector(x, y);
 		this.rotation = new Rotation();
 	}
 
-	public Transform(float x, float y, float z, float angle) {
-		this.position = new Vector(x, y, z);
+	public Transform(float x, float y, float angle) {
+		this.position = new Vector(x, y);
 		this.rotation = new Rotation(angle);
 	}
 
@@ -35,18 +28,10 @@ public class Transform implements Serializable {
 	}
 
 	public boolean equals(Transform transform) {
-		if (transform.position.x == this.position.x && transform.position.y == this.position.y
-				&& transform.position.z == this.position.z) {
+		if (transform.position.x == this.position.x && transform.position.y == this.position.y) {
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	public float dist(Transform transform) {
-		float dx = position.x - transform.position.x;
-		float dy = position.y - transform.position.y;
-		float dz = position.z - transform.position.z;
-		return (float) sqrt(dx * dx + dy * dy + dz * dz);
 	}
 }

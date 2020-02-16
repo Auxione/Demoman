@@ -36,13 +36,11 @@ public class GameObject implements Serializable {
 		if (cellSnapState == false) {
 			this.transform.position.x = transform.position.x;
 			this.transform.position.y = transform.position.y;
-			this.transform.position.z = transform.position.z;
 		}
 
 		else if (cellSnapState == true) {
 			this.transform.position.x = cellCoordinate.getCellX() * Constants.CellSize;
 			this.transform.position.y = cellCoordinate.getCellY() * Constants.CellSize;
-			this.transform.position.z = cellCoordinate.getCellZ() * Constants.CellSize;
 		}
 		this.transform.rotation.setAngle(transform.rotation.degrees());
 		return this;

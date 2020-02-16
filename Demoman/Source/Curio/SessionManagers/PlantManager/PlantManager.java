@@ -1,13 +1,14 @@
 package Curio.SessionManagers.PlantManager;
 
 import Curio.Functions;
+import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.SessionManagers.ItemManager.ItemManager;
 import Curio.SessionManagers.ItemManager.ItemMap;
 import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.SessionManagers.WorldManager.WorldTime;
 import Default.Player;
 
-public class PlantManager {
+public class PlantManager implements FrameUpdate {
 	private WorldManager worldManager;
 	private WorldTime worldTime;
 	public PlantMap plantMap;
@@ -47,11 +48,6 @@ public class PlantManager {
 		} else {
 			return false;
 		}
-	}
-
-	public void update() {
-		updateGrowth();
-		checkHealth();
 	}
 
 	private void updateGrowth() {
@@ -113,5 +109,11 @@ public class PlantManager {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void frameUpdate() {
+		updateGrowth();
+		checkHealth();
 	}
 }

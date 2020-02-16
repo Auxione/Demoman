@@ -1,4 +1,4 @@
-package Curio.Renderer;
+package Curio.Renderer.DisplayObjects;
 
 import java.util.ArrayList;
 

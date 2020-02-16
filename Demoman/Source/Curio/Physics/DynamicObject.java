@@ -1,70 +1,70 @@
 package Curio.Physics;
 
-import java.util.ArrayList;
-
 import Curio.Functions;
 import Curio.GameObject;
-import Curio.Utilities.Math.Transform;
+import Curio.Physics.Interfaces.FixedUpdate;
 import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Shapes.Shape;
 
-public class DynamicObject extends GameObject {
-	public static ArrayList<DynamicObject> dynamicObjectList = new ArrayList<DynamicObject>();
+public class DynamicObject extends GameObject implements FixedUpdate {
+	public Vector velocity;
+	public Vector acceleration;
+	private Vector forceAccum;
 
-	public Vector Velocity;
-	public Vector Acceleration;
-	private float AccelOffset = 1000;
+	private float damping = 1.0f;
+	private float mass = 1.0f;
+	public Shape shape;
 
-	float size;
-
-	public DynamicObject() {
-		this.Velocity = new Vector(0, 0);
-		this.Acceleration = new Vector(0, 0);
-
-		dynamicObjectList.add(this);
+	public DynamicObject(Shape shape) {
+		this.shape = shape;
+		this.acceleration = new Vector(0, 0, 0);
+		this.velocity = new Vector(0, 0, 0);
+		this.forceAccum = new Vector(0, 0, 0);
 	}
 
-	public DynamicObject setSize(float size) {
-		this.size = size;
-		return this;
-	}
+	public void fixedUpdate(int delta) {
+		float deltaTime = delta / 1000.0f;
 
-	public void updatePhysics(float deltaTime) {
-		deltaTime = deltaTime / 1000.0f;
-		Velocity.x += Acceleration.x * deltaTime;
-		Velocity.y += Acceleration.y * deltaTime;
+		this.acceleration.addScaledVector(forceAccum, 1.0f / mass);
 
-		super.transform.position.x += Velocity.x * deltaTime;
-		super.transform.position.y += Velocity.y * deltaTime;
+		this.velocity.multiply(damping);
+		this.velocity.addScaledVector(acceleration, deltaTime);
+
+		super.transform.position.addScaledVector(velocity, deltaTime);
 
 		updateCellPosition();
-		updateWithfriction();
-		// System.out.println(Velocity.x + " : " + Velocity.y);
+		clearForceAccumulator();
 	}
 
-	private void updateWithfriction() {
-		if (Velocity.magnitude() < 1f) {
-			Velocity.multiply(0);
-		} else if (Velocity.magnitude() > 1f) {
-			Velocity.multiply(0.96f);
-		}
+	private void clearForceAccumulator() {
+		forceAccum.set(0, 0, 0);
 	}
 
 	void updateCellPosition() {
 		super.cellCoordinate = Functions.worldPostoCellPosition(super.transform.position);
 	}
 
-	public void addAcceleration(float x, float y) {
-		Acceleration.x = x * AccelOffset;
-		Acceleration.y = y * AccelOffset;
+	public void addForce(Vector force) {
+		this.forceAccum.add(force);
 	}
 
-	public void setPosition(float x, float y) {
-		super.transform.position.x = x;
-		super.transform.position.y = y;
+	public void setMass(float mass) {
+		this.mass = mass;
 	}
 
-	public void setPosition(Transform tr) {
-		super.transform.position.x = tr.position.x;
-		super.transform.position.y = tr.position.y;
+	public void setDamping(float damping) {
+		this.damping = damping;
+	}
+
+	public void setVelocity(Vector velocity) {
+		this.velocity = velocity;
+	}
+
+	public void setAcceleration(Vector acceleration) {
+		this.acceleration = acceleration;
+	}
+
+	public void setPosition(float x, float y, float z) {
+		super.transform.position.set(x, y, z);
 	}
 }

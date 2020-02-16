@@ -34,7 +34,6 @@ public class SetRotation implements Task {
 
 	@Override
 	public void update(ControlPackage controlPackage, Time currentTime) {
-		controlPackage.rotation.setAngle(this.newAngle);
 		active = false;
 		finished();
 	}

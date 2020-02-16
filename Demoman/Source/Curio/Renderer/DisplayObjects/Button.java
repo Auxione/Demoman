@@ -1,4 +1,4 @@
-package Curio.Renderer;
+package Curio.Renderer.DisplayObjects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -12,7 +12,7 @@ import Curio.Utilities.Math.Vector;
 
 public class Button extends HUD implements Renderer {
 	private String buttonText = "";
-	private Color buttonColor= Color.red;
+	private Color buttonColor = Color.red;
 	private Color defaultColor = Color.gray;
 	private Color waitingInputColor = Color.lightGray;
 	private Color pressedColor = Color.darkGray;
@@ -24,17 +24,17 @@ public class Button extends HUD implements Renderer {
 	public Button() {
 		super();
 	}
-	
+
 	public Button setButtonColor(Color buttonColor) {
 		this.buttonColor = buttonColor;
 		return this;
 	}
-	
+
 	public Button setButtonText(String buttonText) {
 		this.buttonText = buttonText;
 		return this;
 	}
-	
+
 	public Button setDefaultColor(Color defaultColor) {
 		this.defaultColor = defaultColor;
 		return this;
@@ -59,12 +59,11 @@ public class Button extends HUD implements Renderer {
 		super.transform.position = vector;
 		return this;
 	}
-
+	
 	public Button setSize(float width, float height) {
 		super.setSize(width, height);
 		return this;
 	}
-
 
 	public void render(Graphics g) {
 		g.pushTransform();
@@ -87,7 +86,11 @@ public class Button extends HUD implements Renderer {
 
 	@Override
 	public void inputEvent(Input input) {
-		if (inRange(input.getMouseX(), input.getMouseY()) == true) {
+		vectorInputEvent(new Vector(input.getMouseX(),input.getMouseY()),input);
+	}
+
+	public void vectorInputEvent(Vector vector, Input input) {
+		if (inRange(vector.x, vector.y) == true) {
 			buttonColor = waitingInputColor;
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {
 				pressed = true;
@@ -115,4 +118,5 @@ public class Button extends HUD implements Renderer {
 		// TODO Auto-generated method stub
 
 	}
+
 }
