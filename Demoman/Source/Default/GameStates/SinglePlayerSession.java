@@ -9,6 +9,7 @@ import Curio.Viewport;
 import Curio.Controllers.Input.UserKeyboardInput;
 import Curio.MouseSelectionUI.MouseSelect;
 import Curio.Renderer.ItemMapRenderer;
+import Curio.Renderer.PathRenderer;
 import Curio.Renderer.PlantMapRenderer;
 import Curio.Renderer.RailRoadMapRenderer;
 import Curio.Renderer.TileMapRenderer;
@@ -38,6 +39,7 @@ import Curio.SessionManagers.WorldManager.WorldTime;
 import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
 import Curio.Utilities.CellCoordinate;
 import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Navigation.Path;
 import Default.Constants;
 import Default.Main;
 import Default.Player;
@@ -88,6 +90,9 @@ public class SinglePlayerSession {
 	private Player selfPlayer;
 
 	private MouseSelect mouseSelect;
+
+	public static Path testPath = new Path();
+	public PathRenderer testPathRenderer = new PathRenderer(testPath).setColor(Color.blue);
 
 	public SinglePlayerSession(int mapSizeX, int mapSizeY, Console console) {
 		userKeyboardInput = new UserKeyboardInput(Main.input);
@@ -143,7 +148,7 @@ public class SinglePlayerSession {
 		worldTime.fixedUpdate(delta);
 		dynamicObjectManager.fixedUpdate(delta);
 		collisionManager.frameUpdate();
-		
+
 		userKeyboardInput.frameUpdate();
 		worldObjectManager.frameUpdate();
 		playerManager.frameUpdate();
@@ -174,6 +179,8 @@ public class SinglePlayerSession {
 		viewport.renderOnWorld(mouseSelect, g);
 		viewport.renderOnWorld(railSystemManager, g);
 		viewport.renderOnWorld(railRoadMapDisplay, g);
+
+		viewport.renderOnWorld(testPathRenderer, g); // for testing
 
 		viewport.renderAlphaMaskOnWorld(worldObjectManager, g);
 		viewport.renderAlphaMaskOnWorld(logicManager, g);
@@ -233,7 +240,7 @@ public class SinglePlayerSession {
 
 			railroad.putVerticalRail(4 + i, 12);
 		}
-		tileMap.setCell(15, 15, 0, Constants.obj_Building);
+		tileMap.setCell(15, 26, 0, Constants.obj_Building);
 
 		railSystemManager.createStation(new CellCoordinate(20, 5))// 1
 				.setColor(Color.red)// set color
@@ -246,8 +253,14 @@ public class SinglePlayerSession {
 				.createNode(new CellCoordinate(18, 5)) // 8
 				.checkStatus();
 
+		testPath.addPoint(new Vector(500, 100))// 1
+				.addPoint(new Vector(700, 300)) // 2
+				.addPoint(new Vector(500, 500))// 3
+				.addPoint(new Vector(600, 600))// 4
+				.addPoint(new Vector(500, 700))// 5
+				.addPoint(new Vector(600, 800));// 6
+
 		playerManager.Create(null).spawn(7, 7);
-		playerManager.Create(null).spawn(8, 7);
 
 		worldTime.setWorldTime(0, 20, 59, 55);
 	}

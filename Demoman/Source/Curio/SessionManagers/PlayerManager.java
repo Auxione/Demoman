@@ -32,6 +32,7 @@ public class PlayerManager implements Renderer, FrameUpdate {
 	public static HashMap<Player, Inventory> playerInventoryList = new HashMap<Player, Inventory>();
 	public static HashMap<Player, ObjectController> playerControllerList = new HashMap<Player, ObjectController>();
 	public static HashMap<Player, AI> aiList = new HashMap<Player, AI>();
+	private HashMap<Player, Boolean> takeOnceList = new HashMap<Player, Boolean>();
 
 	private Console console;
 
@@ -77,11 +78,7 @@ public class PlayerManager implements Renderer, FrameUpdate {
 		}
 
 		else {
-			AI ai = new AI(worldManager.tileMap, itemManager.itemMap, player);
-			if (this.console != null) {
-				ai.setConsole(console);
-			}
-
+			AI ai = new AI(worldManager.tileMap, itemManager, player, playerInventory);
 			aiList.put(player, ai);
 			playerController = new ObjectController(player).setControlPackage(ai.getPackage());
 		}
@@ -89,8 +86,9 @@ public class PlayerManager implements Renderer, FrameUpdate {
 		playerDisplayList.put(player, playerDisplay);
 		playerInventoryList.put(player, playerInventory);
 		playerControllerList.put(player, playerController);
-		dynamicObjectManager.add(player);
+		dynamicObjectManager.add(player).setTorqueCalculation(false);
 		collisionManager.addTilemapCollision(player);
+		takeOnceList.put(player,true);
 
 		return player;
 	}
@@ -98,7 +96,7 @@ public class PlayerManager implements Renderer, FrameUpdate {
 	private void controllerActions() {
 		for (Player player : playerList) {
 			if (playerControllerList.get(player).controlPackage.ActionTake == true) {
-				takePlayerItemFromItemMap(player);
+				takePlayerItemFromItemMap(player, playerControllerList.get(player).controlPackage);
 				plantManager.harvest(player);
 			}
 
@@ -129,11 +127,16 @@ public class PlayerManager implements Renderer, FrameUpdate {
 		}
 	}
 
-	private void takePlayerItemFromItemMap(Player player) {
+	private void takePlayerItemFromItemMap(Player player, ControlPackage controlPackage) {
 		Item item = itemManager.getItemFromCell(player.cellCoordinate);
-		if (item != null) {
+		boolean takeOnce = takeOnceList.get(player);
+		if (item != null && takeOnce == true) {
 			if (playerInventoryList.get(player).putItemToCell(item) == true) {
 				itemManager.removeItem(player.cellCoordinate, 1);
+				takeOnce = false;
+			}
+			if (controlPackage.ActionTake = false) {
+				takeOnce = true;
 			}
 		}
 	}
@@ -159,7 +162,7 @@ public class PlayerManager implements Renderer, FrameUpdate {
 	public void frameUpdate() {
 		for (Player player : playerList) {
 			if (aiList.get(player) != null) {
-				aiList.get(player).update(worldManager.worldTime.getTime());
+				aiList.get(player).frameUpdate();
 			}
 		}
 

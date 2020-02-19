@@ -14,12 +14,21 @@ public class Rotation {
 		return angleInDegrees;
 	}
 
-	public void setAngle(float degrees) {
-		if (degrees >= 0 && degrees < 360.0f) {
-			angleInDegrees = degrees;
-		}
+	public void setAngle(float degrees) {	
+		angleInDegrees = convertAndClampAngle(degrees);
 	}
 
+	private float convertAndClampAngle(float angle) {
+		float newAngle = angle;
+		if (angle <= 0) {
+			newAngle = 360 + angle % 360;
+		}
+		if (angle > 360) {
+			newAngle = angle % 360;
+		}
+		return newAngle;
+	}
+	
 	public void setAngle(Rotation rotation) {
 		this.angleInDegrees = rotation.degrees();
 	}

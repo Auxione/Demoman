@@ -29,7 +29,7 @@ public class Inventory extends CellularMap {
 		int itemID = ItemList.IDlist.get(item);
 		for (int x = 0; x < super.getXAxisMaxCell(); x++) {
 			for (int y = 0; y < super.getYAxisMaxCell(); y++) {
-				if (super.getCell(x, y, 0) == itemID) {
+				if (super.getCell(x, y, 0) == itemID && super.getCell(x, y, 1) > 0) {
 					if (console != null) {
 						console.Add(0, consolePrefix + "Item found at " + x + "-" + y + " .");
 					}
@@ -41,6 +41,12 @@ public class Inventory extends CellularMap {
 			console.Add(0, consolePrefix + "Item not found.");
 		}
 		return null;
+	}
+
+	public void searchAndSetIndex(Item item) {
+		if (searchItem(item) != null) {
+			itemIndex = searchItem(item);
+		}
 	}
 
 	public Item getItemFromIndex() {

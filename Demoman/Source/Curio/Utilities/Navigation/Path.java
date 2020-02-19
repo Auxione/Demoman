@@ -11,14 +11,16 @@ public class Path {
 		this.nodes = new ArrayList<Vector>();
 	}
 
-	public void addPoint(Vector vector) {
+	public Path addPoint(Vector vector) {
 		nodes.add(vector);
+		return this;
 	}
 
-	public void removePoint(int point) {
+	public Path removePoint(int point) {
 		for (int i = point; i < nodes.size(); i++) {
 			nodes.remove(i);
 		}
+		return this;
 	}
 
 	public Vector getFirstNode() {
@@ -27,6 +29,14 @@ public class Path {
 
 	public Vector getLastNode() {
 		return nodes.get(nodes.size() - 1);
+	}
+
+	public Vector nextNode(Vector currentNode) {
+		int currentIndex = nodes.indexOf(currentNode);
+		if (currentIndex + 1 < nodes.size()) {
+			return nodes.get(currentIndex + 1);
+		}
+		return null;
 	}
 
 	public ArrayList<Vector> getNodes() {

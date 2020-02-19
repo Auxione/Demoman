@@ -36,7 +36,9 @@ public class ObjectRenderer implements Renderer, AlphaMaskRenderer {
 		g.rotate(0, 0, gameObject.transform.rotation.degrees());
 		if (gameObject.getObjectImage() != null) {
 			gameObject.getObjectImage().drawCentered(0, 0);
-		} else if (shape != null) {
+		}
+
+		else if (shape != null) {
 			g.setColor(Color.black);
 			if (shape instanceof Circle) {
 				Circle c = (Circle) shape;
@@ -49,7 +51,7 @@ public class ObjectRenderer implements Renderer, AlphaMaskRenderer {
 				g.fillRect(-r.width / 2, -r.height / 2, r.width, r.height);
 			}
 		}
-		
+
 		g.popTransform();
 	}
 

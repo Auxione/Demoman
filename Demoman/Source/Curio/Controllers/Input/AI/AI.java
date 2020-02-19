@@ -1,88 +1,66 @@
 package Curio.Controllers.Input.AI;
 
-import static Curio.Functions.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
-import Curio.Console;
+import Curio.GameObject;
 import Curio.Controllers.ControlPackage;
-import Curio.Controllers.Input.AI.Tasks.SetRotation;
-import Curio.Controllers.Input.AI.Tasks.Wait;
-import Curio.Controllers.Input.AI.Tasks.WanderAround;
-import Curio.Physics.Time;
-import Curio.SessionManagers.ItemManager.ItemMap;
+import Curio.Controllers.Input.AI.Interfaces.Task;
+import Curio.Controllers.Input.AI.Tasks.AimToObjectTask;
+import Curio.Controllers.Input.AI.Tasks.BlindMoveTask;
+import Curio.Controllers.Input.AI.Tasks.FollowPathTask;
+import Curio.Controllers.Input.AI.Tasks.TakeItemFromGroundTask;
+import Curio.Controllers.Input.AI.Tasks.UseItemTask;
+import Curio.Physics.Interfaces.FrameUpdate;
+import Curio.SessionManagers.ItemManager.Inventory;
+import Curio.SessionManagers.ItemManager.Item;
+import Curio.SessionManagers.ItemManager.ItemList;
+import Curio.SessionManagers.ItemManager.ItemManager;
 import Curio.SessionManagers.WorldManager.TileMap;
+import Curio.Utilities.CellCoordinate;
+import Curio.Utilities.Math.Vector;
+import Curio.Utilities.Navigation.Path;
 import Default.Player;
+import Default.GameStates.SinglePlayerSession;
 
-public class AI {
-	private Console console = null;
+public class AI implements FrameUpdate {
+	Queue<Task> Tasks = new LinkedList<Task>();
+	// queue based system to control player actions
 
+	private Task currentTask;
 	private ControlPackage controlPackage = new ControlPackage();
-
 	private Player player;
-	private ItemMap itemmap;
+	private Inventory playerInventory;
 	private TileMap tilemap;
+	private ItemManager itemManager;
 
-	public boolean isBusy = false;
-
-	private WanderAround wanderAround;
-	private Wait wait;
-	private SetRotation setRotation;
-
-	public AI(TileMap tilemap, ItemMap itemmap, Player player) {
-		this.itemmap = itemmap;
+	public AI(TileMap tilemap, ItemManager itemManager, Player player, Inventory playerInventory) {
 		this.tilemap = tilemap;
+		this.itemManager = itemManager;
 		this.player = player;
-		this.wanderAround = new WanderAround(this);
-		this.wait = new Wait(this);
-		this.setRotation = new SetRotation(this);
-	}
-
-	public AI setConsole(Console console) {
-		this.console = console;
-		wanderAround.setConsole(console);
-		wait.setConsole(console);
-		return this;
-	}
-
-	public void update(Time currentTime) {
-		if (isBusy == false) {
-			decideWhatToDo(currentTime);
-		}
-
-		if (isBusy == true) {
-			if (wanderAround.active() == true) {
-				wanderAround.update(controlPackage, currentTime);
-			}
-
-			else if (wait.active() == true) {
-				wait.update(controlPackage, currentTime);
-			} 
-			
-			else if (setRotation.active() == true) {
-				setRotation.update(controlPackage, currentTime);
-			}
-		}
-	}
-
-	private void decideWhatToDo(Time currentTime) {
-		int chance = random(0, 3);
-		if (chance == 0) {
-			if (wanderAround.active() == false) {
-				wanderAround.Order(currentTime, random(1, 2));
-				isBusy = true;
-			}
-		}
-
-		else if (chance == 1) {
-			if (wait.active() == false) {
-				wait.Order(currentTime, random(3, 5));
-				isBusy = true;
-			}
-		} 
+		this.playerInventory = playerInventory;
 		
-		else if (chance == 2) {
-			if (setRotation.active() == false) {
-				setRotation.Order(currentTime, random(0, 359));
-				isBusy = true;
+		CellCoordinate cc = new CellCoordinate(8, 5);
+		blindMove(new Vector(cc.getWorldX(), cc.getWorldY()));
+		takeItemFromGround();
+		blindMove(new Vector(500, 500));
+		useItem(ItemList.list.get(3));
+		followPath(SinglePlayerSession.testPath);
+	}
+
+	@Override
+	public void frameUpdate() {
+		if (this.currentTask == null) {
+			this.currentTask = Tasks.poll();
+		}
+
+		else if (this.currentTask != null) {
+			if (this.currentTask.finished() == false) {
+				this.currentTask.frameUpdate();
+			}
+
+			else if (this.currentTask.finished() == true) {
+				this.currentTask = null;
 			}
 		}
 	}
@@ -90,5 +68,25 @@ public class AI {
 	public ControlPackage getPackage() {
 		// TODO Auto-generated method stub
 		return controlPackage;
+	}
+
+	private void blindMove(Vector targetPosition) {
+		this.Tasks.add(new BlindMoveTask(controlPackage, player, targetPosition));
+	}
+
+	private void followPath(Path path) {
+		this.Tasks.add(new FollowPathTask(controlPackage, player, path));
+	}
+
+	private void aimToObject(GameObject gameObject) {
+		this.Tasks.add(new AimToObjectTask(controlPackage, player, gameObject));
+	}
+
+	private void takeItemFromGround() {
+		this.Tasks.add(new TakeItemFromGroundTask(controlPackage, player, itemManager));
+	}
+
+	private void useItem(Item item) {
+		this.Tasks.add(new UseItemTask(controlPackage, playerInventory, item));
 	}
 }

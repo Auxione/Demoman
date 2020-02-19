@@ -20,7 +20,7 @@ public class ObjectController {
 	public void update() {
 		if (dynamicObject != null) {
 			Vector v = new Vector(controlPackage.movementDirection).multiply(300.0f);
-			dynamicObject.addForce(v);
+			dynamicObject.applyForceToCoM(v);
 			dynamicObject.transform.rotation.setAngle(controlPackage.rotation);
 		}
 	}

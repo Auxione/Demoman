@@ -131,6 +131,10 @@ public class Vector implements Serializable {
 				this.x * vector.y - this.y * vector.x);
 	}
 
+	public Vector crossProduct(Vector vector) {
+		return vectorProduct(vector);
+	}
+
 	public boolean inBetween(Vector vector1, Vector vector2) {
 		float c1 = vector1.dotProduct(this);
 		float c2 = this.dotProduct(vector2);
