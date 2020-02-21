@@ -10,6 +10,7 @@ public class BlindMoveOrder implements MovementOrder {
 	private Vector targetPosition;
 	private Vector distanceVector;
 	public float distance;
+	public float decelerationDistance;
 
 	private ControlPackage controlPackage;
 	private int targetOffset = 10;
@@ -50,5 +51,7 @@ public class BlindMoveOrder implements MovementOrder {
 	private void calculateDistance() {
 		this.distanceVector = targetPosition.distance(currentPosition);
 		this.distance = targetPosition.distanceSQRT(currentPosition);
+		
+		
 	}
 }

@@ -1,17 +1,16 @@
 package Curio.Controllers.Input.AI.Tasks;
 
-import Curio.Controllers.ControlPackage;
+import Curio.Controllers.Input.AI.AI;
 import Curio.Controllers.Input.AI.Interfaces.Task;
 import Curio.Controllers.Input.AI.Orders.BlindMoveOrder;
-import Curio.Physics.DynamicObject;
 import Curio.Utilities.Math.Vector;
 
 public class BlindMoveTask implements Task {
 	BlindMoveOrder blindMoveOrder;
 	private boolean endOrder = false;
 
-	public BlindMoveTask(ControlPackage controlPackage, DynamicObject dynamicObject, Vector targetPosition) {
-		this.blindMoveOrder = new BlindMoveOrder(controlPackage, dynamicObject, targetPosition);
+	public BlindMoveTask(AI ai,Vector targetPosition) {
+		this.blindMoveOrder = new BlindMoveOrder(ai.getPackage(), ai.dynamicObject, targetPosition);
 	};
 
 	@Override

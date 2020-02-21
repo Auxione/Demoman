@@ -73,6 +73,14 @@ public class CellCoordinate implements Serializable {
 		return z * Constants.CellSize;
 	}
 
+	public Vector get2AxisCellMiddle() {
+		return new Vector((x + 0.5f) * Constants.CellSize, (y + 0.5f) * Constants.CellSize);
+	}
+	
+	public Vector get3AxisCellMiddle() {
+		return new Vector((x + 0.5f) * Constants.CellSize, (y + 0.5f) * Constants.CellSize,(z + 0.5f) * Constants.CellSize);
+	}
+
 	public boolean equals(CellCoordinate cell) {
 		if (this.x == cell.x && this.y == cell.y && this.z == cell.z) {
 			return true;

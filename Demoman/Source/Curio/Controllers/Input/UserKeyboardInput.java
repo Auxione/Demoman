@@ -4,10 +4,10 @@ import org.newdawn.slick.Input;
 
 import Curio.Viewport;
 import Curio.Controllers.ControlPackage;
-import Curio.Physics.Interfaces.FrameUpdate;
+import Curio.Physics.Interfaces.FLUpdate;
 import Curio.Utilities.Math.Vector;
 
-public class UserKeyboardInput implements FrameUpdate {
+public class UserKeyboardInput implements FLUpdate {
 	private ControlPackage controlPackage = new ControlPackage();
 	// keys
 	private int key_UP = Input.KEY_W;
@@ -29,23 +29,6 @@ public class UserKeyboardInput implements FrameUpdate {
 		this.input = input;
 	}
 
-	@Override
-	public void frameUpdate() {
-		if (KeyLock == true) {
-			createLookDirection();
-			createMovementDirection();
-			this.controlPackage.ActionNorth = input.isKeyDown(key_UP);
-			this.controlPackage.ActionSouth = input.isKeyDown(key_DOWN);
-			this.controlPackage.ActionWest = input.isKeyDown(key_LEFT);
-			this.controlPackage.ActionEast = input.isKeyDown(key_RIGHT);
-
-			this.controlPackage.ActionUse = input.isKeyDown(key_USE);
-			this.controlPackage.ActionUseItem = input.isKeyPressed(key_USEITEM);
-			this.controlPackage.ActionSwitchItem = input.isKeyPressed(key_SWITCHITEM);
-			this.controlPackage.ActionTake = input.isKeyPressed(key_TAKE);
-			this.controlPackage.ActionDrop = input.isKeyPressed(key_DROP);
-		}
-	}
 
 	public void createLookDirection() {
 		Vector p = new Vector(Viewport.ScreenMiddle);
@@ -79,5 +62,27 @@ public class UserKeyboardInput implements FrameUpdate {
 	public ControlPackage getPackage() {
 		// TODO Auto-generated method stub
 		return controlPackage;
+	}
+
+	@Override
+	public void FirstUpdate() {
+		if (KeyLock == true) {
+			createLookDirection();
+			createMovementDirection();
+			this.controlPackage.ActionNorth = input.isKeyDown(key_UP);
+			this.controlPackage.ActionSouth = input.isKeyDown(key_DOWN);
+			this.controlPackage.ActionWest = input.isKeyDown(key_LEFT);
+			this.controlPackage.ActionEast = input.isKeyDown(key_RIGHT);
+
+			this.controlPackage.ActionUse = input.isKeyDown(key_USE);
+			this.controlPackage.ActionUseItem = input.isKeyPressed(key_USEITEM);
+			this.controlPackage.ActionSwitchItem = input.isKeyPressed(key_SWITCHITEM);
+			this.controlPackage.ActionTake = input.isKeyPressed(key_TAKE);
+			this.controlPackage.ActionDrop = input.isKeyPressed(key_DROP);
+		}
+	}
+
+	@Override
+	public void LastUpdate() {
 	}
 }

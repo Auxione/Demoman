@@ -6,18 +6,13 @@ import Curio.Physics.DynamicObject;
 import Curio.SessionManagers.ItemManager.ItemManager;
 import Curio.Utilities.CellCoordinate;
 
-public class TakeItemFromGroundOrder implements ActionOrder {
-	private CellCoordinate currentCellCoordinate;
+public class BlindTakeItemFromGroundOrder implements ActionOrder {
 	private ControlPackage controlPackage;
-	private ItemManager itemManager;
 
 	private boolean itemTaken = false;
 
-	public TakeItemFromGroundOrder(ControlPackage controlPackage, DynamicObject dynamicObject,
-			ItemManager itemManager) {
-		this.currentCellCoordinate = dynamicObject.cellCoordinate;
+	public BlindTakeItemFromGroundOrder(ControlPackage controlPackage) {
 		this.controlPackage = controlPackage;
-		this.itemManager = itemManager;
 	}
 
 	@Override

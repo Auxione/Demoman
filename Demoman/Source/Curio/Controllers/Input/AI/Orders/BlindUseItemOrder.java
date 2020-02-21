@@ -2,17 +2,14 @@ package Curio.Controllers.Input.AI.Orders;
 
 import Curio.Controllers.ControlPackage;
 import Curio.Controllers.Input.AI.Interfaces.ActionOrder;
-import Curio.SessionManagers.ItemManager.Inventory;
-import Curio.SessionManagers.ItemManager.Item;
 
-public class UseItemOrder implements ActionOrder {
+public class BlindUseItemOrder implements ActionOrder {
 	private ControlPackage controlPackage;
 
 	private boolean itemUsed = false;
 
-	public UseItemOrder(ControlPackage controlPackage, Inventory inventory, Item item) {
+	public BlindUseItemOrder(ControlPackage controlPackage) {
 		this.controlPackage = controlPackage;
-		inventory.searchAndSetIndex(item);
 	}
 
 	@Override

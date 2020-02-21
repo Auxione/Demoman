@@ -13,14 +13,17 @@ import Curio.SessionManagers.PlantManager.PlantManager;
 import Curio.SessionManagers.WorldManager.WorldManager;
 
 public class WorldObjectManager implements Renderer, AlphaMaskRenderer, FrameUpdate {
-	public static ArrayList<WorldObject> worldObjects = new ArrayList<WorldObject>();
-	public static ArrayList<ObjectRenderer> worldObjectRenderer = new ArrayList<ObjectRenderer>();
+	public static ArrayList<WorldObject> worldObjects;
+	public static ArrayList<ObjectRenderer> worldObjectRenderer;
 	public PlaceWorldObjects placeObject;
 
 	private WorldManager worldManager;
 	private PlantManager plantManager;
 
 	public WorldObjectManager(WorldManager worldManager, PlantManager plantManager) {
+		worldObjects = new ArrayList<WorldObject>();
+		worldObjectRenderer = new ArrayList<ObjectRenderer>();
+
 		this.worldManager = worldManager;
 		this.plantManager = plantManager;
 		this.placeObject = new PlaceWorldObjects(worldManager);

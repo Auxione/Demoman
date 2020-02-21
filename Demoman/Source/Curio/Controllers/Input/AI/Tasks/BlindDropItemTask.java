@@ -2,27 +2,27 @@ package Curio.Controllers.Input.AI.Tasks;
 
 import Curio.Controllers.Input.AI.AI;
 import Curio.Controllers.Input.AI.Interfaces.Task;
-import Curio.Controllers.Input.AI.Orders.FollowPathOrder;
-import Curio.Utilities.Navigation.Path;
+import Curio.Controllers.Input.AI.Orders.BlindDropItemOrder;
+import Curio.Controllers.Input.AI.Orders.BlindUseItemOrder;
 
-public class FollowPathTask implements Task {
-	FollowPathOrder FollowPathOrder;
+public class BlindDropItemTask implements Task{
+	private BlindDropItemOrder blindDropItemOrder;
 	private boolean endOrder = false;
 
-	public FollowPathTask(AI ai, Path path) {
-		this.FollowPathOrder = new FollowPathOrder(ai.getPackage(), ai.dynamicObject, path);
+	public BlindDropItemTask(AI ai) {
+		this.blindDropItemOrder = new BlindDropItemOrder(ai.getPackage());
 	};
 
 	@Override
 	public void frameUpdate() {
 		if (endOrder == false) {
-			this.FollowPathOrder.frameUpdate();
+			this.blindDropItemOrder.frameUpdate();
 		}
 	}
 
 	@Override
 	public boolean finished() {
-		return FollowPathOrder.finished() || endOrder;
+		return blindDropItemOrder.finished() || endOrder;
 		// calisirken false false false
 		// durdurulmak false true true
 		// bitti true false true

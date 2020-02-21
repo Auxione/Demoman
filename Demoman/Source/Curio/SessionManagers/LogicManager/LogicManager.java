@@ -21,9 +21,9 @@ import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.Utilities.CellCoordinate;
 
 public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRenderer, FrameUpdate {
-	public static ArrayList<LogicObject> logicObjectList = new ArrayList<LogicObject>();
-	public static ArrayList<LogicObjectRenderer> logicObjectRendererList = new ArrayList<LogicObjectRenderer>();
-	
+	public static ArrayList<LogicObject> logicObjectList;
+	public static ArrayList<LogicObjectRenderer> logicObjectRendererList;
+
 	public PlaceLogicObject placeObject;
 	public LogicMap logicMap;
 
@@ -32,6 +32,8 @@ public class LogicManager implements Renderer, AlphaMaskRenderer, AnimationRende
 
 	public LogicManager(WorldManager worldManager, ItemManager itemManager, FireManager fireManager,
 			LogicMap logicMap) {
+		logicObjectList = new ArrayList<LogicObject>();
+		logicObjectRendererList = new ArrayList<LogicObjectRenderer>();
 		this.placeObject = new PlaceLogicObject(itemManager, worldManager, fireManager);
 		this.logicMap = logicMap;
 		this.currentTime = worldManager.worldTime.getTime();

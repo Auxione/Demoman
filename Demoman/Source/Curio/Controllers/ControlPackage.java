@@ -8,10 +8,10 @@ import Curio.Utilities.Math.Vector;
 
 public class ControlPackage implements Serializable {
 	public Credentials credentials = null;
-	
+
 	public Vector movementDirection = new Vector();
 	public Rotation rotation = new Rotation();
-	
+
 	public boolean ActionNorth = false, ActionSouth = false, ActionWest = false, ActionEast = false,
 			ActionUseItem = false, ActionUse = false, ActionBomb = false, ActionSwitchItem = false, ActionTake = false,
 			ActionDrop = false;
@@ -22,5 +22,19 @@ public class ControlPackage implements Serializable {
 	}
 
 	public ControlPackage() {
+	}
+
+	public ControlPackage resetActions() {
+		ActionNorth = false;
+		ActionSouth = false;
+		ActionWest = false;
+		ActionEast = false;
+		ActionUseItem = false;
+		ActionUse = false;
+		ActionBomb = false;
+		ActionSwitchItem = false;
+		ActionTake = false;
+		ActionDrop = false;
+		return this;
 	}
 }

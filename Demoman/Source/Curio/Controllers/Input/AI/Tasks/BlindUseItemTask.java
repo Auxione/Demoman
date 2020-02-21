@@ -1,17 +1,15 @@
 package Curio.Controllers.Input.AI.Tasks;
 
-import Curio.Controllers.ControlPackage;
+import Curio.Controllers.Input.AI.AI;
 import Curio.Controllers.Input.AI.Interfaces.Task;
-import Curio.Controllers.Input.AI.Orders.UseItemOrder;
-import Curio.SessionManagers.ItemManager.Inventory;
-import Curio.SessionManagers.ItemManager.Item;
+import Curio.Controllers.Input.AI.Orders.BlindUseItemOrder;
 
-public class UseItemTask implements Task {
-	private UseItemOrder useItemOrder;
+public class BlindUseItemTask implements Task {
+	private BlindUseItemOrder useItemOrder;
 	private boolean endOrder = false;
 
-	public UseItemTask(ControlPackage controlPackage, Inventory inventory, Item item) {
-		this.useItemOrder = new UseItemOrder(controlPackage, inventory, item);
+	public BlindUseItemTask(AI ai) {
+		this.useItemOrder = new BlindUseItemOrder(ai.getPackage());
 	};
 
 	@Override

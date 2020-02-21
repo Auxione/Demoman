@@ -36,6 +36,8 @@ public class DynamicObject extends GameObject implements FixedUpdate {
 
 	public Shape shape;
 
+	private float velocityLimit = 0.0f;
+
 	private boolean torqueActive = true;
 
 	/*
@@ -61,7 +63,7 @@ public class DynamicObject extends GameObject implements FixedUpdate {
 		this.centerOfMass = new Vector(this.position);
 		this.momentOfInertia = CalculateMoI(shape);
 
-		this.forceGenerators.add(new Drag(0.1f, 0.02f));
+		this.forceGenerators.add(new Drag(0.1f, 0.01f));
 	}
 
 	public void fixedUpdate(int delta) {
@@ -80,13 +82,16 @@ public class DynamicObject extends GameObject implements FixedUpdate {
 		this.velocity.x = this.velocity.x * damping + this.acceleration.x * deltaTime;
 		this.velocity.y = this.velocity.y * damping + this.acceleration.y * deltaTime;
 		this.velocity.z = this.velocity.z * damping + this.acceleration.z * deltaTime;
+
+		limitVelocity();
+
 		this.position.x += this.velocity.x * deltaTime;
 		this.position.y += this.velocity.y * deltaTime;
 		this.position.z += this.velocity.z * deltaTime;
 
 		roundVectorToZero(velocity, 1.0f);
 		// roundVectorToZero(acceleration, 1.0f);
-		
+
 		if (torqueActive == true) {
 			this.angularAcceleration = this.accumulatedTorque / momentOfInertia;
 			this.angularVelocity = this.angularVelocity * Angulardamping + this.angularAcceleration * deltaTime;
@@ -101,7 +106,6 @@ public class DynamicObject extends GameObject implements FixedUpdate {
 		updateCellPosition();
 		clearTorqueAndForce();
 	}
-
 
 	private void roundValueToZero(float value, float min) {
 		if (value <= min && value >= -min) {
@@ -139,10 +143,25 @@ public class DynamicObject extends GameObject implements FixedUpdate {
 	}
 
 	private float calculateTorque(Vector point, Vector force) {
-		Vector distancetoCom = point.distance(centerOfMass).add(1250,0,0);
+		Vector distancetoCom = point.distance(centerOfMass).add(1250, 0, 0);
 		Vector torqueVector = distancetoCom.crossProduct(force);
 		return torqueVector.z;
 
+	}
+
+	private void limitVelocity() {
+		if (velocityLimit != 0.0f) {
+			if (this.velocity.magnitude() >= velocityLimit) {
+				this.velocity.setMagnitude(velocityLimit);
+			}
+		}
+	}
+
+	public DynamicObject setVelocityLimit(float velocity) {
+		if (this.velocityLimit != velocity) {
+			this.velocityLimit = velocity;
+		}
+		return this;
 	}
 
 	public void applyForceToPoint(Vector point, Vector force) {

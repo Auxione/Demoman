@@ -5,11 +5,9 @@ import java.util.HashMap;
 
 import org.newdawn.slick.Graphics;
 
-import Curio.Console;
 import Curio.Controllers.ControlPackage;
 import Curio.Controllers.ObjectController;
 import Curio.Controllers.Input.AI.AI;
-import Curio.Physics.Collisions.TilemapCollision;
 import Curio.Physics.Interfaces.FrameUpdate;
 import Curio.Renderer.ObjectRenderer;
 import Curio.Renderer.Interface.Renderer;
@@ -23,18 +21,13 @@ import Curio.SessionManagers.PlantManager.PlantManager;
 import Curio.SessionManagers.WorldManager.WorldManager;
 import Curio.SessionManagers.WorldObjectManager.WorldObjectManager;
 import Curio.Utilities.Math.Geometry.Circle;
-import Curio.Utilities.Math.Geometry.Shape;
 import Default.Player;
 
 public class PlayerManager implements Renderer, FrameUpdate {
-	public static ArrayList<Player> playerList = new ArrayList<Player>();
-	public static HashMap<Player, ObjectRenderer> playerDisplayList = new HashMap<Player, ObjectRenderer>();
-	public static HashMap<Player, Inventory> playerInventoryList = new HashMap<Player, Inventory>();
-	public static HashMap<Player, ObjectController> playerControllerList = new HashMap<Player, ObjectController>();
-	public static HashMap<Player, AI> aiList = new HashMap<Player, AI>();
-	private HashMap<Player, Boolean> takeOnceList = new HashMap<Player, Boolean>();
-
-	private Console console;
+	public static ArrayList<Player> playerList;
+	public static HashMap<Player, ObjectRenderer> playerDisplayList;
+	public static HashMap<Player, Inventory> playerInventoryList;
+	public static HashMap<Player, ObjectController> playerControllerList;
 
 	private BombManager bombManager;
 	private FireManager fireManager;
@@ -45,10 +38,18 @@ public class PlayerManager implements Renderer, FrameUpdate {
 	private LogicManager logicManager;
 	private DynamicObjectManager dynamicObjectManager;
 	private CollisionManager collisionManager;
+	private AIManager aiManager;
 
 	public PlayerManager(WorldManager worldManager, BombManager bombManager, FireManager fireManager,
 			PlantManager plantManager, WorldObjectManager gameObjectManager, ItemManager itemManager,
-			LogicManager logicManager, DynamicObjectManager dynamicObjectManager, CollisionManager collisionManager) {
+			LogicManager logicManager, DynamicObjectManager dynamicObjectManager, CollisionManager collisionManager,
+			AIManager aiManager) {
+
+		playerList = new ArrayList<Player>();
+		playerDisplayList = new HashMap<Player, ObjectRenderer>();
+		playerInventoryList = new HashMap<Player, Inventory>();
+		playerControllerList = new HashMap<Player, ObjectController>();
+
 		this.logicManager = logicManager;
 		this.bombManager = bombManager;
 		this.fireManager = fireManager;
@@ -58,11 +59,7 @@ public class PlayerManager implements Renderer, FrameUpdate {
 		this.itemManager = itemManager;
 		this.dynamicObjectManager = dynamicObjectManager;
 		this.collisionManager = collisionManager;
-	}
-
-	public PlayerManager setConsole(Console console) {
-		this.console = console;
-		return this;
+		this.aiManager = aiManager;
 	}
 
 	public Player Create(ControlPackage controlPackage) {
@@ -78,21 +75,20 @@ public class PlayerManager implements Renderer, FrameUpdate {
 		}
 
 		else {
-			AI ai = new AI(worldManager.tileMap, itemManager, player, playerInventory);
-			aiList.put(player, ai);
+			AI ai = aiManager.createPlayerAI(player);
 			playerController = new ObjectController(player).setControlPackage(ai.getPackage());
 		}
+
 		playerList.add(player);
 		playerDisplayList.put(player, playerDisplay);
 		playerInventoryList.put(player, playerInventory);
 		playerControllerList.put(player, playerController);
 		dynamicObjectManager.add(player).setTorqueCalculation(false);
 		collisionManager.addTilemapCollision(player);
-		takeOnceList.put(player,true);
 
 		return player;
 	}
-
+	
 	private void controllerActions() {
 		for (Player player : playerList) {
 			if (playerControllerList.get(player).controlPackage.ActionTake == true) {
@@ -129,14 +125,9 @@ public class PlayerManager implements Renderer, FrameUpdate {
 
 	private void takePlayerItemFromItemMap(Player player, ControlPackage controlPackage) {
 		Item item = itemManager.getItemFromCell(player.cellCoordinate);
-		boolean takeOnce = takeOnceList.get(player);
-		if (item != null && takeOnce == true) {
+		if (item != null) {
 			if (playerInventoryList.get(player).putItemToCell(item) == true) {
 				itemManager.removeItem(player.cellCoordinate, 1);
-				takeOnce = false;
-			}
-			if (controlPackage.ActionTake = false) {
-				takeOnce = true;
 			}
 		}
 	}
@@ -160,12 +151,6 @@ public class PlayerManager implements Renderer, FrameUpdate {
 
 	@Override
 	public void frameUpdate() {
-		for (Player player : playerList) {
-			if (aiList.get(player) != null) {
-				aiList.get(player).frameUpdate();
-			}
-		}
-
 		for (Player player : playerList) {
 			playerControllerList.get(player).update();
 		}

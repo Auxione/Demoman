@@ -1,17 +1,15 @@
 package Curio.Controllers.Input.AI.Tasks;
 
-import Curio.Controllers.ControlPackage;
+import Curio.Controllers.Input.AI.AI;
 import Curio.Controllers.Input.AI.Interfaces.Task;
-import Curio.Controllers.Input.AI.Orders.TakeItemFromGroundOrder;
-import Curio.Physics.DynamicObject;
-import Curio.SessionManagers.ItemManager.ItemManager;
+import Curio.Controllers.Input.AI.Orders.BlindTakeItemFromGroundOrder;
 
-public class TakeItemFromGroundTask implements Task {
-	private TakeItemFromGroundOrder takeItemFromGroundOrder;
+public class BlindTakeItemFromGroundTask implements Task {
+	private BlindTakeItemFromGroundOrder takeItemFromGroundOrder;
 	private boolean endOrder = false;
 
-	public TakeItemFromGroundTask(ControlPackage controlPackage, DynamicObject dynamicObject, ItemManager itemManager) {
-		this.takeItemFromGroundOrder = new TakeItemFromGroundOrder(controlPackage, dynamicObject, itemManager);
+	public  BlindTakeItemFromGroundTask(AI ai) {
+		this.takeItemFromGroundOrder = new BlindTakeItemFromGroundOrder(ai.getPackage());
 	};
 
 	@Override

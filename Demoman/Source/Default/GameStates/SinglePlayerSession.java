@@ -7,6 +7,8 @@ import Curio.Console;
 import Curio.Functions;
 import Curio.Viewport;
 import Curio.Controllers.Input.UserKeyboardInput;
+import Curio.Controllers.Input.AI.AI;
+import Curio.Controllers.Input.AI.PrimitiveTaskList;
 import Curio.MouseSelectionUI.MouseSelect;
 import Curio.Renderer.ItemMapRenderer;
 import Curio.Renderer.PathRenderer;
@@ -17,6 +19,7 @@ import Curio.Renderer.DisplayObjects.BarDisplay;
 import Curio.Renderer.DisplayObjects.InventoryDisplay;
 import Curio.Renderer.DisplayObjects.TextDisplay;
 import Curio.Renderer.DisplayObjects.WorldTimeDisplay;
+import Curio.SessionManagers.AIManager;
 import Curio.SessionManagers.CollisionManager;
 import Curio.SessionManagers.DynamicObjectManager;
 import Curio.SessionManagers.PlayerManager;
@@ -72,6 +75,7 @@ public class SinglePlayerSession {
 
 	private LogicMap logicMap;
 
+	private AIManager aiManager;
 	private DynamicObjectManager dynamicObjectManager;
 	private CollisionManager collisionManager;
 	private FireManager fireManager;
@@ -105,6 +109,7 @@ public class SinglePlayerSession {
 		logicMap = new LogicMap(tileMap);
 		railroad = new RailroadMap(tileMap);
 
+		aiManager = new AIManager();
 		worldManager = new WorldManager(plantMap, tileMap, itemMap, worldTime);
 		dynamicObjectManager = new DynamicObjectManager();
 		collisionManager = new CollisionManager(worldManager);
@@ -116,7 +121,7 @@ public class SinglePlayerSession {
 		logicManager = new LogicManager(worldManager, itemManager, fireManager, logicMap);
 		railSystemManager = new RailSystemManager(railroad);
 		playerManager = new PlayerManager(worldManager, bombManager, fireManager, plantManager, worldObjectManager,
-				itemManager, logicManager, dynamicObjectManager, collisionManager);
+				itemManager, logicManager, dynamicObjectManager, collisionManager, aiManager);
 
 		selfPlayer = playerManager.Create(userKeyboardInput.getPackage());
 		selfPlayer.spawn(6, 6);
@@ -143,13 +148,14 @@ public class SinglePlayerSession {
 	}
 
 	public void update(int delta) {
+		userKeyboardInput.FirstUpdate();
+		aiManager.FirstUpdate();
 		mouseSelect.FirstUpdate();
 
 		worldTime.fixedUpdate(delta);
 		dynamicObjectManager.fixedUpdate(delta);
 		collisionManager.frameUpdate();
 
-		userKeyboardInput.frameUpdate();
 		worldObjectManager.frameUpdate();
 		playerManager.frameUpdate();
 		plantManager.frameUpdate();
@@ -163,6 +169,8 @@ public class SinglePlayerSession {
 
 		worldTime.LastUpdate();
 		mouseSelect.LastUpdate();
+		userKeyboardInput.LastUpdate();
+		aiManager.LastUpdate();
 	}
 
 	public void render(Graphics g) {
@@ -186,7 +194,7 @@ public class SinglePlayerSession {
 		viewport.renderAlphaMaskOnWorld(logicManager, g);
 		viewport.renderAlphaMaskOnWorld(bombManager, g);
 
-		viewport.renderOnHUD(worldTimeDisplay, g);
+		//viewport.renderOnHUD(worldTimeDisplay, g);
 		viewport.renderOnHUD(inventoryDisplay, g);
 		viewport.renderOnHUD(PlayerName, g);
 		viewport.renderOnHUD(hpBar, g);
@@ -261,6 +269,17 @@ public class SinglePlayerSession {
 				.addPoint(new Vector(600, 800));// 6
 
 		playerManager.Create(null).spawn(7, 7);
+
+		AI a = aiManager.getLastCreatedAI();
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindMove(a, new CellCoordinate(8, 4).get2AxisCellMiddle()));
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindTakeItemFromGround(a));
+		aiManager.addTasktoAI(a, PrimitiveTaskList.followPath(a, testPath));
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindDropItem(a));
+		
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindMove(a, new CellCoordinate(9, 4).get2AxisCellMiddle()));
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindTakeItemFromGround(a));
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindMove(a, new CellCoordinate(9, 20).get2AxisCellMiddle()));
+		aiManager.addTasktoAI(a, PrimitiveTaskList.blindDropItem(a));
 
 		worldTime.setWorldTime(0, 20, 59, 55);
 	}
